@@ -1,4 +1,4 @@
-main {
+.main {
   box-sizing: border-box;
   flex-grow: 1;
   padding: 0 20px;
@@ -13,29 +13,29 @@ main {
   padding-top: 185px;
 }
 
-.cont_intro .tit_intro {
+.tit_intro {
   color: #000;
   display: block;
   font-size: 3.64rem;
   line-height: 1.41;
   word-break: keep-all;
 }
-.cont_intro .tit_intro .tit_tech {
+.tit_tech {
   display: block;
   font-size: 70px;
   font-weight: 700;
 }
-.cont_intro .tit_intro .tit_tech:nth-child(2) {
+.tit_tech:nth-child(2) {
   font-size: 50px;
 }
-.cont_intro .desc_intro {
+.desc_intro {
   color: #475569;
   font-size: 18px;
   line-height: 1.55;
   margin-top: 12px;
   font-weight: 500;
 }
-.cont_intro img {
+.img_intro {
   height: 286px;
   margin-top: -10px;
   width: 690px;

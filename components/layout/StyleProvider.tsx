@@ -1,3 +1,4 @@
+// components/layout/StyleProvider.tsx
 "use client";
 
 import { ThemeProvider } from "next-themes";
@@ -12,7 +13,7 @@ export default function StyleProvider({
       attribute="class"
       defaultTheme="dark"
       enableSystem
-      disableTransitionOnChange
+      disableTransitionOnChange={false}
     >
       {children}
     </ThemeProvider>

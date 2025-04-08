@@ -2,10 +2,11 @@
 "use client";
 
 import { useTheme } from "@/hooks/useTheme";
-import styles from "./DarkModeToggle.module.css";
+import styles from "@/styles/layout/DarkModeToggle.module.css";
+import { useEffect } from "react";
 
 const DarkModeToggle = () => {
-  const { isDark, toggleTheme } = useTheme();
+  const { theme, isDark, toggleTheme } = useTheme();
 
   return (
     <>
@@ -13,12 +14,12 @@ const DarkModeToggle = () => {
         id="toggle"
         className={styles.toggle}
         type="checkbox"
-        checked={!isDark}
+        checked={isDark}
         onChange={toggleTheme}
       />
-      <div className={styles.background}></div>
+
       <label htmlFor="toggle" className={styles.title}>
-        Toggle dark mode
+        Toggle {theme}
       </label>
     </>
   );

@@ -1,4 +1,6 @@
 .toggle {
+  position: relative; /* 추가해줘야 z-index가 작동함 */
+  z-index: 1;
   --size: 2rem;
 
   appearance: none;
@@ -10,8 +12,8 @@
   box-shadow: inset calc(var(--size) * 0.33) calc(var(--size) * -0.25) 0;
   border-radius: 999px;
   color: hsl(240, 100%, 95%);
+
   transition: all 500ms;
-  z-index: 1;
 }
 
 .toggle:checked {
@@ -34,24 +36,8 @@
     var(--offset-diagonal) calc(var(--offset-diagonal) * -1) 0 var(--ray-size);
 }
 
-body,
-.container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-}
-
-.background {
-  background: var(--bg);
-  position: fixed;
-  height: 100vh;
-  width: 100vw;
-  transition: background 500ms;
-}
-
 .title {
+  --color: hsl(240, 100%, 95%);
   color: var(--color);
   z-index: 1;
   cursor: pointer;
