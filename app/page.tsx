@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <div>
       <Head>
-        <title>카카오테크2</title>
+        <title>카카오테크</title>
         <meta
           name="description"
           content="카카오테크, 미래의 문턱을 낮추는 기술"
