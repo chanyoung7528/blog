@@ -18,9 +18,7 @@ const DarkModeToggle = () => {
         onChange={toggleTheme}
       />
 
-      <label htmlFor="toggle" className={styles.title}>
-        Toggle {theme}
-      </label>
+      <label htmlFor="toggle" className={styles.title} />
     </>
   );
 };

@@ -14,7 +14,6 @@
 }
 
 .tit_intro {
-  color: #000;
   display: block;
   font-size: 3.64rem;
   line-height: 1.41;
@@ -29,7 +28,6 @@
   font-size: 50px;
 }
 .desc_intro {
-  color: #475569;
   font-size: 18px;
   line-height: 1.55;
   margin-top: 12px;

@@ -6,7 +6,6 @@ module.exports = {
     hoverOnlyWhenSupported: true,
   },
   content: [
-    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
@@ -16,7 +15,9 @@ module.exports = {
       serif: ["AritaBuri", "sans-serif"],
       mono: ["Source Code Pro", "monospace"],
     },
+    testcolor: "blue",
     colors: {
+      testcolor: "blue",
       transparent: "transparent",
       current: "currentColor",
       fg: "var(--fg)",
