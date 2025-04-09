@@ -1,7 +1,7 @@
 "use client";
 
 import { useTheme } from "@/hooks/useTheme";
-import styles from "@/styles/layout/DarkModeToggle.module.css";
+import styles from "@/styles/layout/darkModeToggle.module.css";
 
 const DarkModeToggle = () => {
   const { isDark, toggleTheme } = useTheme();

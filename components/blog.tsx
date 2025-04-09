@@ -1,13 +1,13 @@
 import { ArrowRight } from "lucide-react";
 
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
-} from "@/components/ui/Card";
-import { Badge } from "./ui/Badge";
+} from "@/components/ui/card";
+import { Badge } from "./ui/badge";
 
 interface Post {
   id: string;

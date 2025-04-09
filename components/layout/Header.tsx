@@ -55,7 +55,10 @@ const Header = () => {
           ref={headerRef}
           className="sticky left-0 top-0 z-10 h-20 w-full bg-white  transition duration-500 dark:bg-[#1a1a1a]"
         >
-          <DarkModeToggle />
+          <div className="inner_header">
+            <div className="doc-title">kakao tech</div>
+            <DarkModeToggle />
+          </div>
         </header>
       )}
     </>

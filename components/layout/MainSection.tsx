@@ -1,5 +1,5 @@
 import RecentPosts from "./RecentPosts";
-import styles from "@/styles/layout/Main.module.css";
+import styles from "@/styles/layout/main.module.css";
 
 const MainSection = () => (
   <main className={`${styles.main} mx-auto my-12 max-w-[1280]`}>
