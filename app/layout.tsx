@@ -1,5 +1,3 @@
-// app/layout.tsx
-
 import "@/styles/global.css";
 import StyleProvider from "@/components/layout/StyleProvider";
 import type { Metadata } from "next";

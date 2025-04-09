@@ -11,10 +11,10 @@ const MainSection = () => (
             <span className={styles.tit_tech}>미래의 문턱을 낮추는 기술</span>
           </h2>
           <p className={styles.desc_intro}>
-            Kakao lowers the barrier to the future, and brings tomorrow's
-            technology into your life
+            Kakao lowers the barrier to the future, and brings technology into
+            your life
           </p>
-          <div className="rounded-xl bg-bg p-6 text-tx shadow-shadow">
+          <div className="bg-bg text-tx shadow-shadow rounded-xl p-6">
             <h1 className="text-tx">안녕하세요!</h1>
             <p>이건 Tailwind 색상 변수 예시입니다.</p>
           </div>
