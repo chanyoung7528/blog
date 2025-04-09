@@ -1,0 +1,97 @@
+---
+title: '공통 모달 커스텀 훅 (3)'
+description: '공통모달 커스텀 훅을 만들어서 모두가 사용할 수 있도록!'
+image: '/img/posts/custom.jpeg'
+draft: false
+category: 'project'
+subImage: '/img/posts/project.png'
+date: 2023-12-22 16:00:00
+---
+
+## 앞으로 갈 수 있다면! 뒤로 가는 것도 할 수 있잖아?
+
+앞에서 여러개의 모달이 있는 케이스를 만들어 보았다. 하지만 이 전에는 모달이 띄어진 상태에서 새 모달이 띄어지는 형태였고, 이번에는 모달에 `prev`, `next`버튼이 생겨서 앞으로도 가고 뒤로도 갈 수 있는 모달을 만들어 보려고한다.
+
+```tsx
+export const NextModalMappingCase = () => {
+    const { modalOpen, modalClose } = useModal();
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+    const contentObj = {
+        header: {
+            1: <Header1 currentIndex={currentIndex} />,
+            2: <Header1 currentIndex={currentIndex} />,
+            3: <Header1 currentIndex={currentIndex} />,
+        },
+        content: {
+            1: <Content5 setCurrentIndex={setCurrentIndex} />,
+            2: <Content6 setCurrentIndex={setCurrentIndex} />,
+            3: <Content7 setCurrentIndex={setCurrentIndex} />,
+        },
+    };
+
+    return (
+        <>
+            <ButtonMui onClick={() => modalOpen(getModalState(1))}>button</ButtonMui>
+        </>
+    );
+};
+```
+
+위의 데이터에서 키값을 1, 2, 3으로 설정한 것은 예시로 개발한 것으로 눈에 명확하게 보기위함이지 실무에선 배열형태로 작성해도 된다. 배열로 설정하게되면 인덱스값이 자동으로 설정되므로 저렇게 키값을 지정하지 않아도 되기떄문이다. 위에부분은 비지니스 로직을 담당하는 부분으로, 실제 모달을 사용하는 곳이다. 모달관련한 데이터를 contentObj으로 관리하고 있다. 이전과 같이 각각의 Content 컴포넌트에서 deleteKey를 줄 수도 있지만, 그렇게 되면 위처럼 많은 컨텐츠들이 생길경우 관리하기 힘들어지고, 플로우 로직이 복잡해질 수 있다. 그 이유는 관리를 한곳에서 하는것이 아니라 각각의 컴포넌트에서 로직을 파악해야하기 때문이다. 그래서 최상위 컴포넌트에서 deleteKey를 관리하는 것이 바람직하다.
+
+## Delete Key, Modal Data를 최상위 컴포넌트에서 관리해보자!
+
+```tsx
+	--- 생략---
+  const getModalHandler = () => {
+    modalClose(currentIndex)
+    const modalState = getModalState(currentIndex)
+    modalOpen(modalState)
+  }
+   const getModalState = (currentStep) => {
+    const modalState: ModalType = {
+      deleteKey: currentStep,
+      title: contentObj.header[currentStep],
+      content: contentObj.content[currentStep],
+    }
+    return modalState
+  }
+```
+
+위의 NextModalMappingCase컴포넌트에서 위의 로직을 추가하였다. getModalHandler함수를 살펴보면, 실행될때, 기존에있는 모달Close를 닫고,
+새로운 모달에 대한 데이터를 getModalState 함수를 통해 얻어서 오픈함수를 실행하게된다. 간단히 정리하자면, 기존 모달을 제거하고 새 모달을 오픈하게되어 마치 앞으로 가게끔 UI가 보여지게된다. 뒤로가려면 어떻게해야할까? currentStep을 역순으로 값을 주면 된다. 현재 모달을 닫고 현재 모달에 -1를 뺀값으로 모달데이터를 얻어오면 된다. 이렇게하면 prev, next 버튼이 완성된다. 그리고, 최상위 컴포넌트인 NextModalMappingCase에서 위의로직을 관리하므로서, 플로우가 단순화되었다. 즉, 개발자는 유지보수할 때, getModalHandler에서 모든것을 관리하여 빠르게 이슈, 개발을 분석할 수 있게되었다.
+
+## getModalHandler 호출 시점을 정해주자!
+
+```tsx
+- Content5.tsx---
+
+export const Content6 = ({ setCurrentIndex }) => {
+   const back = () => {
+    setCurrentIndex((prev) => prev - 1)
+  }
+  return (
+    <>
+      <ButtonMui size="xlarge" onClick={() => back()}>
+        Back
+      </ButtonMui>
+      <ButtonMui size="xlarge" onClick={() => setCurrentIndex((prev) => prev + 1)}>
+        Next
+      </ButtonMui>
+    </>
+  )
+}
+```
+
+```tsx
+useEffect(() => {
+    if (currentIndex > 0) {
+        getModalHandler();
+    }
+}, [currentIndex]);
+```
+
+위의 코드에서 Back버튼에 currentIndex를 -1로 업데이트 시켜준다. 그다음, NextModalMappingCase 컴포넌트 최하단에서 currentIndex가 0이상일 경우에만 getModalHandler함수를 실행시켜 모달의 데이터를 업데이트 시켜준다. 사실 각각의 컴포넌트에서 getModalHandler를 프롭스로 받아 바로 실행시킬수도 있지만, 그렇게하면 Content 컴포넌트가 생길때마다 getModalHandler 프롭스를 넘겨줘야하고 getModalHandler함수안에 분기처리를 해야하는 로직이 추가될 것이다. 개발자의 성향마다 다르겠지만, 처음에 말했다시피 최상단에서 모달 데이터를 관리하는 단순한 플로우를 구현하고자 하였다.
+
+![modal-mult](/gif/modal-mult.gif)

@@ -1,0 +1,74 @@
+---
+title: '세 수 중 최솟값'
+description: '00이하의 자연수 A, B, C를 입력받아 세 수 중 가장 작은 값을 출력하는 프로그램을 작성하세요'
+image: '/img/posts/tech.png'
+draft: false
+category: 'algorithms'
+subImage: '/img/posts/algo.png'
+date: 2022-08-04 22:06:43
+tag:
+  - 최솟값
+---
+
+## 세 수 중 최솟값
+
+Q. `100이하의 자연수 A, B, C`를 입력받아 세 수 중 가장 작은 값을 출력하는 프로그램을 작성하세요.
+(정렬을 사용하면 안됩니다)
+
+▣ 입력설명
+
+- 첫 번째 줄에 100이하의 세 자연수가 입력된다.
+
+▣ 출력설명
+
+- 첫 번째 줄에 가장 작은 수를 출력한다.
+
+## 내가 작성한 코드 - 1
+
+```tsx
+function solution(a, b, c) {
+  let answer;
+  const d = a > b ? b : a;
+  answer = d < c ? d : c;
+  return answer;
+}
+
+console.log(solution(10, 20, 30));
+```
+
+## 내가 작성한 코드 - 2
+
+```tsx
+function solution(a, b, c) {
+  let answer;
+  if (a < b) {
+    return (answer = a);
+  } else if (a > b) {
+    return (answer = b);
+  } else if (answer > c) {
+    return (answer = c);
+  }
+  return answer;
+}
+```
+
+## 답안지에 적힌 코드
+
+```tsx
+function solution(a, b, c) {
+  let answer;
+  if (a < b) answer = a;
+  else answer = b;
+  if (c < answer) answer = c;
+  return answer;
+}
+```
+
+#### 후기
+
+<div class="notice--warning" markdown="1">
+<strong>너무 생각보다 복잡하게 생각한것 같기도하다..</strong>
+
+</div>
+
+[test](https://gist.github.com/imchanyo/4c346da2c378a71b294f0fe37904348a.js)

@@ -1,0 +1,374 @@
+---
+title: "Validation 체계화"
+description: "반복되는 벨리데이션을 컴포저블과 yup을 통해 더 간단하게 만들기!"
+image: "/img/posts/tech.png"
+draft: false
+category: "project"
+subImage: "/img/posts/project.png"
+date: 2025-01-07 14:00:00
+tags:
+  - validation
+  - yup
+  - schema
+---
+
+## useValid와 yup을 도입하게 된 계기
+
+```typescript
+// 저장 검증
+const saveValidation = () => {
+  const alertInfo = {
+    content: "",
+    flag: false,
+  };
+  const {
+    brndId,
+    conrBrndDspyYn,
+    conrBrndDspySeq,
+    conrBrndDspyBegnDt,
+    conrBrndDspyEndDt,
+  } = values.value;
+  // 기본정보 필수값 체크
+  if (
+    isEmptyAnyPropertyCheck({
+      brndId,
+      conrBrndDspyYn,
+      conrBrndDspySeq,
+      conrBrndDspyBegnDt,
+      conrBrndDspyEndDt,
+    })
+  ) {
+    alertInfo.content = RGISTER_MESSAGES[REGISTER_REQUIRED];
+    alertInfo.flag = true;
+    return alertInfo;
+  }
+};
+const saveForm = () => {
+  const { flag, content } = saveValidation();
+  if (flag) {
+    openAlert({
+      content,
+      btnType: "full",
+    });
+    return;
+  }
+  // actions..
+};
+```
+
+values에 업데이트 된 데이터들이 담겨져있는데, 이를 벨리데이션 하기위해서 위와같은 로직으로 구성되어있었습니다.
+등록 또는 수정시에 필요한 데이터들의 유무를 체크하는 로직입니다.
+전 다음과 같은 이유로 위의 소스를 구조화 하고싶었습니다.
+
+**가독성 부족 및 유지보수성 저하:**
+
+- 현재 로직은 데이터 흐름이 명확하지 않아 코드의 의도를 직관적으로 파악하기 어렵습니다.
+- 검증 로직과 값 설정 로직이 혼합되어 있어 수정 시 영향 범위를 이해하는 데 시간이 소요됩니다.
+
+**선언형 프로그래밍의 부재:**
+
+- 검증 로직이 명령형으로 작성되어 있어 내부 구현을 이해해야만 결과를 알 수 있습니다.
+- 선언형 접근 방식으로 변경 시 코드의 의도가 명확히 드러나고 유지보수성이 향상됩니다.
+
+**중복 코드와 확장성 부족:**
+
+- 데이터 키 값만 다르고 검증 로직이 동일한 경우에도 반복 작업이 필요합니다.
+- 중복 코드는 변경 사항 발생 시 일관성 문제를 유발하며, 확장에 용이하지 않습니다.
+
+**타입 안정성 부족:**
+
+- `values` 객체에서 접근하는 값들이 암묵적으로 존재한다고 가정하고 있으며, 타입스크립트의 이점을 충분히 활용하지 못하고 있습니다.
+- 엄격한 타입 정의를 통해 개발 시점에 오류를 방지하고 코드의 안정성을 높일 필요가 있습니다.
+
+## schema 폴더구조화
+
+```tsx
+📦constants
+ ┣ 📂validation
+ ┃ ┣ 📂schema
+ ┃ ┃ ┣ 📂bulletin
+ ┃ ┃ ┃ ┣ 📜faq.ts
+ ┃ ┃ ┃ ┣ 📜index.ts
+ ┃ ┃ ┃ ┗ 📜notice.ts
+ ┃ ┃ ┣ 📂business
+ ┃ ┃ ┃ ┣ 📜duty-free.ts
+ ┃ ┃ ┃ ┗ 📜index.ts
+ ┃ ┃ ┣ 📂operation
+ ┃ ┃ ┃ ┣ 📜administrator.ts
+ ┃ ┃ ┃ ┣ 📜common-code.ts
+ ┃ ┃ ┃ ┣ 📜index.ts
+ ┃ ┃ ┃ ┣ 📜manger.ts
+ ┃ ┃ ┃ ┣ 📜product-group.ts
+ ┃ ┃ ┃ ┗ 📜system.ts
+ ┃ ┃ ┗ 📜index.ts
+ ┃ ┣ 📜errorMessages.ts
+   ┗ 📜index.ts
+```
+
+위와 같이 constants/validation/schema로 분리하여 벨리데이션 관련 소스를 파악하기 용이하게 하였습니다.
+구조기준은 views에 적용된 구조와 동일하게 적용하여 사용성을 높였습니다.
+
+## schema 작성
+
+```ts
+export const administratorSchema: SchemaType = {
+  schema: {
+    authGrpNm: string()
+      .required(RGISTER_MESSAGES[REGISTER_REQUIRED])
+      .when("grpNm", {
+        is: (grpNm: string) => !!grpNm,
+        then: (schema) =>
+          schema.test(
+            "권한 그룹명 중복체크",
+            ADMINISTRATOR_MESSAGE[ADMINISTRATOR_MESSAGE_USAGE_DUPLICATE_ERROR],
+            (authGrpNm, context) => authGrpNm === context.parent.grpNm
+          ),
+      }),
+  },
+};
+```
+
+스키마에 벨리데이션을 할 키를 입력하고, 위와같이 yup문법을 사용하여 벨리데이션을 체크하는 로직을 추가합니다.
+확실히, 기존과 다른점은 데이터의 타입이 명확하게 보이고, 내부로직을 파악하지 않아도 어떤 벨리데이션을 체크하는지 명확하게 파악할 수 있습니다. 또한, test함수 첫번째 인자에 stirng 타입으로 기입하는 테스트명으로 좀더 빠른 분석이 가능합니다.
+
+## useValid의 필요성
+
+여기서 의문인 점이 있습니다. 위의 언급한 대로, schema에 벨리데이션을 정의하고 해당페이지에서 사용하면 되지않을까? 굳이useValid 커스텀훅을 만들어서 사용할 필요가 있을까? 하고 말입니다.하지만, 위의 벨리데이션 함수에서 flag에 불리언 값에따라 알럿을 띄우는 로직을 벨리데이션을 사용할 때마다 작성해야합니다. 그래서 다음과 같은 기능을 추가해볼 까 합니다.
+
+- validation의 flag값에 따른 알럿창 띄우기
+- Required등과 같이 사용하는 곳이많고 특별한 로직이 필요없는 경우 좀 더 간단하게 사용하기.
+
+### validation의 flag값에 따른 알럿창 띄우기
+
+```ts
+export const useValid = () => {
+  const { openAlert } = useAlert();
+
+  const throwError = (content: string): never => {
+    openAlert({
+      btnType: "full",
+      content,
+    });
+    throw new Error(content); // 이후 로직 중단
+  };
+  const runValidation = async <T,>({
+    params,
+    schema,
+  }: RunValidationModel<T>): Promise<void> => {
+    try {
+      await object().shape(schema).validate(params);
+    } catch (err) {
+      if (err instanceof ValidationError) {
+        throwError(err.errors[0]);
+      }
+    }
+  };
+  return {
+    runValidation,
+  };
+};
+```
+
+useValid에서 호출한 runValidation함수를 이용하여 최종적으로 action전에 벨리데이션을 체크합니다.
+이때, try,catch를 이용하여 에러일 경우 new Error를 통해 로직을 중단하고,
+schema에서 정의한 에러메시지를 alert으로 띄웁니다.
+이제 매번 벨리데이션을 체크하는 파일에서 flag를 이용하여 알럿을 띄우지 않아도 됩니다.
+
+#### Required 스키마 추가하기
+
+<img src="/img/project/usevalid.png" />
+
+위의 알럿처럼, 특정 페이지에서만 사용하는 벨리데이션이 아니라 공통적으로 사용하는 벨리데이션이 있다면 커스텀훅에 기능을 추가하여 반복을 줄이고 재사용성을 높일 수 있습니다.
+
+#### SchemaType - Input
+
+```ts
+export interface RequireParamsType {
+  required?: string[];
+}
+type SchemaType = {
+  schema?: Record<string, any>;
+  commonSchema?: RequireParamsType;
+};
+
+export const faqSchema: SchemaType = {
+  commonSchema: {
+    required: ["faqTitle", "faqType", "faqContent", "langCode"],
+  },
+};
+```
+
+runValidation에 들어갈 commonSchema 인자값을 생성합니다. commonSchema 인자의 타입은 위와같이 입력할 예정입니다. required 값에 배열이 들어가며, 배열은 string[] 타입으로 배열안에 들어가는 string값 자체가 필수값을 체크하기 위한 데이터로 인식하여 벨리데이션을 체크합니다.
+
+### createCommonSchema
+
+```ts
+--output--
+object().shape({
+key :value.string().trim().required(msg)
+})
+```
+
+yup에서 제공해주는 object.shape을 이용하여 안에 객체타입으로 벨리데이션을 체크할 것입니다.
+결국, createCommonSchema의 return값은 shape함수 안에 들어가는 객체를 생성하는 함수입니다.
+
+```ts
+const processCommonSchema = <T,>(
+  params: T,
+  commonSchema: RequireParams
+): Record<string, any> => {
+  return Object.entries(commonSchema).reduce(
+    (acc, [key, value]) => {
+      if (Array.isArray(value)) {
+        acc[key] = extractParams(params, value); // value를 배열로 간주하여 처리
+      } else {
+        acc[key] = {}; // 객체가 아닌 경우 빈 객체로 초기화
+      }
+      return acc;
+    },
+    {} as Record<string, any>
+  );
+};
+```
+
+processCommonSchema함수는 commonSchema배열의 키값에 해당하는 데이터만 Pick 하여 새로운 객체를 반환하게 해주는 함수입니다.
+
+```ts
+ex)
+const commonSchema = ['name']
+const parmas = {
+   name : 'chan',
+   age : 17,
+	 address : 'seoul'
+}
+// return
+{
+	name : 'chan'
+}
+```
+
+위의 소스를 보면, commonSchema배열의 name만 params에서 가져와서 새로운 객체를 반환하는 것을 볼 수있습니다.
+params에는 실제 벨리데이션에 필요한 데이터 뿐만아니라 필요없는 데이터가 들어있을 수도 있기때문에 한번 필터링과정을 거칩니다. 사실 입력단에서 필터링하여 데이터를 제공해주면 되지만, 입력단에서 매번 가공해서 데이터를 제공해야하므로 위의 기능을 제공했습니다.
+
+```ts
+const requireMessage = {
+  required: RGISTER_MESSAGES[REGISTER_REQUIRED],
+  lang: RGISTER_MESSAGES[REGISTER_LANG],
+};
+
+const createCommonSchema = (
+  commonSchema: RequireParams = {}
+): Record<string, any> => {
+  return Object.entries(commonSchema).reduce(
+    (acc, [key, value]) => {
+      const fieldEntries = Object.entries(value || {});
+      fieldEntries.forEach(([field, fieldValue]) => {
+        if (fieldValue === null) {
+          acc[field] = string()
+            .nonNullable()
+            .required(requireMessage[key || "required"]);
+          return;
+        }
+        const type = typeof fieldValue;
+        const schemaType =
+          type === "string" ? string().nonNullable().trim() : typeObj[type]; // type이 없거나 잘못된 경우 기본값으로 string 사용
+        acc[field] = schemaType.required(requireMessage[key || "required"]);
+      });
+      return acc;
+    },
+    {} as Record<string, any>
+  );
+};
+```
+
+이렇게 필터링된 데이터를 본격적으로 schema 형태로 생성해주는 함수입니다. 방어코드로, 데이터가 null일 경우엔 필수체크를 바로 해줍니다.
+데이터의 타입에 따라 yup에서 제공해주는 타입을 달리 해야하므로, 데이터 타입을 분석후 yup에 알맞은 타입을 제공해줍니다.
+trim함수는 string타입일 경우만 사용되므로, 다른 타입과 다르게 사용되므로 분기처리해주었습니다.
+
+## useValid의 이점
+
+<div style={{ display: 'flex', gap: '10px' }}>
+
+```typescript
+// --useValid 적용 전---
+const saveValidation = () => {
+  const alertInfo = {
+    content: "",
+    flag: false,
+  };
+  const {
+    brndId,
+    conrBrndDspyYn,
+    conrBrndDspySeq,
+    conrBrndDspyBegnDt,
+    conrBrndDspyEndDt,
+  } = values.value;
+  // 기본정보 필수값 체크
+  if (
+    isEmptyAnyPropertyCheck({
+      brndId,
+      conrBrndDspyYn,
+      conrBrndDspySeq,
+      conrBrndDspyBegnDt,
+      conrBrndDspyEndDt,
+    })
+  ) {
+    alertInfo.content = RGISTER_MESSAGES[REGISTER_REQUIRED];
+    alertInfo.flag = true;
+    return alertInfo;
+  }
+};
+const saveForm = () => {
+  const { flag, content } = saveValidation();
+  if (flag) {
+    openAlert({
+      content,
+      btnType: "full",
+    });
+    return;
+  }
+  // actions..
+};
+```
+
+```ts
+// --useValid 적용 후---
+const saveForm = handleSubmit(async (params: AdministratorParams) => {
+  const { updDt, regrUuid, regDt, updrUuid, ...rest } = params;
+  await runValidation<AdministratorParams>({ params, ...administratorSchema });
+
+  isEdit.value ? updateAdmin(rest) : registrationAdmin(rest);
+});
+```
+
+</div>
+기존에 if문으로 길게 작성되었던 로직을 제거하고, 위와같이 Action을 담당하는 함수에 runValidation함수만 호출해서 사용하면, 손쉽게 벨리데이션을 제어할 수 있게됩니다. 이로써 얻고자하는 이점은 다음과 같습니다.
+
+**1. 검증 로직의 분리화로 유지보수성 향상**
+
+- 검증 로직이 runValidation 함수로 통합되어, 동일한 검증 로직을 여러 곳에서 재사용할 수 있습니다.
+- 검증 로직 수정 시, 단일 위치에서 변경이 가능하여 유지보수 부담을 줄입니다.
+- 검증 규칙이 명확히 분리됨으로써 코드의 모듈성과 확장성을 확보합니다.
+
+**2. 코드 간결성 및 중복 제거**
+
+- 기존의 명령형 방식으로 작성된 중복된 필수값 체크 코드를 제거하고, runValidation 함수에 통합하여 코드 라인을 크게 줄였습니다.
+- 코드 구조가 간결해져 비즈니스 로직에 집중할 수 있으며, 불필요한 중복 작업을 방지합니다.
+
+**3. 선언형 프로그래밍 도입으로 명료한 로직**
+
+- 선언형 프로그래밍을 사용하여 검증 프로세스를 명확하게 표현하였습니다.
+- 개발자는 내부 구현 세부사항을 이해하지 않아도, 결과를 직관적으로 파악할 수 있습니다.
+- 검증 규칙이 함수나 객체 형태로 선언되어, 코드의 가독성과 이해도를 높였습니다.
+
+**4. 타입스크립트와의 친화성 및 타입 안정성 강화**
+
+- 입력 데이터(params)와 검증 스키마가 타입스크립트 기반으로 설계되어, 정적 타입 검사를 통해 오류를 사전에 방지합니다.
+- 타입 추론을 통해 변수 및 함수의 데이터 흐름을 명확히 파악할 수 있어, 디버깅이 용이합니다.
+- 런타임 오류가 발생하기 전에 컴파일 단계에서 잘못된 입력을 감지할 수 있습니다.
+
+**5. 코드 흐름의 명확화**
+
+- 검증과 실행 로직이 분리되어, 코드 흐름을 읽기 쉽고 의도에 맞게 이해할 수 있습니다.
+- runValidation 함수가 실패와 성공의 조건을 명확히 제어하여, 검증과 실행의 분리를 강화하였습니다.
+- 코드 흐름의 단순화는 신규 개발자나 협업 개발자들이 빠르게 이해하고 작업할 수 있도록 돕습니다.

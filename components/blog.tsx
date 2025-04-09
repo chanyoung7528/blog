@@ -1,13 +1,13 @@
 import { ArrowRight } from "lucide-react";
 
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/Button";
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
-} from "@/components/ui/card";
+} from "@/components/ui/Card";
+import { Badge } from "./ui/Badge";
 
 interface Post {
   id: string;
@@ -78,16 +78,16 @@ const Blog = ({
           <Badge variant="secondary" className="mb-6">
             {tagline}
           </Badge>
-          <h2 className="mb-3 text-3xl font-semibold text-pretty md:mb-4 md:text-4xl lg:mb-6 lg:max-w-3xl lg:text-5xl">
+          <h2 className="text-pretty mb-3 text-3xl font-semibold md:mb-4 md:text-4xl lg:mb-6 lg:max-w-3xl lg:text-5xl">
             {heading}
           </h2>
-          <p className="mb-8 text-muted-foreground md:text-base lg:max-w-2xl lg:text-lg">
+          <p className="text-muted-foreground mb-8 md:text-base lg:max-w-2xl lg:text-lg">
             {description}
           </p>
           <Button variant="link" className="w-full sm:w-auto" asChild>
             <a href={buttonUrl} target="_blank">
               {buttonText}
-              <ArrowRight className="ml-2 size-4" />
+              <ArrowRight className="size-4 ml-2" />
             </a>
           </Button>
         </div>
@@ -101,7 +101,7 @@ const Blog = ({
                 <a
                   href={post.url}
                   target="_blank"
-                  className="transition-opacity duration-200 fade-in hover:opacity-70"
+                  className="fade-in transition-opacity duration-200 hover:opacity-70"
                 >
                   <img
                     src={post.image}
@@ -124,10 +124,10 @@ const Blog = ({
                 <a
                   href={post.url}
                   target="_blank"
-                  className="flex items-center text-foreground hover:underline"
+                  className="text-foreground flex items-center hover:underline"
                 >
                   Read more
-                  <ArrowRight className="ml-2 size-4" />
+                  <ArrowRight className="size-4 ml-2" />
                 </a>
               </CardFooter>
             </Card>

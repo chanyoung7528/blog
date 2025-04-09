@@ -1,7 +1,14 @@
-import type { NextConfig } from "next";
+import { withContentlayer } from "next-contentlayer";
 
-const nextConfig: NextConfig = {
-  /* config options here */
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  reactStrictMode: true,
+  trailingSlash: false,
+  swcMinify: true,
+  basePath: process.env.NODE_ENV === "production" ? "/imchanyo.github.io" : "",
+  output: "export" as const,
+  assetPrefix:
+    process.env.NODE_ENV === "production" ? "https://imchanyo.github.io" : "",
 };
 
-export default nextConfig;
+export default withContentlayer(nextConfig);

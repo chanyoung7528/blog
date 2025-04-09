@@ -1,0 +1,46 @@
+---
+title: '내적'
+description: '길이가 같은 두 1차원 정수 배열 a, b가 매개변수로 주어집니다.'
+image: '/img/posts/tech.png'
+draft: false
+category: 'algorithms'
+subImage: '/img/posts/algo.png'
+date: 2022-08-24 22:06:43
+tag:
+  - reduce
+  - 배열의 합
+---
+
+## 내적
+
+Q. 길이가 같은 두 1차원 정수 배열 a, b가 매개변수로 주어집니다.
+a와 b의 [내적](https://en.wikipedia.org/wiki/Dot_product)을 return 하도록 solution 함수를 완성해주세요.
+이때, `a와 b의 내적은 a[0]*b[0] + a[1]*b[1] + ... + a[n-1]\*b[n-1]` 입니다. (n은 a, b의 길이)
+
+▣ 제한사항
+
+- a, b의 길이는 1 이상 1,000 이하입니다.
+- a, b의 모든 수는 -1,000 이상 1,000 이하입니다.
+
+▣ 입출력 예
+
+| a         | b           | result |
+| --------- | ----------- | ------ |
+| [1,2,3,4] | [-3,-1,0,2] | [3]    |
+| [-1,0,1]  | [1,0,-1]    | [-2]   |
+
+## 내가 작성한 코드 - 1
+
+```tsx
+function solution(absolutes, signs) {
+return absolutes.reduce((acc, cur, i) => (acc += cur \* signs[i]), 0);
+}
+
+solution([-1, 0, 1], [1, 0, -1]);
+```
+
+1. 여기서 중요한건 a와 b의 길이가 같다는 점이다. 이를 활용한다
+2. 결국 a^0 _ b^0 + a^1 _ b^1 ... 이런식의 합을 구하는문제이다.
+3. 축적된 합을 acc라고 하고, 현재의값 cur과 cur의 맞는 signs의 인덱스 인자를 곱하여 acc에 축적한다.
+4. 축적된 acc는 다시 반복적으로 실행된 cur 과 signs의 합을 더하여 축적해나간다.
+5. 최종적으로 모두 합해진 답이나온다.

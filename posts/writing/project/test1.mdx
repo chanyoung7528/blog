@@ -1,0 +1,122 @@
+## Vue 공식문서 참고자료
+
+[커스텀 이벤트 - Vue.js](https://kr.vuejs.org/v2/guide/components-custom-events.html#sync-%EC%88%98%EC%8B%9D%EC%96%B4)
+
+<aside>
+💡 가끔 prop에 대해서 “양방향 바인딩”이 필요한 경우가 있습니다. 
+안타깝게도, 진짜 양방향 바인딩은 유지보수 측면에서 이슈를 발생시킬 수 있습니다. 
+자식 컴포넌트가 변이 코드 없이 부모 컴포넌트를 변경할 수 있게 되면, 부모 요소와 자식 요소 중 변이를 발생시킨 지점을 특정할 수 없게 되기 때문입니다.
+
+</aside>
+
+## update 문법을 써야하는 이유
+
+> Vue 2.3.0+ 에서 추가
+
+<aside>
+💡 위의 글에서는 데이터가 변하는 지점을 예측할 수가 없어서 유지보수가 힘들다고 하였습니다. 그렇다면 '변하는 지점'을 가리키는 무언가가 있으면 되지않을까요? 그게 바로 'update'입니다
+
+이벤트를 emit할 때에는 update:visible과 같은 패턴이 권장됩니다.
+
+</aside>
+
+## 직접 바인딩하여 알아보기
+
+### update을 적용하기 전 단일방향으로 props을 사용할경우
+
+> 제가 실제로 PO의 리뷰페이지를 만들때 사용한 코드를 참고하였습니다. 밑에 코드는 리뷰페이지 필터모달창의 관련된 코드입니다.
+
+```tsx
+---ReviewList.vue--  // 부모
+
+<template>
+<modal-review-list-fitler @toggleList="toggleList"
+goSearchData="goSearchData" @goSearch="goSearch" v-if="open" />
+</temaplte>
+
+<script>
+
+data() {
+    return {
+      searchParams: {
+        searchOrderType: '',
+      },
+goSearch(params) {
+      if (params.date) {
+        this.searchParams.searchOrderType = params.date
+      }
+    },
+
+</script>
+```
+
+```tsx
+--ModalReviewListFilter.vue-- // 자식
+
+<tempalte>
+<button type="button" class="btn color1" @click="goSearch" >적용하기</button>
+</tempalte>
+
+<script>
+
+goSearch (){
+          this.$emit('goSearch', {
+            date: this.searchValue
+})},
+</script>
+```
+
+<aside>
+💡 리뷰리스트에서 필터링된 데이터값 (this.searchValue)를 받기위해 함수를 선언했다. 즉 emit을 사용하려면 함수를 선언해야한다.
+그리고 받은 data를 다시 변수에 할당해준다.
+
+코드를 작성하면서 되게 비효율적인 방법이라고 생각했다.
+이렇게 한번만 작성할떄는 괜찮을 수 있어도 매번 사용할때마다 부모에 함수를 선언하고 데이터를 넘겨받아야하는 점은 힘든 작업이다.
+
+</aside>
+
+```tsx
+--payment.vue----
+
+<template>
+<popup-layout :visible.sync="isOpenPopup"
+:title="popupTitle" :popup-class="popupClass">
+</template>
+
+```
+
+```tsx
+---popupLayout.vue--
+
+<template>
+ <button type="button" class="bg-icon close"
+ @click.self.stop="handleWrapperClick">닫기</button>
+</template>
+
+<script>
+props: {
+    visible: {
+      type: Boolean,
+      default: false,
+    },
+methods: {
+    handleWrapperClick() {
+      this.$emit('update:visible', false)
+    },
+</scirpt>
+```
+
+- @click.self.stop가 뭘까요?
+  이벤트 핸들러 내부에서 event.preventDefault() 또는 event.stopPropagation()를 호출하는 것은 매우 보편적인 일입니다.
+  관련 코드가 동일한 순서로 생성되므로 수식어를 사용할 때 순서를 지정하세요. 다시말해 `v-on:click.prevent.self`를 사용하면
+  **모든 클릭**을 막을 수 있으며 `v-on:click.self.prevent`는 엘리먼트 자체에 대한 클릭만 방지합니다.
+  - Click preventDefault 이벤트 더 자세히 알아보기
+
+<aside>
+💡 부모인 payment페이지에서 isOpenPopup의 데이터를 visible로 popupLayout에 넘겨주고 있다.(props)
+popupLayout에서 props인 visible을 받아서 바로 handleWrapperClick함수에서 클릭이벤트 발생시 visible의 값을 false로 변환해주고 있다.
+
+즉, 부모 요소는 이벤트를 감지하여 (원한다면) 로컬 data 속성을 업데이트 할 수 있습니다.
+위에 update를 적용하기전과 차이가 느껴지시나요? 부모에 함수를 선언하지않아도 바로 props의 data를 업데이트 할 수 있습니다.
+
+</aside>
