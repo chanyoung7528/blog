@@ -1,7 +1,7 @@
 .toggle {
   position: relative; /* 추가해줘야 z-index가 작동함 */
   z-index: 1;
-  --size: 2rem;
+  --size: 1.5rem;
 
   appearance: none;
   outline: none;

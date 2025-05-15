@@ -35,7 +35,7 @@ export default function useKbarAction(allWritings: Writing[] = []) {
         shortcut: ["H"],
         keywords: "profile",
         section: "Pages",
-        icon: <HomeIcon width={20} />,
+        icon:<HomeIcon width={20} />,
         perform: () => router.push(`${rootUrl()}`),
       },
       {

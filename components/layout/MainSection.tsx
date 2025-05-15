@@ -14,7 +14,7 @@ const MainSection = () => (
             Kakao lowers the barrier to the future, and brings technology into
             your life
           </p>
-          <div className="bg-bg text-tx shadow-shadow rounded-xl p-6">
+          <div className="rounded-xl bg-bg p-6 text-tx shadow-shadow">
             <h1 className="text-tx">안녕하세요!</h1>
             <p>이건 Tailwind 색상 변수 예시입니다.</p>
           </div>

@@ -1,6 +1,8 @@
 import "@/styles/global.css";
 import StyleProvider from "@/components/layout/StyleProvider";
 import type { Metadata } from "next";
+import KBarProviders from "@/components/layout/KbarProvider";
+import { allWritings } from "contentlayer/generated";
 
 export const metadata: Metadata = {
   title: "카카오테크",
@@ -15,7 +17,9 @@ export default function RootLayout({
   return (
     <html lang="ko" suppressHydrationWarning>
       <body className="md:m mt-4 md:mt-0">
-        <StyleProvider>{children}</StyleProvider>
+        <StyleProvider>
+          <KBarProviders allWritings={allWritings}>{children}</KBarProviders>
+        </StyleProvider>
       </body>
     </html>
   );

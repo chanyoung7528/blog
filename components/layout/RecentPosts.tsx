@@ -1,8 +1,5 @@
-import Blog from "../blog";
-
 const RecentPosts = () => (
   <section className="my-12">
-    <Blog />
     {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {posts.map((post) => (
         <div key={post.id} className="border p-4 rounded-lg">
