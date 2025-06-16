@@ -14,8 +14,11 @@
 
 /* 전역 폰트 fallback 설정 */
 :root {
+  --font-fallback-heading:
+    "KakaoBig", "Apple SD Gothic Neo", "Malgun Gothic", "맑은 고딕", sans-serif;
+
   --font-fallback:
-    "KakaoBigSans-ExtraBold", Pretendard Variable, -apple-system,
+    "KakaoSmallSans-Bold", Pretendard Variable, -apple-system,
     BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI",
     "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji",
     "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
@@ -33,6 +36,17 @@ body {
   transition:
     background-color 0.5s ease,
     color 0.5s ease;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+strong {
+  font-weight: 900;
+  font-family: var(--font-fallback-heading);
 }
 
 body {
@@ -143,9 +157,11 @@ a {
 
 /* 태그 스타일 */
 .tag-item {
-  border: 1px solid #97bbf680;
+  border: 1px solid #60a5fa;
   border-radius: 12px;
   padding: 3px 8px;
+  font-size: 14px;
+  color: #60a5fa;
 }
 
 /* 화면 리듬 애니메이션 (선택 사항) */

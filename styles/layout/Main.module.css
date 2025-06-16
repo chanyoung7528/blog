@@ -8,9 +8,9 @@
 .cont_intro {
   box-sizing: border-box;
   display: flex;
-  height: 641px;
   justify-content: space-between;
   padding-top: 185px;
+  gap: 50px;
 }
 
 .tit_intro {

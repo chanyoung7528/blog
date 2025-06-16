@@ -11,9 +11,13 @@ module.exports = {
   ],
   theme: {
     fontFamily: {
-      sans: ["Pretendard Variable", "sans"],
-      serif: ["AritaBuri", "sans-serif"],
-      mono: ["Source Code Pro", "monospace"],
+      sans: ['"Pretendard Variable"', "sans-serif"],
+      heading: ['"KakaoBigSans-ExtraBold"', "sans-serif"],
+    },
+    fontSize: {
+      base: "1rem", // 16px
+      body: ["1rem", { lineHeight: "1.75rem" }],
+      heading: ["2rem", { fontWeight: "700", lineHeight: "2.5rem" }],
     },
     colors: {
       transparent: "transparent",
@@ -52,9 +56,11 @@ module.exports = {
       "black-A12": "var(--blackA12)",
     },
     screens: {
-      lg: { min: "1024px" },
-      md: { min: "768px" },
-      sm: { min: "640px" },
+      sm: "640px",
+      md: "768px",
+      lg: "1024px",
+      xl: "1280px",
+      "2xl": "1536px",
       maxSm: { max: "640px" },
       maxMd: { max: "768px" },
     },

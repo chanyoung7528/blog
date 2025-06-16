@@ -4,6 +4,7 @@ import { KBarProvider } from "kbar";
 import dynamic from "next/dynamic";
 import useKBarAction from "@/hooks/useKbarAction";
 import { Writing } from "contentlayer/generated";
+import { AllWritingsContext } from "@/contexts/AllWritingsContext";
 
 const KBar = dynamic(() => import("@/components/ui/Kbar"), { ssr: false });
 
@@ -17,11 +18,13 @@ export default function KBarProviders({
   const actions = useKBarAction(allWritings);
 
   if (actions?.length === 0 || !actions) return null;
-  console.log(actions);
+
   return (
-    <KBarProvider actions={actions}>
-      <KBar />
-      {children}
-    </KBarProvider>
+    <AllWritingsContext.Provider value={allWritings}>
+      <KBarProvider actions={actions}>
+        <KBar />
+        {children}
+      </KBarProvider>
+    </AllWritingsContext.Provider>
   );
 }
