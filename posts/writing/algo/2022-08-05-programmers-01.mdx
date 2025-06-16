@@ -1,0 +1,86 @@
+---
+title: '없는 숫자 더하기'
+description: ' 0부터 9까지의 숫자 중 일부가 들어있는 정수 배열'
+image: '/img/posts/tech.png'
+draft: false
+category: 'algorithms'
+subImage: '/img/posts/algo.png'
+date: 2022-08-05 22:06:43
+tag:
+  - 없는 숫자 더하기
+  - reduce
+---
+
+## 없는 숫자 더하기
+
+Q. 0부터 9까지의 숫자 중 일부가 들어있는 정수 배열 `numbers`가 매개변수로 주어집니다.
+`numbers`에서 찾을 수 없는 0부터 9까지의 숫자를 모두 찾아 더한 수를 return 하도록
+solution 함수를 완성해주세요.
+
+▣ 제한사항
+
+- 1 ≤ numbers의 길이 ≤ 9
+  0 ≤ numbers의 모든 원소 ≤ 9
+  numbers의 모든 원소는 서로 다릅니다.
+
+▣ 입출력 예
+
+| numbers           | result |
+| ----------------- | ------ |
+| [1,2,3,4,6,7,8,0] | [14]   |
+| [5,8,4,0,6,7,9]   | [6]    |
+
+## 내가 작성한 코드 - 1
+
+```tsx
+function solution(numbers) {
+  var answer = -1;
+  const arr = Array.from({ length: 9 }, (v, i) => i + 1);
+  answer = getSum(arr) - getSum(numbers);
+  return answer;
+}
+
+getSum = (arr) => arr.reduce((acc, cur) => acc + cur, 0);
+
+console.log(solution([1, 2, 3, 4, 6, 7, 8, 0]));
+```
+
+접근방법 1. `i~n의 전체 합을 구한다. 2. 전체합 - 인자로오는 배열의합 = 나머지 수의 합`
+코드설명 1. `i~n의 배열을 구한다.` 물론, 45라는건 암산으로 할수있어도 추후 확정성까지 고려하면 비효율적인 방법이다.
+
+1. `Array.from({ length: 9 }, (v, i) => i + 1)`으로 전체길이만 알면 쉽게 구할수 있다.
+2. 이제 `getSum함수의 reduce`를 이용해서 각각 합산한 것을 빼주면 된다.
+
+## 응용해보기 - 1~9까지의 수중 인자로 들어오는 수 제외한 배열출력하기
+
+```tsx
+function solution1(numbers) {
+  var answer = -1;
+  const arr = Array.from({ length: 9 }, (v, i) => i + 1);
+  return arr.filter((el) => !numbers.includes(el));
+}
+
+console.log(solution1([1, 2, 3, 4, 6, 7, 8, 0]));
+```
+
+접근방식
+
+1. i~n의 전체 배열를 구한다.
+2. 전체 배열에서 들어온인자와 같지않은것들만 필터링해준다.
+
+### 다른사람이 짠 코드 피드백
+
+```tsx
+function solution(numbers) {
+  let answer = 0;
+
+  for (let i = 0; i <= 9; i++) {
+    if (!numbers.includes(i)) answer += i;
+  }
+
+  return answer;
+}
+```
+
+for문을 사용해서 들어온인자 numbers의 배열안에 값과 해당하지않는것을 answer에 더해준다.
+이떄 +=를 사용하므로서 적절히 코드를 줄인거같다. 생각해보니 굳이 배열을 만들지않고 0~9까지 돌리면 되는일이었는데 또 복잡하게 생각했다..

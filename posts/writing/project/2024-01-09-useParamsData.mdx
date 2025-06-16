@@ -1,0 +1,335 @@
+---
+title: 'useParamsData (1)'
+description: 'CRUD 데이터를 쉽게 관리해보자'
+image: '/img/posts/custom.jpeg'
+draft: false
+category: 'project'
+subImage: '/img/posts/project.png'
+date: 2024-01-09 17:00:00
+tags:
+  - jotai
+  - custom Hook
+---
+
+## Data를 어떻게하면 효율적으로 관리할 수 있을까?
+
+![스크린샷 2023-12-26 오후 12.37.04](/img/posts/useparams-1.png)
+
+화면단에서 제일 많이하는 작업이 CRUD 데이터 가공입니다. 보통 위와같은 화면에서 개발하게된다면 우리는 아래와같은 작업을 거칠겁니다.
+
+```tsx
+const [testInfo, setTestInfo] = useState<TestInfoAddType>({
+  category: '',
+  startDate: '',
+  endDate: '',
+  purpose: '',
+  testName: '',
+  desc: '',
+});
+```
+
+이렇게 객체타입으로 구성된 testInfo를 생성하여 각각의 해당하는 이벤트를 통해서 사용자가 지정하는 값들을 testInfo에 없데이트 시켜줄겁니다. 다음과 같이말이죠.
+
+```tsx
+const handleCategoryCodeChange = (event: SelectChangeEvent) => {
+  setTestInfo((prev) => {
+    return { ...prev, category: event.target.value };
+  });
+};
+
+const handleDueDateChange = ({
+  startDate,
+  endDate,
+}: {
+  startDate: string;
+  endDate: string;
+}) => {
+  setTestInfo((prev) => {
+    return { ...prev, startDate, endDate };
+  });
+};
+
+const handleTestCodeChange = (event: SelectChangeEvent) => {
+  setTestInfo((prev) => {
+    return { ...prev, purpose: event.target.value };
+  });
+};
+
+const handleTestNameChange = (event: ChangeEvent<HTMLInputElement>) => {
+  setTestInfo((prev) => {
+    return { ...prev, testName: event.target.value };
+  });
+};
+```
+
+우리는 Input, TextArea, Select태그에서 각각의 onChange이벤트를 통해서 위의 함수처럼 값을 업데이트 시킵니다. 인풋박스하나마다 우리는 위와같이 계속 같은로직의 함수를 작성해야하는 번거로움이 생깁니다. 그래서 아래와 같이 중복을 방지하여 코드를작성합니다.
+
+```tsx
+const handleChange = (event: ChangeEvent<HTMLTextAreaElement>, key) => {
+  setTestInfo((prev) => {
+    return {
+      ...prev,
+      [key]: event.target.value,
+    };
+  });
+};
+```
+
+key를 두번째 인자로 받아서 값을 갱신하는 것입니다. 여기서 event의 타입이 각각 다르기떄문에 이를 고려해야합니다. 유니온타입으로 따로 작성하여 타입을 제공하면 됩니다. 여기까지 도달하게되면, 한가지 더 생각하게됩니다. 첫번째 받는 인자의 event가 엘리멘트에서 제공하는 event타입이아니라, 순수한 값일 경우는 어떻게해야할까? 위의 UI에서 Due date 인풋박스가 그런 경우입니다. 그래서 각각의 분기처리가 필요해보입니다.
+
+## 데이터 타입에 따라 분기처리하여 관리하자!
+
+```tsx
+  const handleChange (data: unknown, key?: string) => {
+
+  /* get Event Params */
+  if (key && typeof data === 'object' && 'target' in data) {
+    setTestInfo((prev) => {
+      return  {
+        ...prev,
+        [key] : data.target.value
+      }
+    })
+  }
+```
+
+먼저, event type으로 받는 경우이다. event type으로 받을경우는 key가 필수값으로 제공되어야한다. 그리고, data 값에서 target이 있는 경우에만 해당하도록 하였다. Event로 제공해주는 엘리먼트는 많지만 자주 사용하는 태그는 input / button과 같은 태그이므로 이를 고려하여 target의 유무로 조건을 걸었다.
+
+```tsx
+/* get Key value Params */
+if (key) {
+  setTestInfo((prev) => {
+    return {
+      ...prev,
+      [key]: data,
+    };
+  });
+  return;
+}
+```
+
+위의 경우는, key는 제공되지만 event type아니라 순수한 값이 저장되는 경우이다.객체나 배열을 고려하였다.
+
+```tsx
+/* get Object & Array type Params */
+if (!key && typeof data === 'object') {
+  setTestInfo((prev) => {
+    return {
+      ...prev,
+      ...data,
+    };
+  });
+}
+```
+
+## 실제 적용해보기!
+
+```tsx
+return (
+  	/..../
+  	<FilterItem label="Period">
+	  <DateRangePicker
+	  	onChangePickerDate={({ startDate, endDate }) => {
+    	handleChange({ startDate, endDate })
+  		}}
+	  />
+	</FilterItem>
+	<BaseInput
+     maxLength={100}
+     onChange={(event) => handleChange(event, 'purpose')}
+     value={params.purpose || ''}
+     />
+     <BaseInput
+     maxLength={100}
+     onChange={(event) => handleChange(event, 'testName')}
+     value={params.testName || ''}
+     />
+     <BaseInput
+     maxLength={100}
+     onChange={(event) => handleChange(event, 'desc')}
+     value={params.desc || ''}
+     />
+     /..../
+)
+```
+
+전처럼 이벤트가 발생할때마다 handle~~ 각각 함수를 제공하는 것이 아니라 handleChange함수에서 분기처리하여 제공하고 있습니다. 이처럼 하면, 반복되는 로직을 계속 만들필요없이 handleChange함수 하나로 데이터관리할 수 있게됩니다.
+
+![스크린샷 2023-12-26 오후 12.37.04](/img/project/console.png)
+
+적용한 곳에서 콘솔을 찍어보니 위처럼 잘나오고 있는 것을 볼 수 있습니다.
+
+## 커스텀 훅으로 만들어보자
+
+위에 있는 코드를 재사용할 수 있게 커스텀훅으로 만들어봅시다.
+
+```tsx
+export const useParamsData = <T>(initData?: T) => {
+ 	const [params, setParmas] = useState<T>(initData)
+
+  const setChangeParams = (data: unknown, key?: string) => {
+  /* get Event Params */
+  if (key && typeof data === 'object' && 'target' in data) {
+    setParmas((prev) => {
+      return  {
+        ...prev,
+        [key] : data.target.value
+      }
+    })
+  }
+     /* get Key value Params */
+  if (key) {
+    setParmas((prev)=> {
+      return {
+        ...prev,
+        [key]: data
+      }
+    })
+     return
+   }
+   if (!key && typeof data === 'object') {
+    setParmas((prev)=> {
+      return {
+        ...prev,
+        ...data
+      }
+    })
+	}
+
+return {
+  params,
+  setChangeParams
+}
+```
+
+setChangeParams를 이용해서 params를 업데이트 시켜주고 업데이트 시켜준 데이터를 view로 보여주게됩니다.
+
+view -> update : setChangeParams -> rendering -> updated view
+이런 방식으로 업데이트가 되어 화면에 보여주게됩니다. 실제 이를 적용해봅시다!
+
+```tsx
+const { params, setChangeParams } = useParamsData<TermsAddParamsType>()
+
+return (
+	...
+ 	  <td colSpan={2} className="pb_20">
+      <BaseInput
+        placeholder="Please enter subject."
+        onChange={(event) => setChangeParams(event, 'title')}
+        value={params?.title || ''}
+        maxLength={250}
+      />
+  ...
+   <div className="align start">
+    {openLevelGroup.length > 0 &&
+      openLevelGroup.map((option) => (
+        <div key={option.value} className="item">
+          <RadioBox
+            id={option.value}
+            value={option.value}
+            checked={option.value === params.openLevel}
+            text={option.name}
+            onChange={() => setChangeParams(option.value, 'openLevel')}
+           />
+     </div>
+    ))}
+	 </div>
+)
+```
+
+위의 소스처럼 이벤트가 발생하는 시점에 setChangeParams함수에 값과 타입을 넣어주면 됩니다. 우리가 앞서 정했던 타입에 맞게 값을 넣어주기만 하면 반복된 로직으로 인해 지칠 필요가없어집니다. 업데이트가 된 이후 state로 업데이트가 되기떄문에 재랜더링이 되어 value에 있던 값도 업데이트 되어 반영됩니다. `value <-> change`가 올바른 로직으로 연결됩니다.
+
+## 타입관리에도 용이합니다.
+
+```tsx
+/* Terms Add Type */
+export type TermsAddParamsType = {
+  termsCategoryCode: string;
+  version: string;
+  countryCode: string;
+  releaseDate: string;
+  termsNum?: number;
+  conditionsDetail: TermsConditionsDetailType[];
+};
+
+const { params, setChangeParams } = useParamsData<TermsAddParamsType>();
+```
+
+api에서 제공받는 데이터타입을 디폴트 설정하여 화면을 보여줘야하는 경우입니다. 위처럼 useParamsData에 제네릭으로 타입을 제공받아 지정해줄 수있습니다. 이렇게하면 사용하는 컴포넌트에서 타입을 컨트롤 할 수있게됩니다.
+
+![스크린샷 2024-01-22 오후 1.47.53](/img/project/console-1.png)
+
+위에서 타입목록을 보여주고, 타입정의에 맞게 사용하지 않으면 타입오류를 검출해줍니다. 사용하는 페이지마다 dto, type이 다르기 때문에 동적 타입을 제공해주어 이를 해결했습니다.
+
+## 상태관리를 통해서 데이터를 관리해보기!
+
+우리는 지금까지 단순히 useState로 데이터를 관리했습니다. 하지만 useState로 데이터를 관리하게 되면 전역으로 사용할 수 없다는 점이 있습니다. 이것은 딱히 단점은 아닙니다. 전역으로 사용하지 않는 경우도 있기 때문이죠. 하지만 보통 api에서 주고받는 데이터를 사용할때는 전역으로 데이터를 관리해야하는 경우가 있습니다. 이 때 useState로는 한계가 있습니다. 그래서 상태관리를 통해 보다 더 편하게 전역으로 데이터를 관리해봅시다.
+
+## Why Jotai?
+
+리액트에서 사용하는 상태관리는 많습니다. Redux, Recoil, Context등이 이에 해당합니다. 하지만 리덕스는 초기설정이 번거롭습니다. 이에 반면에 리코일은 되게 심플하게 데이터 플로우를 제공합니다. 리코일과 방향성이 일치하지만 더 간단한 플로우를 제시하는 조타이를 사용해보려합니다. 조타이는 아토믹 디자인 기반으로 설계된 상태관리이므로 아톰으로 초기설정을 해주고 아톰으로 데이터를 주고받습니다. 여기서는 조타이에 대한 설명보다는, 조타이를 이용해 어떻게 데이터를 관리했는지 설명하려합니다.
+
+## Jotai + Custom Hook
+
+위에서 우리가 만든 커스텀훅인 useParamsData훅에서 jotai를 사용해봅시다. useState로 상태관리를 했던 부분을 Jotai로 대체하면 됩니다.
+
+```tsx
+---paramsState.ts----
+
+import { atom } from 'jotai'
+
+export const paramsAtom = atom({})
+
+export const setParamsAtom = atom(null, (get, set, { data, key }) => {
+  const prev = get(paramsAtom)
+
+  /* get Event Params */
+  if (key && typeof data === 'object' && 'target' in data) {
+    set(paramsAtom, {
+      ...prev,
+      [key]: data.target.value,
+    })
+    return
+  }
+
+  /* get Key value Params */
+  if (key) {
+    set(paramsAtom, {
+      ...prev,
+      [key]: data,
+    })
+    return
+  }
+
+  /* get Object & Array type Params */
+  if (!key && typeof data === 'object') {
+    set(paramsAtom, {
+      ...prev,
+      ...data,
+    })
+  }
+})
+
+```
+
+paramsAtom으로 데이터를 초기화하고, setParamsAtom에서 아까 분기별로 처리했던 로직을 적용해줍니다. 전에는 setState로 업데이트를 해주었는데 이번엔 set으로 변경된 것말고는 나머지 로직은 동일합니다. setParamsAtom에서 paramsAtom을 업데이트 시켜줍니다.
+
+```tsx
+import { paramsAtom, setParamsAtom } from '../store/client/paramsState'
+
+export const useParamsData = <T>(initData?: T) => {
+  const params: T = useAtomValue(paramsAtom) as T
+  const setParams = useSetAtom(setParamsAtom)
+
+  const setChangeParams = (data: unknown, key?: string) => {
+    setParams({ data, key })
+  }
+  return {
+    params,
+    setChangeParams,
+  }
+}
+```
+
+setChangeParams함수에 있던 로직은 jotai로 설정했기 때문에 setParams에 데이터만 인자로 넘겨주면 됩니다. 사용하는 곳마다 타입이 다르기때문에 params의 타입을 제네릭으로 설정하여 제공해줍니다. useAtomValue, useSetAtom을 통하여 불필요한 랜더링 발생을 방지시켜줍니다.
+다음에는 이를 통하여 실제 적용해보고 미흡한 부분을 보완하는 과정을 글로 담아보려합니다. 읽어주셔서 감사드립니다.

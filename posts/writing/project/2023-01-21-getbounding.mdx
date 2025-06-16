@@ -1,0 +1,80 @@
+---
+title: "getBoundingClientRect"
+description: "scroll-getBoundingClientRect"
+image: "/img/posts/tech.png"
+draft: false
+category: "project"
+subImage: "/img/posts/project.png"
+date: 2023-01-21 16:00:00
+tags:
+  - getBoundingClientRect
+---
+
+## ScrollTo 이용해서 원하는 곳으로 이동하기
+
+<img src="/img/project/video.gif" />
+
+위와같이 버튼을 눌렀을때 해당 버튼위치로 스크롤이 이동하는 기능을 구현해보자.
+
+## Window.pageYOffset
+
+<img src="/img/project/page.png" />
+
+<a href="https://ko.javascript.info/coordinates">사진출처 및 자세히알아보기</a>
+
+위 사진에서 pageYoffset을 자세히 알수있다. 스크롤을 내릴수록 y축은 타겟과 멀어진다. 스크롤에 의해 변경됨을 알 수있다.
+
+## getBoundingClientRect
+
+<img src="/img/project/getBoundingClientRect.png" />
+
+<a href="https://ko.javascript.info/coordinates">사진출처 및 자세히알아보기</a>
+
+getBoundingClientRect은 기본적으로 element에 x,y,bottom,top을 제공합니다.
+
+## 구현원리 알아보기
+
+<img src="/img/project/page2.png" />
+
+위의 부분을 보면 페이지에서 스크롤까지의 pageYOffset을 구하고 해당엘리먼트의 top을 더하면 우리는 원하는 위치를 구현할 수있을까?
+
+<img src="/img/project/page3.png" />
+
+pageYOffset + element.clientHeight으로 값을 주어 스크롤 이벤트를 발생시켰지만 위의 사진처럼 버튼이 화면에 가려져있는걸 볼수있다. 왜 이런현상이 일어날까?
+
+<img src="/img/project/page4.png" />
+
+우린 고려해야할 사항이 하나있다. fixed로 고정된 메인배너와 최신순 / 전체로 고정된 두개의 박스의 높이도 고려해야한다. 화면에 가려진이유는 버튼이 화면 맨위로 올라가고 있기때문이다. 당연히 elemet의 top으로 설정했으니 화면단맨위로 올라가는게 정상이다. 위처럼 고정된박스들의 높이를 top에 더한다면 더한만큼 top에서 멀어지기때문에 화면에 버튼이 잘보이게 될것이다.
+
+```tsx
+<template>
+<div>
+  <ul>
+  	<li @click="scrollClick">
+      <button id="list-button">
+       </button>
+  	</li>
+  </ul>
+ </div>
+</template>
+
+<script>
+ methods: {
+  scrollClick(){
+    const elemnetTop = document.getElementById('list-button').getBoundingClientRect().top
+
+    setTimeout(() => {
+     window.scrollTo({
+      top: this.calc(elemnetTop),
+            behavior: 'smooth'
+          })
+        }, 400)
+    },
+    calc(elemnetTop){
+      return window.pageYOffset + elemnetTop + document.querySelector('.tab').clientHeight
+    }
+
+  }
+</script>
+
+```

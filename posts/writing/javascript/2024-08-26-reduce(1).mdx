@@ -1,0 +1,298 @@
+---
+title: 'Reduce 실전에서 사용해보기 (1)'
+description: ''
+image: '/img/posts/tech.png'
+draft: false
+category: 'javascript'
+subImage: '/img/posts/javascript.png'
+date: 2024-08-26 12:00:00
+tags:
+  - reduce
+---
+ 
+
+ ## 각각의 테이블 항목에 탭이 있는경우
+
+
+
+<div className="center">
+<img width="70%" src="/img/javascript/reduce-1.png" />
+</div>
+
+
+위의 화면처럼 Tab 별로 데이터를 가공해주어야 하는 경우가 있을 때, `reduce`로 데이터를 가공하면 가독성, 효율적인 코딩이 가능합니다.
+
+## 인터페이스
+
+ ```js
+
+  interface ITest{       
+        tfbzId: string  
+        tfbzSku: string   
+        aprcEvntDvcd: string  
+        aprcEvntDvnm: string 
+        aprcEvntCode: string  
+        aprcEvntNm: string  
+        aprcEvntBegnDt: string  
+        aprcEvntEndDt: string  
+        aprcEvntGudcKrCn: string  
+        aprcEvntGudcEnCn: string  
+        aprcEvntGudcJaCn: string  
+        aprcEvntGudcZcnCn: string  
+        aprcEvntGudcTwCn: string  
+        aprcEvntKrCn: string  
+        aprcEvntEnCn: string  
+        aprcEvntJaCn: string  
+        aprcEvntZcnCn: string  
+        aprcEvntTwCn: string  
+        aprcEvntImgUrl: string  
+        aprcGdsKrNm: string  
+        aprcGdsEnNm: string  
+        aprcGdsJaNm: string  
+        aprcGdsZcnNm: string  
+        aprcGdsTwNm: string  
+        aprcGdsRlteAtpnKrCn: string  
+        aprcGdsRlteAtpnEnCn: string  
+        aprcGdsRlteAtpnJaCn: string  
+        aprcGdsRlteAtpnZcnCn: null  
+        aprcGdsRlteAtpnTwCn: null  
+        regDt: string  
+        updDt: string  
+  }
+ 
+ ```
+
+ 실제 API에서 내려오는 데이터가 위의 인터페이스라고 생각해봅시다. 이번 개발환경은 vue3기반으로 개발하였지만, 리액트트든 ,뷰든 크게 상관은 없습니다.
+ 탭의 각 항목마다 데이터를 넣으려면 최종적으로 리턴된 값은 아래와같습니다.
+
+```js
+const result = {
+    gdsEvent : [국문, 영문, 일문, 중문(간체), 중문(번체)], // 혜택 행사 안내
+    gdsNm : [국문, 영문, 일문, 중문(간체), 중문(번체)], // 사은 상품명
+    gud : [국문, 영문, 일문, 중문(간체), 중문(번체)] // 사은 행사 안내
+}
+```
+각탭의 공통점은 차례대로 국문, 영문, 일문, 중문(간체), 중문(번체)순으로 데이터를 정렬하면 탭의 인덱스에 따라 화면을 변환시킬 수 있다는 점입니다.
+이 점을 이용해서 하드코딩하여 데이터를 넣으면 아래와같은 코딩이 가능합니다.
+
+
+```js
+  const values = computed(() => {
+    if (!appreciationInfo.value) return { gdsNm: [], gdsEvnt: [], gud: [], rlte: [] }
+    const {
+      aprcEvntGudcKrCn,
+      aprcEvntGudcEnCn,
+      aprcEvntGudcJaCn,
+      aprcEvntGudcZcnCn,
+      aprcEvntGudcTwCn,
+      aprcGdsKrNm,
+      aprcGdsEnNm,
+      aprcGdsJaNm,
+      aprcGdsZcnNm,
+      aprcGdsTwNm,
+      aprcEvntZcnCn,
+      aprcEvntTwCn,
+      aprcEvntKrCn,
+      aprcEvntEnCn,
+      aprcEvntJaCn,
+      aprcGdsRlteAtpnKrCn,
+      aprcGdsRlteAtpnEnCn,
+      aprcGdsRlteAtpnJaCn,
+      aprcGdsRlteAtpnZcnCn,
+      aprcGdsRlteAtpnTwCn
+    } = appreciationInfo.value
+
+    return {
+      gdsEvnt: [aprcEvntKrCn, aprcEvntEnCn, aprcEvntJaCn, aprcEvntZcnCn, aprcEvntTwCn],
+      gdsNm: [aprcGdsKrNm, aprcGdsEnNm, aprcGdsJaNm, aprcGdsZcnNm, aprcGdsTwNm],
+      gud: [aprcEvntGudcKrCn, aprcEvntGudcEnCn, aprcEvntGudcJaCn, aprcEvntGudcZcnCn, aprcEvntGudcTwCn],
+      rlte: [aprcGdsRlteAtpnKrCn, aprcGdsRlteAtpnEnCn, aprcGdsRlteAtpnJaCn, aprcGdsRlteAtpnZcnCn, aprcGdsRlteAtpnTwCn]
+    }
+  })
+```
+
+위의 인터페이스에서 받은 데이터를 appreciationInfo 반응형 변수에 할당하게되면 computed가 감지하여 values에 계산된 값을 세팅해줍니다.
+여기서, 하드코딩으로 작성하게된다면 무리없이 탭의 인덱스에따라 값이 변환하여 보여주게 됩니다.
+하지만, 위의화면반 보더라도 벌써 가독성이 떨어지는 코드로인해 자칫 리스크가 높은 코딩임은 분명합니다. 여기서 reduce를 이용하여 가독성이 높은 코드로 변환해봅시다.
+
+## 규칙을 먼저 찾아보기!
+
+```js
+      aprcEvntGudcKrCn,
+      aprcEvntGudcEnCn,
+      aprcEvntGudcJaCn,
+      aprcEvntGudcZcnCn,
+      aprcEvntGudcTwCn,
+
+```
+위의 변수이름에서 규칙을 찾아보면 reduce에서 로직을 짤 때, 더욱더 용이할 것같습니다.
+apprcEEventGud~Cn은 앞뒤로 명칭이 동일하고 Kr, En, Ja, Zcn, Tw의 언어명칭만 변경되는 것을 알 수 있습니다.
+이런 규칙을 이용해 개발할 수있게 해주는 로직은 정규식이 제일 효과적입니다.
+
+
+```js
+const dataKey = 'aprcEvntKrCn'
+const prefix = 'aprcEvnt'
+
+const match =  dataKey.match(new RegExp(`^${prefix}(Kr|En|Ja|Zcn|Tw)Cn$|^${prefix}(Kr|En|Ja|Zcn|Tw)Nm$`))
+
+result :  [ 'aprcEvntKrCn', 'Kr', undefined, index: 0, input: 'aprcEvntKrCn', groups: undefined ]
+```
+예를들어, dataKey를 appreciationInfo에서 받은 키라고 가정하고, prefix는 키 값을 이루고있는 접두사라고 가정해봅시다.
+appreciationInfo의 키값들 중 prefix의 뒤에 Kr,En,Ja,Zcn,Tw 중에 Cn이 붙거나 Nm이 붙은 것을 가져오는 로직을 짤 수있습니다.
+매칭된 값을 배열안에 삽입합니다. 삽입된 배열로 구성된 객체를 만들면 각각의 데이터를 만들 수 있게됩니다.
+
+## 매칭된 값을 배열로 만들기
+```js
+
+const setPattern = (prefix: string) => `^${prefix}(Kr|En|Ja|Zcn|Tw)Cn$|^${prefix}(Kr|En|Ja|Zcn|Tw)Nm$`
+ const dataKey = 'aprcEvntKrCn'
+ const prefix = 'aprcEvnt' 
+
+ const testData = {
+     "aprcEvntGudcTwCn": "購買時享受10％折扣",
+    "aprcEvntKrCn": "추가이벤트내용한국어",
+    "aprcEvntEnCn": "AdditionaleventcontentEnglish",
+    "aprcEvntJaCn": "追加イベント内容日本語",
+    "aprcEvntZcnCn": "其他简体中文活动详情",     
+}
+ 
+
+ Object.entries(testData).reduce((acc, [key,value])=> {   
+  const match = key.match(setPattern(prefix))
+     
+  if(match){
+    console.log(`key :${key}, value : ${value}`)    
+    acc.push(value)
+  }  
+  return acc
+}, [])
+
+
+return : 
+'key :aprcEvntKrCn, value : 추가이벤트내용한국어,  
+'key :aprcEvntEnCn, value : AdditionaleventcontentEnglish 
+'key :aprcEvntJaCn, value : 追加イベント内容日本語 
+'key :aprcEvntZcnCn, value : 其他简体中文活动详情 
+```
+`setPattern` 함수를 살펴보면, prefix로 전달받은 값 뒤에 Kr,En,Ja,Zcn,Tw중 하나가 포함되있고 Cn으로 끝나는 단어를 매칭해주는 패턴입니다.
+key가 `aprcEvntKrCn`라면, 위의 패턴에 부합하므로 match가 되는 값인 `[ 'aprcEvntKrCn', 'Kr']` 값이 배열로 만들어집니다.
+match함수는 매치된게 없으면 null로 리턴해주기 때문에 배열의 길이를 비교하기보단 유무판단만 해서 조건문을 완성합니다.
+매치된게 있다면 acc 배열에 삽입해줍니다.
+이제 이 배열을 초반에 말했던 `{ gdsNm: [], gdsEvnt: [], gud: [], rlte: [] }` 각각의 객체에 해당 키값에맞는 value를 넣어주는 로직을 만들어주기만 하면됩니다.
+
+
+## reduce안에 reduce로 데이터 만들기
+
+```js
+  const values = computed(() => {
+    if (!appreciationInfo.value) return { gdsNm: [], gdsEvnt: [], gud: [], rlte: [] }
+
+    const categories = {
+      gdsEvnt: 'aprcEvnt',
+      gdsNm: 'aprcGds',
+      gud: 'aprcEvntGudc',
+      rlte: 'aprcGdsRlteAtpn'
+    }
+
+    return Object.entries(categories).reduce(
+      (acc, [key, prefix]) => {
+        acc[key] = Object.entries(appreciationInfo.value)
+          .reduce((arr, [dataKey, value]) => {
+            const match = dataKey.match(setPattern(prefix))
+            if (match) {
+              arr.push(value) 
+            }
+            return arr
+          }, [])
+          .filter(Boolean)
+
+        return acc
+      },
+    {})
+  })
+```
+`categories`라는 객체의 키값은 reduce를 이용해 최종적으로 만들어질 객체의 키값들을 선언하고,
+value는 정규식패턴에 이용할 prefix를 선언합니다. 그리고 카테고리를 배열로 만들어 각각 `key`,`value`로 선언합니다.
+이 전에 만들었던 매칭된 값들만 배열로 생성해주는 함수를 객체의 `value`로 할당해줍니다.
+
+한가지 예를들면, 객체의 키값중 `gdsEvnt`값에 `aprcEvnt`값이 `prefix로` 들어가게되는데, `appreciationInfo`의 값중 `aprcEvntKrCn`값이 매칭이되어,
+arr배열에 푸시 됩니다. 리턴된 arr 배열은 acc객체의 gdsEvnt키 값에 할당됩니다. reduce는 이 같은 로직을 누적하여 반복하여 최종적으로 이전의 값과 현재의값이 쌓여서
+데이터를 구성해줍니다. 그럼 카테고리에서 할당된 각각의 객체의 키값에 맞는  `appreciationInfo`의 value값들이 할당이된 객체를 반환하게 됩니다.
+
+## 함수를 선언하여 복잡도 줄이기
+
+```ts
+const extractValues = (
+  data,
+  prefix
+) => {
+  return Object.entries(data)
+    .reduce((arr, [dataKey, value]) => {
+      const match = dataKey.match(new RegExp(`^${prefix}(Kr|En|Ja|Zcn|Tw)Cn$|^${prefix}(Kr|En|Ja|Zcn|Tw)Nm$`));
+      if (match) {
+        arr.push(value); // 값이 문자열임을 명시적으로 캐스팅
+      }
+      return arr;
+    }, [] )
+    .filter(Boolean);
+};
+
+const values = computed(() => {
+  if (!appreciationInfo.value) return { gdsNm: [], gdsEvnt: [], gud: [], rlte: [] };
+  return Object.entries(categories).reduce(
+    (acc, [key, prefix]) => {
+      acc[key] = extractValues(appreciationInfo.value, prefix);
+      return acc;
+    },
+    {} 
+  );
+});
+
+```
+
+## 타입스크립트 추가하기
+
+```ts
+const categories = {
+    gdsEvnt: 'aprcEvnt',
+    gdsNm: 'aprcGds',
+    gud: 'aprcEvntGudc',
+    rlte: 'aprcGdsRlteAtpn'
+  };
+
+type CategoriesKeys = keyof typeof categories;
+type ValuesType = { [key in CategoriesKeys]: string[] };
+
+const extractValues = (
+  data: ProductAppreciationEventListModel,
+  prefix: string
+): string[] => {
+  return Object.entries(data)
+    .reduce((arr, [dataKey, value]) => {
+      const match = dataKey.match(new RegExp(`^${prefix}(Kr|En|Ja|Zcn|Tw)Cn$|^${prefix}(Kr|En|Ja|Zcn|Tw)Nm$`));
+      if (match) {
+        arr.push(value); // 값이 문자열임을 명시적으로 캐스팅
+      }
+      return arr;
+    }, [] as string[])
+    .filter(Boolean);
+};
+
+const values = computed(() => {
+  if (!appreciationInfo.value) return { gdsNm: [], gdsEvnt: [], gud: [], rlte: [] };
+  return Object.entries(categories).reduce(
+    (acc, [key, prefix]) => {
+      acc[key as CategoriesKeys] = extractValues(appreciationInfo.value!, prefix);
+      return acc;
+    },
+    {} as ValuesType
+  );
+});
+```
+
+`reduce`에서 최종적으로 리턴하는 값은 결국 카테고리의 키타입과 `value`는 `string` 타입이다.
+이미 선언한 카테고리 변수를 이용하여 타입을 생성해주고, 배열의 비구조화로 인해 선언할 때 타입을 정의할 수없어서 as로 타입을 강제합니다.
+`reduce`함수는 사실 간단한 로직으로 사용하는 것이아니라면 유지보수할 때 한눈에 파악하기 어려울 수 있으므로 리턴 타입선언이 필수라고 생각합니다.
+개발자가 reduce안에 로직을 파악할 필요가 없을 때, 리턴타입만 보면 데이터 구조를 파악하기 수월하기 떄문입니다.
+여기서도 결국 `{ [key in CategoriesKeys]: string[] }`로 리턴되어 데이터 구조가 이루어지는 것을 알수 있습니다.

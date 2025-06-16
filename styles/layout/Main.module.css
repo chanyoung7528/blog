@@ -1,0 +1,40 @@
+.main {
+  box-sizing: border-box;
+  flex-grow: 1;
+  padding: 0 20px;
+  width: 100%;
+}
+
+.cont_intro {
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  padding-top: 185px;
+  gap: 50px;
+}
+
+.tit_intro {
+  display: block;
+  font-size: 3.64rem;
+  line-height: 1.41;
+  word-break: keep-all;
+}
+.tit_tech {
+  display: block;
+  font-size: 70px;
+  font-weight: 700;
+}
+.tit_tech:nth-child(2) {
+  font-size: 50px;
+}
+.desc_intro {
+  font-size: 18px;
+  line-height: 1.55;
+  margin-top: 12px;
+  font-weight: 500;
+}
+.img_intro {
+  height: 286px;
+  margin-top: -10px;
+  width: 690px;
+}

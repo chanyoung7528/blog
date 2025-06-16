@@ -1,0 +1,100 @@
+---
+title: '공통 모달 커스텀 훅 (4)'
+description: '공통모달 커스텀 훅을 만들어서 모두가 사용할 수 있도록!'
+image: '/img/posts/custom.jpeg'
+draft: false
+category: 'project'
+subImage: '/img/posts/project.png'
+date: 2023-12-24 16:00:00
+---
+
+## 또 한번의 시련이 오다 
+
+xx씨 혹시 이 기능 어떻게 해야할까? 라는 채팅이 슬랙으로 전해왔다. 공통을 맡은 이 후로 공통에 대한 피드백이 자주 찾아오고 있어 이제는 나름 대응에는 자신있었다. 이슈내용은 이러했다.
+
+**모달의 outside click에서 닫지말고 어떤 기능을 추가해야하는 로직인데 어떻게 해야할까?**
+
+이 말을 듣자마자, 아 차 싶었다. 생각해보니 모달 밖에 부분을 클릭했을 떈 무조건 모달을 닫아야한다고 생각을 했던지라 그 부분을 고려하지 못하였다.
+하지만 이것이바로 처음에 말했던 커스텀하기 쉽다라는 부분이다. 기존 라이브러리를 사용하면 커스텀하기 어려운 부분일테지만, 내가 직접 개발하는 것이니 상대적으로 개발하기 수월했다. 
+
+
+## modalAllClose 추가!
+
+```tsx
+---useModal.ts-------
+  
+const [modalAllClose, setModalAllClose] = useAtom(modalAllCloseAtom)
+
+const modalClose = useCallback(
+    (deleteKey?: DeleteKeyType, isAllClose?: boolean) => {
+      if (!deleteKey) {
+        initModalDate()
+      } else {
+        setModalDataState((prev) => prev.filter((modal: ModalType) => modal.deleteKey !== deleteKey))
+      }
+      if (isAllClose) {
+        setModalAllClose(isAllClose)
+      }  
+    },
+    [modalDataState, setModalDataState]
+  )
+
+  useEffect(() => {
+    setModalAllClose(false)
+  }, [])
+```
+
+소스를 보면, modalClose에서 isAllClose를 받게 설정했다. modalClose에서 isAllClose가 있다면, 전체모달을 관리하는 modalAllClose 상태를 true로 업데이트하고 없다면 false로 설정해놓는다. isAllClose를 사용할때만 true로 해놓는다. 그 다음 useEffect로 isAllClose상태를 초기화시켜준다.
+
+
+##  ModalCompoenent 
+
+```tsx
+ {modalDataState &&
+        modalDataState.map((modal: ModalType, index: number) => (
+          <Dialog
+            key={index}         
+            fullWidth
+            open={modal.isOpen || false}
+            onClose={() => modalClose(modal?.deleteKey, modal?.isAllClose)}
+          >
+            <IconButton onClick={() => modalClose(modal?.deleteKey, modal?.isAllClose)}>
+              <Icons.CloseIcon width={24} height={24} fill="#C6CDDA" />
+            </IconButton>
+            <DialogTitle>
+              {modal.title}
+              {modal.textTitle && <p className={styles.text_title}>{modal.textTitle}</p>}
+            </DialogTitle>
+            <DialogContent>{modal.content}</DialogContent>
+          </Dialog>
+  ))}
+```
+
+그리고 isAllClose를 ModalComponent(Modal UI)에 연결해준다. onClose함수가 실행될때, modalDataState에  isAllClose가 있다면 두번째 인자로 넘겨준다.
+
+
+## 이제 세팅은 완료! 사용해보자!
+
+```tsx
+  const { modalOpen, modalAllClose} = useModal()
+  const modalState: ModalType = {
+    icon: 'success',
+    title: 'title',
+    isAllClose: true,
+    content: (
+      <div className="align center mt_30">
+        <ButtonMui size="xlarge" onClick={() => console.log('hi')}>
+          Test
+        </ButtonMui>
+      </div>
+    ),
+  }
+
+  useEffect(() => {
+    if (modalAllClose) {
+      // modal out click시 실행되는 함수
+    }
+  }, [modalAllClose])
+```
+
+처음 모달을 오픈하게되면 modalDataState에서 isAllClose가 true로 담겨지게된다. 그 다음 모달의 밖에 부분을 클릭하면 modalAllClose가 true가 되면서 useEffect에서 디펜던시의 변화를 감지하여 modalAllClose가 true일때 로직을 실행하게 된다. 실행한 이 후 , useModal에서 다시 모달을 오픈하면 modalAllClose가 false로 초기화가되어 원상태가 된다. 이렇게 가이드를 드렸고, 작업은 원활하게 진행될 수 있었다.!

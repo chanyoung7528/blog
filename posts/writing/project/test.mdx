@@ -1,0 +1,156 @@
+## 공통컴포넌트 사용시 다방향으로 컴포넌트를 제어하기
+
+<aside>
+💡 쓰임이 공통적으로 많이 사용할 것같은 것들을 분리하여 사용하는 것이 바로 공통컴포넌트입니다.
+쉽게 말해 '재사용'이 가능한 컴포넌트라고 정의합니다. 
+하지만 뼈대는 같을지라도 안에 사용하는 실제 Data들은 다를 수 밖에없습니다. 그럴때 우리는 난처한 상황을 겪곤합니다. 이때 유용한 것이 바로 class binding 입니다.
+
+</aside>
+
+```tsx
+-- CommonAccordion.vue --
+
+<template>
+  <!-- [D] accordion 펼침 상태 : .active 추가 -->
+  <div class="accordion" :class="{ active: isActive }">
+    <div class="accordion-title">
+      <p class="title">{{ title }}</p>
+      <button type="button" class="bg-icon toggle" @click="toggle">펼침</button>
+    </div>
+    <div class="accordion-cont">
+      <slot></slot>
+    </div>
+  </div>
+</template>
+```
+
+CommonAccordion 컴포넌트는 다수에서 사용하고 있는 Accordion 기능을 공통으로 만든 컴포넌트이다.
+
+기능은 간단하다. 토글기능을 추가하여 isActive가 true일때 active가 class binding되어 block이 된다.
+
+그러면 실제 class명은 'accordion active'인것이다.
+
+하지만 이와같은 방법은 무조건 class명이 정해져있다. 무조건 active로 바인딩 되기때문에 하나의 스타일로만 지정할 수 밖에없는 것이다.
+
+물론, 모든 accordion 스타일이 동일하다면 상관이없지만 어떤부분에서는 다른스타일을 추가하는 방법을 알아보자.
+
+```tsx
+
+<template>
+----위 코드 생략----
+
+  <!-- [D] accordion 펼침 상태 : .active 추가 -->
+  <div v-if="type === active2" class="accordion" :class="{ active: isActive }">
+    <div class="accordion-title">
+      <p class="title">{{ title }}</p>
+      <button type="button" class="bg-icon toggle" @click="toggle">펼침</button>
+    </div>
+    <div class="accordion-cont">
+      <slot></slot>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  props: {
+    type: {
+      type: String,
+      default: '',
+    },
+  },
+```
+
+위 코드는 이렇게 단순하게 if문을 걸어 한 박스를 더 만드는 행위이다. 이렇게해도 기능상에는 별 문제는 없다.
+
+하지만 단순히 1개2개가아니라 수백개이상일 경우 공통컴포넌트라고 하기엔 민망한 상황이 발생할 수도 있다.
+
+그래서 Class Binding Array를 사용해보자.
+
+```tsx
+<template>
+  <div class="accordion" :class="[{ active: isActive },
+		{'active type2': isActive2 }, { type2: !isActive2 && !isActive }]">
+    <div class="accordion-title">
+      <p class="title">{{ title }}</p>
+<button type="button" class="bg-icon toggle" @click="toggle">펼침</button>
+    </div>
+    <div class="accordion-cont">
+      <slot></slot>
+    </div>
+  </div>
+</template>
+
+```
+
+`<template>`부분에서 클래스 바인딩을 주목하자. 배열을 사용하여 만든것을 알 수있다.
+
+클래스 바인딩할때 배열을 사용하면 여러개의 클래스를 동시에 받아서 필터링하여 사용할 수있다는 장점이있습니다. 이렇게하면 위처럼 템플릿을 하나 더 만들어 조건을 걸지않아도 된다.
+
+코드 설명을 해보자면, isActive는 기본적으로 적용되는 active로 default값이다.
+
+대부분 사용하는 아코디언스타일이라고 생각하면된다.
+
+그리고 'active type2'는 말그대로 아코디언 타입2라고 보면된다. 다른 스타일이 적용되어있는 클래스명이다. 이렇게 중간에 빈공간이 있을경우에는 ''를 붙여준다.
+
+참고로, active는 string type이다. data type이 아니다.
+
+이제 `<script>`부분으로 넘어가면, mounted에서 isActive가 props로 받아온 type이 있다면 false로 되고, this.isActive2는 true로 설정한다. props로 받아온 값이 있다는것은 기본 default 스타일을 적용하고싶은게 아니라 새로운 타입의 스타일을 적용하고싶은 것이므로 이렇게 설정하였다.
+
+이렇게하면 isActive2가 true가되면서 'active type2'가 스타일적용이 된다.
+
+여기서 한가지더 설명하자면, type2라는 것은 active가 false일때 accordion 클래스명으로 되는데 새로운 아코디언스타일을 적용했으므로, accordion type2로 하고싶어 설정한것이다. (즉, 아코디언이 닫힐떄 스타일)
+
+토글함수를 실행하면 똑같이 초기화시켜주면서 토글해준다.
+
+<aside>
+💡 이처럼 배열로 처리하면 공통컴포넌트를 극대화 시킬수 있다는 장점이 있다.
+
+</aside>
+
+```tsx
+<script>
+export default {
+  name: 'CommonAccordion',
+  props: {
+    // 제목 받아옴
+    title: {
+      type: String,
+      default: '',
+    },
+    // 기본값을 false로 할수도 있음
+    activeDefault: {
+      type: Boolean,
+      default: true,
+    },
+    type: {
+      type: String,
+      default: '',
+    },
+  },
+  data() {
+    return {
+      isActive2: true,
+      isActive: this.activeDefault, // 열림 닫힘 여부
+    }
+  },
+  computed: {},
+  mounted() {
+    this.isActive = !this.type
+    this.isActive2 = this.type
+  },
+  methods: {
+    // 열림 닫힘 컨트롤
+    toggle() {
+      if (this.type) {
+        this.isActive2 = !this.isActive2
+        this.isActive = false
+        return
+      }
+      this.isActive = !this.isActive
+      this.isActive2 = false
+    },
+  },
+}
+</script>
+```
