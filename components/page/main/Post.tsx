@@ -28,7 +28,11 @@ export const Post = () => {
                   />
                 </div>
                 <div className="mt-[1.57rem]">
-                  <h4 className={styles.tit_post}>{post.title}</h4>
+                  <h4
+                    className={`${styles.tit_post} overflow-hidden text-ellipsis whitespace-nowrap`}
+                  >
+                    {post.title}
+                  </h4>
 
                   <dl className={styles.dl_info}>
                     <dd className={styles.dl_info_time}>

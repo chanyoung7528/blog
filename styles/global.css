@@ -46,7 +46,7 @@ h5,
 h6,
 strong {
   font-weight: 900;
-  font-family: var(--font-fallback-heading);
+  font-family: var(--font-fallback);
 }
 
 body {

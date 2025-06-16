@@ -23,7 +23,7 @@ const MainSection = () => (
           <p className={styles.desc_intro}>Kakao lowers</p>
         </div>
         <div className="flex-1 maxSm:mt-5">
-          <div className="flex flex-wrap gap-5">
+          <div className="flex flex-wrap gap-[2rem]">
             {categoryInfo?.map((category, index) => (
               <Link
                 href={`${rootUrl()}/category/${category.value}`}
