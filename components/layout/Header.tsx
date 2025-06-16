@@ -6,9 +6,9 @@ import { useRouter } from "next/navigation";
 
 import Navbar from "./Navbar";
 
-import { Toggle } from "../icons/toggle";
 import KBarButton from "../ui/KbarButton";
 import DarkModeToggle from "../ui/DarkModeToggle";
+import { Toggle } from "../ui/icons/toggle";
 
 const Header = () => {
   const router = useRouter();

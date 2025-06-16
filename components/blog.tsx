@@ -1,13 +1,11 @@
 import { ArrowRight } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
-import { Badge } from "./ui/badge";
 
 interface Post {
   id: string;
@@ -30,11 +28,6 @@ interface Blog7Props {
 }
 
 const Blog = ({
-  tagline = "Latest Updates",
-  heading = "Blog Posts",
-  description = "Discover the latest trends, tips, and best practices in modern web development. From UI components to design systems, stay updated with our expert insights.",
-  buttonText = "View all articles",
-  buttonUrl = "https://shadcnblocks.com",
   posts = [
     {
       id: "post-1",
@@ -72,26 +65,9 @@ const Blog = ({
   ],
 }: Blog7Props) => {
   return (
-    <section className="py-32">
+    <section>
       <div className="container mx-auto flex flex-col items-center gap-16 lg:px-16">
-        <div className="text-center">
-          <Badge variant="secondary" className="mb-6">
-            {tagline}
-          </Badge>
-          <h2 className="text-pretty mb-3 text-3xl font-semibold md:mb-4 md:text-4xl lg:mb-6 lg:max-w-3xl lg:text-5xl">
-            {heading}
-          </h2>
-          <p className="text-muted-foreground mb-8 md:text-base lg:max-w-2xl lg:text-lg">
-            {description}
-          </p>
-          <Button variant="link" className="w-full sm:w-auto" asChild>
-            <a href={buttonUrl} target="_blank">
-              {buttonText}
-              <ArrowRight className="size-4 ml-2" />
-            </a>
-          </Button>
-        </div>
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-8">
+        <div className="grid gap-6 lg:grid-cols-3 lg:gap-8 md:grid-cols-2">
           {posts.map((post) => (
             <Card
               key={post.id}

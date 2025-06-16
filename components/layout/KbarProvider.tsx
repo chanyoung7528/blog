@@ -17,7 +17,7 @@ export default function KBarProviders({
   const actions = useKBarAction(allWritings);
 
   if (actions?.length === 0 || !actions) return null;
-
+  console.log(actions);
   return (
     <KBarProvider actions={actions}>
       <KBar />

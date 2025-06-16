@@ -2,15 +2,16 @@ import { Action } from "kbar";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import { ArchiveBoxIcon } from "@/components/icons/ArchiveBoxIcon";
-import HomeIcon from "@/components/icons/HomeIcon";
-import GithubIcon from "@/components/icons/GithubIcon";
 import { siteConfig } from "@/config";
-import MailIcon from "@/components/icons/MailIcon";
-import { AboutBoxIcon } from "@/components/icons/AboutBoxIcon";
-import { TagBoxIcon } from "@/components/icons/TagBoxIcon";
-import { LibBoxIcon } from "@/components/icons/LibBoxIcon";
+
 import { rootUrl } from "@/lib/utils";
+import MailIcon from "@/components/ui/icons/mail-icon";
+import GithubIcon from "@/components/ui/icons/github-icon";
+import HomeIcon from "@/components/ui/icons/home-icon";
+import { AboutBoxIcon } from "@/components/ui/icons/about-box.icon";
+import { TagBoxIcon } from "@/components/ui/icons/tag-box-icon";
+import { ArchiveBoxIcon } from "@/components/ui/icons/archive-box-icon";
+import { LibBoxIcon } from "@/components/ui/icons/lib-box-icon";
 
 const icons: Record<string, React.ReactNode> = {
   email: <MailIcon />,
@@ -35,7 +36,7 @@ export default function useKbarAction(allWritings: Writing[] = []) {
         shortcut: ["H"],
         keywords: "profile",
         section: "Pages",
-        icon:<HomeIcon width={20} />,
+        icon: <HomeIcon width={20} />,
         perform: () => router.push(`${rootUrl()}`),
       },
       {

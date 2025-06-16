@@ -1,46 +1,36 @@
-import * as React from "react";
-import { Slot } from "@radix-ui/react-slot";
-import { cva, type VariantProps } from "class-variance-authority";
+import React from "react";
+import Image from "next/image";
 
-import { cn } from "@/lib/utils";
+export type CateogryInfoType = {
+  name: string;
+  value: string;
+  src: string;
+};
 
-const badgeVariants = cva(
-  "inline-flex items-center justify-center rounded-md border px-2 py-0.5 text-xs font-medium w-fit whitespace-nowrap shrink-0 [&>svg]:size-3 gap-1 [&>svg]:pointer-events-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive transition-[color,box-shadow] overflow-hidden",
-  {
-    variants: {
-      variant: {
-        default:
-          "border-transparent bg-primary text-primary-foreground [a&]:hover:bg-primary/90",
-        secondary:
-          "border-transparent bg-secondary text-secondary-foreground [a&]:hover:bg-secondary/90",
-        destructive:
-          "border-transparent bg-destructive text-white [a&]:hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60",
-        outline:
-          "text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground",
-      },
-    },
-    defaultVariants: {
-      variant: "default",
-    },
-  },
-);
+type BadgeType = {
+  category: CateogryInfoType;
+  index?: number;
+};
 
-function Badge({
-  className,
-  variant,
-  asChild = false,
-  ...props
-}: React.ComponentProps<"span"> &
-  VariantProps<typeof badgeVariants> & { asChild?: boolean }) {
-  const Comp = asChild ? Slot : "span";
-
+export function Badge({ category, index }: BadgeType) {
   return (
-    <Comp
-      data-slot="badge"
-      className={cn(badgeVariants({ variant }), className)}
-      {...props}
-    />
+    <div key={index || 0} className="group relative flex">
+      <div className="badgebox duration-250 hover:translate-z-0 relative h-14 w-14 cursor-pointer overflow-hidden rounded-full border-2 border-white bg-white opacity-100 shadow-md transition-transform hover:scale-[1.2] md:h-16 md:w-16">
+        <Image
+          src={category.src}
+          alt={category.value}
+          fill
+          className="overflow-hidden object-cover"
+          sizes="(max-width: 768px) 56px, 64px"
+        />
+      </div>
+
+      <span
+        className="bg-gray-800 text-gray-100 tool-tip absolute left-1/2 top-[30px] m-4 mx-auto -translate-x-1/2 translate-y-full 
+    rounded-md px-1 text-sm opacity-0 transition-opacity group-hover:opacity-100"
+      >
+        {category.name}
+      </span>
+    </div>
   );
 }
-
-export { Badge, badgeVariants };

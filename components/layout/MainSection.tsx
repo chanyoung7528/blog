@@ -1,8 +1,12 @@
+import { categoryInfo } from "@/constant/post";
 import RecentPosts from "./RecentPosts";
 import styles from "@/styles/layout/main.module.css";
+import Link from "next/link";
+import { rootUrl } from "@/lib/utils";
+import { Badge } from "../ui/badge";
 
 const MainSection = () => (
-  <main className={`${styles.main} mx-auto my-12 max-w-[1280]`}>
+  <main className={`${styles.main} mx-auto my-12 max-w-[1280px]`}>
     <article>
       <div className={styles.cont_intro}>
         <div className={styles.info_intro}>
@@ -14,17 +18,19 @@ const MainSection = () => (
             Kakao lowers the barrier to the future, and brings technology into
             your life
           </p>
-          <div className="rounded-xl bg-bg p-6 text-tx shadow-shadow">
-            <h1 className="text-tx">안녕하세요!</h1>
-            <p>이건 Tailwind 색상 변수 예시입니다.</p>
+        </div>
+        <div className="flex-1 maxSm:mt-5">
+          <div className="flex flex-wrap gap-5">
+            {categoryInfo?.map((category, index) => (
+              <Link
+                href={`${rootUrl()}/category/${category.value}`}
+                key={index}
+              >
+                <Badge category={category} />
+              </Link>
+            ))}
           </div>
         </div>
-        <img
-          className={styles.img_intro}
-          src="https://img1.kakaocdn.net/thumb/U983x0/?fname=https://t1.kakaocdn.net/kakao_tech/resources/static/img_intro.png"
-          alt=""
-          data-v-2bcb85f3=""
-        ></img>
       </div>
       <div className="cont_main"></div>
       <div className="cont_main">
