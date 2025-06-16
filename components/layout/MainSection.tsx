@@ -7,7 +7,10 @@ import Post from "../page/main/Post";
 import { MainPagination } from "@/components/page/main/MainPagination";
 
 const MainSection = () => (
-  <main className={`${styles.main} mx-auto my-12 max-w-[1280px]`}>
+  <main
+    id="target-section"
+    className={`${styles.main} mx-auto my-12 max-w-[1280px]`}
+  >
     <article>
       <div
         className={`${styles.cont_intro} flex-col gap-5 lg:flex lg:flex-row`}

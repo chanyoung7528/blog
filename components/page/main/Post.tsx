@@ -6,14 +6,14 @@ import Link from "next/link";
 import { format } from "date-fns";
 import styles from "@/styles/layout/post.module.css";
 export const Post = () => {
-  const posts = useAllWritings();
+  const { currentPageWritings } = useAllWritings();
 
   return (
     <section className="mt-[6.78rem]">
       <h3 className={styles.tit_sub}>Posts</h3>
       <ul className="pt-[2.7rem]">
         <div className="grid grid-cols-1 gap-[64px] md:grid-cols-2 lg:grid-cols-3">
-          {posts.map((post) => (
+          {currentPageWritings.map((post) => (
             <li key={post._id}>
               <Link
                 href={`/posts/${post._raw.flattenedPath}`}

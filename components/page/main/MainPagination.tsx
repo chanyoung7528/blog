@@ -6,7 +6,6 @@ import {
   PaginationItem,
   PaginationLink,
 } from "@/components/ui/pagination";
-import { useState } from "react";
 import {
   ChevronLeft,
   ChevronRight,
@@ -16,14 +15,23 @@ import {
 import { cn } from "@/lib/utils";
 
 export const MainPagination = () => {
-  const posts = useAllWritings();
-  const postsPerPage = 9;
-  const totalPages = Math.ceil(posts.length / postsPerPage);
-  const [currentPage, setCurrentPage] = useState(1);
+  const { currentPage, totalPages, setCurrentPage } = useAllWritings();
 
-  const handlePageChange = (page: number) => {
+  const scrollToTarget = () => {
+    const element = document.getElementById("target-section");
+    if (element) {
+      element.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+        inline: "nearest",
+      });
+    }
+  };
+
+  const handlePageChange = (page: number): void => {
     if (page >= 1 && page <= totalPages) {
       setCurrentPage(page);
+      scrollToTarget();
     }
   };
 
