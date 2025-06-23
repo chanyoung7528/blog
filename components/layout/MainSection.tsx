@@ -3,8 +3,9 @@ import styles from "@/styles/layout/main.module.css";
 import Link from "next/link";
 import { rootUrl } from "@/lib/utils";
 import { Badge } from "../ui/badge";
-import Post from "../page/main/Post";
-import { MainPagination } from "@/components/page/main/MainPagination";
+
+import BlogList from "../page/main/BlogList";
+import { allWritings } from "contentlayer/generated";
 
 const MainSection = () => (
   <main
@@ -37,10 +38,8 @@ const MainSection = () => (
       </div>
 
       <div className="cont_main">
-        <Post />
+        <BlogList writings={allWritings} />
       </div>
-
-      <MainPagination />
     </article>
   </main>
 );

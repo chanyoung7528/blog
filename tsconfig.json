@@ -29,8 +29,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    ".contentlayer/generated"
-    // "app/category/[slug]"
+    ".contentlayer/generated",
+    "app/posts/[[...slug]]" // "app/category/[slug]"
   ],
   "exclude": ["node_modules"]
 }

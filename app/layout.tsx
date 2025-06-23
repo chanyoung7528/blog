@@ -6,6 +6,9 @@ import KBarProviders from "@/components/layout/KbarProvider";
 import FloatScrollTopButton from "@/components/ui/float-scroll-top-button";
 import GoogleAnalytics from "@/components/google-analytics";
 import { allWritings } from "contentlayer/generated";
+import Footer from "@/components/layout/Footer";
+import Header from "@/components/layout/Header";
+
 export const metadata: Metadata = {
   title: {
     template: "%s | chanyoung",
@@ -22,10 +25,6 @@ export const metadata: Metadata = {
     shortcut: "/favicon.ico",
     icon: "/favicon.ico",
   },
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-    { media: "(prefers-color-scheme: dark)", color: "#1a1a1a" },
-  ],
   robots: {
     index: true,
     follow: true,
@@ -37,6 +36,13 @@ export const metadata: Metadata = {
   alternates: {
     canonical: siteConfig.url,
   },
+};
+
+export const viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#1a1a1a" },
+  ],
 };
 
 export default function RootLayout({
@@ -55,7 +61,9 @@ export default function RootLayout({
       <body className="md:m mt-4 md:mt-0">
         <StyleProvider>
           <KBarProviders allWritings={allWritings}>
+            <Header />
             {children}
+            <Footer />
             <FloatScrollTopButton />
           </KBarProviders>
         </StyleProvider>
