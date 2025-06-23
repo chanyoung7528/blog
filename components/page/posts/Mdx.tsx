@@ -1,5 +1,5 @@
 "use client";
-
+import "@/styles/mdx.css";
 import { cn } from "@/lib/utils";
 import { useMDXComponent } from "next-contentlayer/hooks";
 import { useEffect } from "react";

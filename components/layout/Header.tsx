@@ -66,7 +66,7 @@ const Header = () => {
     if (location) menuRouter(location);
   };
 
-  const initShadowClassList = () => {
+  const initShadowClassList = useCallback(() => {
     const header = headerRef.current;
     if (!header || !currentTheme) return;
 
@@ -75,7 +75,7 @@ const Header = () => {
 
     header.classList.remove(darkShadow, lightShadow);
     header.classList.add(shadowColor(currentTheme));
-  };
+  }, [currentTheme]);
 
   useEffect(() => {
     setHasMounted(true);
@@ -90,16 +90,16 @@ const Header = () => {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [currentTheme, hasMounted, handleScroll]);
+  }, [currentTheme, hasMounted, handleScroll, initShadowClassList]);
 
   if (!hasMounted) return null;
 
   return (
     <header
       ref={headerRef}
-      className="sticky left-0 top-0 z-10 h-20 w-full bg-white  dark:bg-[#1a1a1a]"
+      className="sticky left-0 top-0 z-10 h-[50px] w-full bg-white  dark:bg-[#1a1a1a]"
     >
-      <div className="mx-auto flex h-20 max-w-page flex-nowrap items-center justify-between gap-5 px-10 text-black">
+      <div className="mx-auto flex h-full max-w-page flex-nowrap items-center justify-between gap-5 px-10 text-black">
         <div className="hidden items-center gap-5 text-center sm:flex">
           {/* <Navbar type="normal" onClick={menuRouter} /> */}
         </div>
@@ -122,7 +122,7 @@ const Header = () => {
       {/* 모바일 토글 메뉴 */}
       <div
         ref={toggleRef}
-        className="absolute left-0 top-20 z-50 hidden h-screen w-full flex-col bg-white p-5 dark:bg-[#111111]"
+        className="absolute left-0 top-[50px] z-50 hidden h-screen w-full flex-col bg-white p-5 dark:bg-[#111111]"
       >
         <Navbar type="toggle" onClick={handleToggle} />
       </div>

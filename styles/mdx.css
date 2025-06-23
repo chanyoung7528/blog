@@ -1,6 +1,6 @@
-@import "./font.css";
 .mdx {
-  @apply w-full  text-tx;
+  font-family: var(--font-fallback);
+  @apply w-full text-tx;
 
   --shiki-color-text: var(--text-color);
   --shiki-color-background: var(--gray3);
@@ -15,25 +15,120 @@
   --shiki-token-link: var(--gray12);
 }
 
-/* code */
+.mdx img {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  @apply overflow-hidden rounded-md;
+}
+
+.mdx > :where(h2, h3, h4, h5, h6) {
+  margin: 2rem 0 1rem;
+}
+
+.mdx h2 {
+  color: #111827;
+  font-weight: 700;
+  line-height: 32px;
+  font-size: 24px;
+}
+
+.mdx h3 {
+  color: #111827;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 32px;
+}
+
+.mdx h4 {
+  color: #111827;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+}
+
+.mdx ul {
+  color: #374151;
+  font-size: 1.14rem;
+  line-height: 1.75;
+  margin: 1rem 0;
+  padding-left: 32px;
+}
+
+.mdx li {
+  margin: 0.5rem 0;
+}
+
+.mdx .table-wrapper {
+  margin: 1.5rem 0;
+  overflow-x: auto;
+  width: 100%;
+}
+
+.mdx table {
+  color: #374151;
+  line-height: 24px;
+  width: 100%;
+}
+
+.mdx th {
+  border-bottom: 1px solid #d1d5db;
+  color: #111827;
+  font-weight: 700;
+  padding: 4px 8px 12px;
+}
+
+.mdx td {
+  border-bottom: 1px solid #e5e7eb;
+  min-width: 60px;
+  padding: 8px;
+  word-break: break-all;
+}
+
+.mdx figcaption {
+  color: #000;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.mdx p {
+  font-weight: 400;
+  color: #374151;
+  font-size: 1.14rem;
+  line-height: 1.75;
+  margin: 1.5rem 0 1rem;
+}
+
+.mdx a {
+  font-weight: 700;
+  text-decoration: underline;
+  word-break: break-all;
+}
 
 .mdx code:not(pre code) {
-  @apply relative rounded-md bg-gray-3 px-1.5 py-1 text-gray-3;
-  font-family: "Pretendard-Regular";
-  font-size: 18px;
-  line-height: 1.25rem; /* 20px */
-  color: #4d5357;
+  background: #ddd;
+  border: 1px solid #bcbec0;
+  border-radius: 20px;
+  font:
+    85% Monaco,
+    Consolas,
+    Andale Mono,
+    DejaVu Sans Mono,
+    monospace;
+  padding: 0.2em 0.4em;
+  white-space: break-spaces;
 }
 
 .mdx pre {
   @apply relative grid overflow-x-auto rounded-lg bg-gray-3
     px-4 py-3
     leading-6;
-  font-size: 0.875rem; /* 14px */
+  font-size: 0.875rem;
   -moz-tab-size: 4;
   -o-tab-size: 4;
   tab-size: 4;
 }
+
 .mdx code {
   font-size: 1.1em;
 }
@@ -44,14 +139,14 @@
 
 [data-rehype-pretty-code-title] {
   @apply mb-1 text-gray-11;
-  font-size: 0.875rem; /* 14px */
-  line-height: 1.25rem; /* 20px */
+  font-size: 0.875rem;
+  line-height: 1.25rem;
 }
 
 [data-rehype-pretty-code-caption] {
   @apply mt-1 text-gray-11;
-  font-size: 0.875rem; /* 14px */
-  line-height: 1.25rem; /* 20px */
+  font-size: 0.875rem;
+  line-height: 1.25rem;
 }
 
 [data-line] {
@@ -114,8 +209,6 @@ code[data-line-numbers-max-digits="3"] > [data-line]::before {
   background-color: #6b21a880;
 }
 
-/* rehype-autolink-headings */
-
 .mdx .anchor {
   @apply no-underline after:opacity-0 hover:after:opacity-100 focus:after:opacity-100;
 }
@@ -133,213 +226,6 @@ code[data-line-numbers-max-digits="3"] > [data-line]::before {
   .mdx *:hover > .anchor {
     @apply opacity-100;
   }
-}
-
-/* prose */
-
-.mdx > :first-child {
-  @apply mt-0;
-}
-
-.mdx > * {
-  @apply mb-7;
-}
-
-.mdx > :where(h1, h2, h3, h4) {
-  @apply scroll-mt-page text-base font-semibold leading-7;
-  /* font-feature-settings: 'kern', 'calt', 'case'; */
-}
-
-.mdx > :where(h1, h2) {
-  @apply mt-20;
-}
-.mdx > :where(h1) {
-  font-size: 2.6rem;
-  letter-spacing: -1px;
-  line-height: 1.25;
-  font-weight: 800;
-}
-
-.mdx > :where(h2) {
-  font-size: 2.2em;
-  font-weight: 700;
-  letter-spacing: -1px;
-  line-height: 1.25;
-}
-.mdx > :where(h3) {
-  font-size: 2rem;
-  line-height: 1;
-  letter-spacing: -0.8px;
-  font-weight: 600;
-}
-.mdx > :where(h4) {
-  font-size: 1.7rem;
-  line-height: 1.27;
-  letter-spacing: -0.8px;
-  font-weight: 600;
-}
-.mdx > :where(h5) {
-  font-size: 1.4rem;
-  line-height: 1.23;
-  letter-spacing: -0.8px;
-  font-weight: 700;
-}
-
-.mdx > :where(h3, h4) {
-  @apply mt-20;
-}
-
-.mdx > :where(h1, h2) + :where(h3, h4) {
-  @apply mt-0;
-}
-
-.mdx p {
-  @apply text-base leading-7 tracking-normal;
-  font-size: 18px;
-  line-height: 1.7;
-  /* font-feature-settings: 'kern', 'frac', 'kern', 'ss02'; */
-}
-
-.mdx b,
-.mdx strong:not:has(code) {
-  @apply bg-gray-4 p-0.5 font-semibold;
-}
-
-.mdx del {
-  @apply !text-gray-8;
-}
-
-.mdx a {
-  @apply relative break-all
-    underline decoration-gray-8 decoration-1 underline-offset-[2.5px]
-    transition-[color,text-decoration-color] duration-xx ease-[ease]
-    hover:text-tx hover:decoration-gray-9 hover:duration-fast;
-}
-
-.mdx blockquote {
-  quotes: "“" "”" "‘" "’";
-  --quote-offset: 2px;
-}
-
-.mdx blockquote:before {
-  @apply absolute -translate-x-full text-gray-11;
-  content: open-quote;
-  left: calc(-1 * var(--quote-offset));
-}
-
-.mdx blockquote :last-child:after {
-  content: close-quote;
-  margin-left: var(--quote-offset);
-}
-
-.mdx blockquote * {
-  @apply text-gray-11;
-}
-
-.mdx > :has(+ :where(ul, ol)) {
-  @apply mb-2;
-}
-
-.mdx ul {
-  list-style-type: disc;
-  list-style-position: outside;
-  padding-left: 16px;
-}
-
-.mdx li > ul {
-  @apply list-[circle];
-}
-
-.mdx li {
-  @apply list-item leading-7;
-}
-
-.mdx li::marker {
-  @apply text-gray-11;
-}
-
-.mdx li + li,
-.mdx li > ul {
-  @apply mt-[7px];
-}
-
-.mdx li > div,
-.mdx li > p {
-  @apply mb-3;
-}
-
-.mdx ol {
-  --counter-space: 12px;
-  counter-reset: basics-ol;
-  list-style-type: none;
-  padding: 0;
-}
-
-.mdx ol li {
-  --l: calc(2 * var(--counter-space));
-  text-indent: calc(-1 * var(--l));
-  padding-left: var(--l);
-}
-
-.mdx ol li:before {
-  @apply inline-flex select-none items-center justify-end text-right text-gray-11;
-  content: counter(basics-ol) ". ";
-  counter-increment: basics-ol;
-  min-width: var(--counter-space);
-  margin-right: var(--counter-space);
-  font-feature-settings: "tnum" 1;
-  letter-spacing: -0.05em;
-  line-height: normal;
-}
-
-.mdx hr {
-  @apply h-[1px] border-none bg-gray-5;
-}
-
-.mdx table {
-  empty-cells: hide;
-}
-
-@media (min-width: 768px) {
-  .mdx table {
-    font-size: 0.875rem; /* 14px */
-    line-height: 1.25rem; /* 20px */
-  }
-}
-
-.mdx th {
-  @apply px-4 pb-1 text-left font-semibold
-    [&[align=center]]:text-center 
-    [&[align=right]]:text-right;
-}
-
-.mdx td {
-  @apply border-l px-4 py-2 text-left align-text-top
-    [&[align=center]]:text-center 
-    [&[align=right]]:text-right;
-}
-
-.mdx td:first-child {
-  word-break: keep-all;
-}
-
-.mdx td:last-child {
-  @apply border-r;
-}
-
-.mdx img {
-  @apply flex overflow-hidden rounded-md;
-}
-
-.mdx img + em,
-.mdx img + em p {
-  @apply mt-2 inline-block font-sans not-italic leading-5 text-gray-11;
-  font-size: 0.875rem; /* 14px */
-}
-
-.mdx img,
-.medium-zoom-image--opened {
-  filter: drop-shadow(0 25px 20px rgba(0, 0, 0, 0.1));
 }
 
 .medium-zoom-overlay,

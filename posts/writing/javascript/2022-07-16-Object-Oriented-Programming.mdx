@@ -1,10 +1,10 @@
 ---
-title: 'Object-Oriented Programming'
-description: '자바스크립트에서 모든 오브젝트에는 프로토타입이라는 숨겨진 속성이 있다.'
-image: '/img/posts/tech.png'
+title: "Object-Oriented Programming"
+description: "자바스크립트에서 모든 오브젝트에는 프로토타입이라는 숨겨진 속성이 있다."
+image: "/img/posts/tech.png"
 draft: false
-category: 'javascript'
-subImage: '/img/posts/javascript.png'
+category: "javascript"
+subImage: "/img/posts/javascript.png"
 date: 2022-07-16 22:06:43
 ---
 
@@ -12,7 +12,7 @@ date: 2022-07-16 22:06:43
 
 ```jsx
 const person = {
-    name: 'mike',
+  name: "mike",
 };
 const prototype = Object.getPrototypeOf(person);
 console.log(typeof prototype);
@@ -20,7 +20,7 @@ console.log(person.__proto__ === prototype);
 
 결과;
 
-('object');
+("object");
 true;
 ```
 
@@ -30,10 +30,10 @@ true;
 
 ```jsx
 const person = {
-    name: 'mike',
+  name: "mike",
 };
 const programmer = {
-    language: 'javascript',
+  language: "javascript",
 };
 
 Object.setPrototypeOf(programmer, person);
@@ -44,7 +44,7 @@ console.log(programmer.name);
 결과;
 
 true;
-('mike');
+("mike");
 ```
 
 프로토타입을 변경할때는 setPrototypeOf함수로 할 수있다. 이는 programer.**proto** = person와 같은역할을 한다. 프로토타입은 이렇게 속성값을 읽을 때 사용한다. 프로그래머에는 name이라는 속성이 없다. 이렇게 자기 자신에 없는 속성이 있을 때 프로토타입에서 그 속성을 찾는다. 지금 프로그래머의 프로토타입은 person이기 때문에 person에서 name을 찾아서 mike가 출력된다.
@@ -81,21 +81,21 @@ frontendDev에는 name과 language가 없지만 이것을 출력해보면 ‘mik
 
 ```jsx
 const person = {
-    name: 'mike',
+  name: "mike",
 };
 const programmer = {
-    language: 'javascript',
+  language: "javascript",
 };
 
 Object.setPrototypeOf(programmer, person);
-programmer.name = 'jane';
+programmer.name = "jane";
 console.log(programmer.name);
 console.log(person.name);
 
 결과;
 
-('jane');
-('mike');
+("jane");
+("mike");
 ```
 
 ## 자기자신에게 속성추가
@@ -104,13 +104,13 @@ console.log(person.name);
 
 ```jsx
 const person = {
-    name: 'mike',
-    sayHello() {
-        console.log('hello!');
-    },
+  name: "mike",
+  sayHello() {
+    console.log("hello!");
+  },
 };
 const programmer = {
-    language: 'javascript',
+  language: "javascript",
 };
 
 Object.setPrototypeOf(programmer, person);
@@ -118,7 +118,7 @@ programmer.sayHello();
 
 결과;
 
-('hello!');
+("hello!");
 ```
 
 프로토타입은 일반적인 객체이기 때문에 함수를 정의해서 공통 로직을 추가할 수 있다. 프로그래머에는 sayHello함수가 없지만 호출할 수 있다.
@@ -127,21 +127,21 @@ programmer.sayHello();
 
 ```jsx
 const person = {
-    name: 'mike',
+  name: "mike",
 };
 const programmer = {
-    language: 'javascript',
+  language: "javascript",
 };
 
 Object.setPrototypeOf(programmer, person);
 for (const prop in programmer) {
-    console.log(prop);
+  console.log(prop);
 }
 
 결과;
 
-('language');
-('name');
+("language");
+("name");
 ```
 
 프로토타입에 있는 속성까지 사용이가능하다. 두가지 속성이 모두 출력이 된다.
@@ -150,21 +150,21 @@ for (const prop in programmer) {
 
 ```jsx
 const person = {
-    name: 'mike',
+  name: "mike",
 };
 const programmer = {
-    language: 'javascript',
+  language: "javascript",
 };
 
 for (const prop in programmer) {
-    if (programmer.hasOwnProperty(prop)) {
-        console.log(prop);
-    }
+  if (programmer.hasOwnProperty(prop)) {
+    console.log(prop);
+  }
 }
 
 결과;
 
-('language');
+("language");
 ```
 
 자기자신의 속성만 사용하고싶으면 hasOwnProperty를 사용한다.
@@ -173,18 +173,18 @@ for (const prop in programmer) {
 
 ```jsx
 const person = {
-    name: 'mike',
+  name: "mike",
 };
 const programmer = {
-    language: 'javascript',
+  language: "javascript",
 };
 
 for (const prop of Object.keys(programmer)) {
-    console.log(prop);
+  console.log(prop);
 }
 
 결과;
-('language');
+("language");
 ```
 
 또다른 방법은 Object.keys함수를 이용한다.
@@ -193,17 +193,17 @@ for (const prop of Object.keys(programmer)) {
 
 ```jsx
 function Person(name) {
-    // this = {};
-    this.name = name;
-    // return this;
+  // this = {};
+  this.name = name;
+  // return this;
 }
 
-const person = new Person('mike');
+const person = new Person("mike");
 console.log(person.name);
 
 결과;
 
-('mike');
+("mike");
 ```
 
 이렇게 new 키워드를 사용해서 객체를 만들때 사용하는 함수를 생성자 함수라고한다. 자바스크립트 엔진은 내부적으로 this에 빈객체를 할당해준다. 그리고 함수가 종료하기직전에 this를 반환해준다. 여기서 반환된 person은 함수에서 반환된 this이다.
@@ -214,7 +214,7 @@ console.log(person.name);
 const obj = new Object({ a: 123 });
 const arr = new Array(10, 20, 30);
 const num = new Number(123);
-const str = new String('abc');
+const str = new String("abc");
 
 console.log({ obj, arr, num, str });
 ```

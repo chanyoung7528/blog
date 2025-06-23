@@ -14,19 +14,14 @@
 
 /* 전역 폰트 fallback 설정 */
 :root {
-  --font-fallback-heading:
-    "KakaoBig", "Apple SD Gothic Neo", "Malgun Gothic", "맑은 고딕", sans-serif;
-
   --font-fallback:
-    "KakaoSmallSans-Bold", Pretendard Variable, -apple-system,
-    BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI",
-    "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji",
-    "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+    "KakaoBig", "Apple SD Gothic Neo", "Malgun Gothic", "맑은 고딕", sans-serif;
 }
 
 /* 기본 스타일 초기화 및 설정 */
 html,
 body {
+  font-size: 14px;
   font-family: var(--font-fallback);
   padding-bottom: env(safe-area-inset-bottom);
   -webkit-font-smoothing: antialiased;
@@ -45,7 +40,6 @@ h4,
 h5,
 h6,
 strong {
-  font-weight: 900;
   font-family: var(--font-fallback);
 }
 

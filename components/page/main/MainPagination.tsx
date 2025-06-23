@@ -18,13 +18,18 @@ export const MainPagination = () => {
   const { currentPage, totalPages, setCurrentPage } = useAllWritings();
 
   const scrollToTarget = () => {
+    const isMobile = window.innerWidth <= 768;
     const element = document.getElementById("target-section");
     if (element) {
-      element.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-        inline: "nearest",
-      });
+      if (isMobile) {
+        window.scrollTo({ top: 0 });
+      } else {
+        element.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+          inline: "nearest",
+        });
+      }
     }
   };
 
