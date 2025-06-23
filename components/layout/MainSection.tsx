@@ -16,12 +16,9 @@ const MainSection = () => (
       <div
         className={`${styles.cont_intro} flex-col gap-5 lg:flex lg:flex-row`}
       >
-        <div className={styles.info_intro}>
-          <h2 className={styles.tit_intro}>
-            <span className={styles.tit_tech}>카카오테크,</span>
-            <span className={styles.tit_tech}>미래의 문턱을 낮추는 기술</span>
-          </h2>
-          <p className={styles.desc_intro}>Kakao lowers</p>
+        <div className={`${styles.info_intro} flex-[1]`}>
+          <div className="min-w-[400px]"></div>
+          <p className={styles.desc_intro}> </p>
         </div>
         <div className="flex-1 maxSm:mt-5">
           <div className="flex flex-wrap gap-[2rem]">
