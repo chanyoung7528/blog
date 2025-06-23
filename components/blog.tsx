@@ -1,5 +1,5 @@
 import { ArrowRight } from "lucide-react";
-
+import Image from "next/image";
 import {
   Card,
   CardContent,
@@ -67,7 +67,7 @@ const Blog = ({
   return (
     <section>
       <div className="container mx-auto flex flex-col items-center gap-16 lg:px-16">
-        <div className="grid gap-6 lg:grid-cols-3 lg:gap-8 md:grid-cols-2">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-8">
           {posts.map((post) => (
             <Card
               key={post.id}
@@ -79,15 +79,17 @@ const Blog = ({
                   target="_blank"
                   className="fade-in transition-opacity duration-200 hover:opacity-70"
                 >
-                  <img
+                  <Image
                     src={post.image}
                     alt={post.title}
                     className="h-full w-full object-cover object-center"
+                    width={100}
+                    height={100}
                   />
                 </a>
               </div>
               <CardHeader>
-                <h3 className="text-lg font-semibold hover:underline md:text-xl">
+                <h3 className="text-lg md:text-xl font-semibold hover:underline">
                   <a href={post.url} target="_blank">
                     {post.title}
                   </a>

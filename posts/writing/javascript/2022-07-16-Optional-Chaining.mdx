@@ -1,10 +1,10 @@
 ---
-title: 'Optional Chaining'
-description: '자바스크립트에서는 객체의 속성에 접근할때 .을 찍는다.'
-image: '/img/posts/tech.png'
+title: "Optional Chaining"
+description: "자바스크립트에서는 객체의 속성에 접근할때 .을 찍는다."
+image: "/img/posts/tech.png"
 draft: false
-category: 'javascript'
-subImage: '/img/posts/javascript.png'
+category: "javascript"
+subImage: "/img/posts/javascript.png"
 date: 2022-07-16 22:06:43
 ---
 
@@ -26,8 +26,7 @@ const name2 = person?.name;
 
 ## Optional Chaining의 효과
 
-앞서 error를 방지하기위해 앤드연산자를 사용할수 도 있지만 이방식보다는 optional chaining을 사용하면 간단하게 작성할 수 있다.
-이렇게 하면 자동으로 person의 유무를 검사해주어 에러를 방지한다.
+Kanana LLM의 첫 번째 버전의 모델도 출시 당시에는 준수한 성능을 보였으나, 코딩과 수학 성능에서 상대적으로 아쉬운 측면이 있었습니다. 기존 학습 데이터는 주로 일반적인 웹 코퍼스에서 수집된 내용이 많아, 전문적이거나 고품질의 코드, 수학 데이터가 상대적으로 부족했습니다. 이러한 데이터로 학습된 모델은 때때로 피상적인 패턴만을 학습하여 복잡한 문제 해결에 실패하거나, 논리적 오류가 있거나 비효율적인 코드를 생성할 가능성이 있었습니다. 특히, 다단계 추론이 필수적인 수학 문제나, 실제 환경에서의 실행 정확성과 안정성이 중요한 코드 생성에 있어서는 이러한 한계가 더욱 두드러졌습니다. 예를 들어, 수학 문제에서는 풀이 과정의 논리적 비약이 발생하거나, 코드 생성에서는 특정 엣지 케이스를 고려하지 못하는 경우가 있었습니다.
 
 ```js
 const name = person?.name;
@@ -39,7 +38,7 @@ null또는 undefined이면 undefined가 출력이되고 그게아니면 의도�
 
 ```js
 const person = {
-    getName: () => 'abc',
+  getName: () => "abc",
 };
 const name = person.getName?.();
 console.log(name);
@@ -49,7 +48,7 @@ console.log(name);
 abc;
 
 const person = {
-    //	getName : () => 'abc',
+  //	getName : () => 'abc',
 };
 const name = person.getName?.();
 console.log(name);
@@ -64,15 +63,15 @@ undefined;
 
 ```js
 function loadData(onComplete) {
-    console.log('loading...');
-    onComplete?.();
+  console.log("loading...");
+  onComplete?.();
 }
-let a = '1';
+let a = "1";
 loadData(a?.name);
 
 결과;
 
-('loading...');
+("loading...");
 ```
 
 함수 호출시 optional chaining를 사용하는 것은 함수를 매개변수로 받아서 그것을 호출 할때 유용하게 사용할 수 있다.
@@ -82,7 +81,7 @@ loadData(a?.name);
 const person = { friends: null, mother: null };
 const firstFriend = person.friends?.[0];
 
-const prop = 'name';
+const prop = "name";
 const name = person.mother?.[prop];
 ```
 
@@ -111,7 +110,7 @@ optional chaining은 검사하는 단계가많을수록 효율적으로 간단�
 
 ```js
 const person = {};
-const name = person?.friends?.[0]?.mother?.name ?? 'default name';
+const name = person?.friends?.[0]?.mother?.name ?? "default name";
 //Nullish coalescing
 ```
 

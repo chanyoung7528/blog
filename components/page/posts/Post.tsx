@@ -16,7 +16,7 @@ export const Post = () => {
           {currentPageWritings.map((post) => (
             <li key={post._id}>
               <Link
-                href={`/posts/${post._raw.flattenedPath}`}
+                href={`/posts/${post.slug}`}
                 className="flex h-full flex-col"
               >
                 <div className="relative aspect-[400/207] w-full overflow-hidden rounded-md bg-[#f2f4f7]">
