@@ -3,7 +3,7 @@
 import { rootUrl } from "@/lib/utils";
 
 const nav: { title: string; location: string }[] = [
-  { title: "Home", location: rootUrl() },
+  { title: "Chans tech", location: rootUrl() },
   // { title: 'About', location: `${rootUrl()}/about` },
   { title: "Tag", location: `${rootUrl()}/tag` },
   { title: "Archives", location: `${rootUrl()}/archives` },
@@ -22,18 +22,17 @@ export default function Navbar({ type, onClick }: NavProps) {
       {nav.map((item) => {
         const { title, location } = item;
         return (
-          <div
-            style={{ fontFamily: "Tmon", fontSize: "1.3rem" }}
+          <h1
             onClick={() => onClick && onClick(location)}
             key={title}
             className={
               type === "normal"
                 ? defaultStyleString
-                : defaultStyleString + " py-4 text-lg"
+                : defaultStyleString + " text-lg py-4"
             }
           >
             {title}
-          </div>
+          </h1>
         );
       })}
     </>

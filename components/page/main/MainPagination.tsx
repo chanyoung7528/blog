@@ -13,12 +13,22 @@ import {
   ChevronsRight,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useEffect, useState } from "react";
 
 export const MainPagination = () => {
   const { currentPage, totalPages, setCurrentPage } = useAllWritings();
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   const scrollToTarget = () => {
-    const isMobile = window.innerWidth <= 768;
     const element = document.getElementById("target-section");
     if (element) {
       if (isMobile) {
@@ -40,13 +50,30 @@ export const MainPagination = () => {
     }
   };
 
-  const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
+  const getVisiblePages = () => {
+    if (!isMobile) return Array.from({ length: totalPages }, (_, i) => i + 1);
 
-  const baseButtonStyles =
-    "h-[50px] w-[50px] mt-[10px] bg-[#f3f4f6] text-[30px] flex items-center justify-center";
+    let start = currentPage - 1;
+    let end = currentPage + 1;
+
+    if (start < 1) {
+      start = 1;
+      end = Math.min(3, totalPages);
+    } else if (end > totalPages) {
+      end = totalPages;
+      start = Math.max(1, totalPages - 2);
+    }
+
+    return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+  };
+
+  const baseButtonStyles = isMobile
+    ? "h-[40px] w-[40px] mt-[10px] bg-[#f3f4f6] text-[24px] flex items-center justify-center"
+    : "h-[50px] w-[50px] mt-[10px] bg-[#f3f4f6] text-[30px] flex items-center justify-center";
   const disabledStyles = "pointer-events-none opacity-50";
-  const numberButtonStyles =
-    "min-w-[50px] text-[17px] rounded-[5px] cursor-pointer flex items-center justify-center no-underline";
+  const numberButtonStyles = isMobile
+    ? "min-w-[40px] text-[15px] rounded-[5px] cursor-pointer flex items-center justify-center no-underline"
+    : "min-w-[50px] text-[17px] rounded-[5px] cursor-pointer flex items-center justify-center no-underline";
 
   return (
     <div className="mt-[90px] w-full text-center">
@@ -79,6 +106,7 @@ export const MainPagination = () => {
               className={cn(
                 baseButtonStyles,
                 "mr-[50px]",
+                "hidden lg:flex",
                 currentPage === 1
                   ? "text-[#d1d5db] " + disabledStyles
                   : "text-[#a3a3a3]",
@@ -87,7 +115,7 @@ export const MainPagination = () => {
               <ChevronLeft size={24} />
             </PaginationLink>
           </PaginationItem>
-          {pageNumbers.map((page) => (
+          {getVisiblePages().map((page) => (
             <PaginationItem key={page}>
               <PaginationLink
                 href="#"
@@ -116,6 +144,7 @@ export const MainPagination = () => {
               className={cn(
                 baseButtonStyles,
                 "ml-[50px]",
+                "hidden lg:flex",
                 currentPage === totalPages
                   ? "text-[#d1d5db] " + disabledStyles
                   : "text-[#a3a3a3]",

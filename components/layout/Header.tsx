@@ -17,6 +17,7 @@ const Header = () => {
 
   const [hasMounted, setHasMounted] = useState(false);
   const [onToggle, setOnToggle] = useState(false);
+  const [isSticky, setIsSticky] = useState(false);
 
   // 마운트 후에만 useTheme() 호출
   const { theme, systemTheme } = useTheme();
@@ -39,9 +40,11 @@ const Header = () => {
         currentTheme === "dark" ? lightShadow : darkShadow,
       );
       header.classList.add(shadowColor(currentTheme));
+      setIsSticky(true);
     } else {
       header.classList.remove(darkShadow);
       header.classList.remove(lightShadow);
+      setIsSticky(false);
     }
   }, [currentTheme]);
 
@@ -97,11 +100,13 @@ const Header = () => {
   return (
     <header
       ref={headerRef}
-      className="sticky left-0 top-0 z-10 h-[50px] w-full bg-white  dark:bg-[#1a1a1a]"
+      className={`sticky left-0 top-0 z-10 w-full bg-white transition-[height] duration-300 dark:bg-[#1a1a1a] ${
+        isSticky ? "h-[50px]" : "h-[70px]"
+      }`}
     >
-      <div className="mx-auto flex h-full max-w-page flex-nowrap items-center justify-between gap-5 px-10 text-black">
+      <div className="mx-auto flex h-full max-w-[1260px] flex-nowrap items-center justify-between gap-5 text-black">
         <div className="hidden items-center gap-5 text-center sm:flex">
-          {/* <Navbar type="normal" onClick={menuRouter} /> */}
+          <Navbar type="normal" onClick={menuRouter} />
         </div>
         <div className="flex gap-5 maxSm:w-full maxSm:justify-end">
           <div className="flex items-center gap-2">
@@ -122,7 +127,9 @@ const Header = () => {
       {/* 모바일 토글 메뉴 */}
       <div
         ref={toggleRef}
-        className="absolute left-0 top-[50px] z-50 hidden h-screen w-full flex-col bg-white p-5 dark:bg-[#111111]"
+        className={`absolute z-50 hidden h-screen w-full flex-col bg-white p-5 dark:bg-[#111111] ${
+          isSticky ? "top-[50px]" : "top-[70px]"
+        }`}
       >
         <Navbar type="toggle" onClick={handleToggle} />
       </div>
