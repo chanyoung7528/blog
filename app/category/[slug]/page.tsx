@@ -4,13 +4,15 @@ import { categoryInfo } from "@/constant/post";
 import { filterDraft, sortDateDesc } from "@/lib/mdx";
 import { allWritings } from "contentlayer/generated";
 import { format } from "date-fns";
-import { Metadata } from "next";
+import { Metadata, ResolvingMetadata } from "next";
 import { notFound } from "next/navigation";
+import { CategoryTagFilter } from "@/components/page/category/CategoryTagFilter";
 
 interface PageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
+  searchParams: Promise<{ tag?: string }>;
 }
 
 export function generateStaticParams() {
@@ -46,11 +48,15 @@ function getDocFromParams(slug: string) {
     categoryId,
   };
 }
-export async function generateMetadata({
-  params,
-}: PageProps): Promise<Metadata> {
+
+export async function generateMetadata(
+  { params }: { params: PageProps["params"] },
+  parent: ResolvingMetadata,
+): Promise<Metadata> {
   const resolvedParams = await params;
   const { categoryList } = getDocFromParams(resolvedParams.slug);
+
+  const previousImages = (await parent).openGraph?.images || [];
 
   if (!categoryList) {
     return {};
@@ -66,6 +72,7 @@ export async function generateMetadata({
       description: categoryList[0]?.description,
       images: [
         "https://user-images.githubusercontent.com/65283190/262063367-a7407bba-09a0-420a-ae45-2ed3e6f3e3b8.png",
+        ...previousImages,
       ],
       locale: "ko_KR",
       type: "website",
@@ -73,9 +80,14 @@ export async function generateMetadata({
   };
 }
 
-export default async function CategoryPage({ params }: PageProps) {
+export default async function CategoryPage({
+  params,
+  searchParams,
+}: PageProps) {
   const resolvedParams = await params;
-  const { categoryList } = getDocFromParams(resolvedParams.slug);
+  const searchParam = await searchParams;
+  const { categoryList, categoryId } = getDocFromParams(resolvedParams.slug);
+  const activeTag = searchParam.tag || null;
 
   const categoryBadgeInfo = categoryInfo.find(
     (cate) => cate.value === resolvedParams.slug,
@@ -84,6 +96,14 @@ export default async function CategoryPage({ params }: PageProps) {
   if (!categoryList) {
     notFound();
   }
+
+  const allUniqueTags = [
+    ...new Set(categoryList.flatMap((item) => item.tags || [])),
+  ];
+
+  const filteredPosts = activeTag
+    ? categoryList.filter((post) => post.tags?.includes(activeTag))
+    : categoryList;
 
   return (
     <main className="mx-auto box-border w-full max-w-[1280px] flex-grow px-[30px] py-[69px] pb-[88px]">
@@ -96,22 +116,7 @@ export default async function CategoryPage({ params }: PageProps) {
           {categoryBadgeInfo && (
             <Badge category={categoryBadgeInfo} isSubName={false} />
           )}
-          <div className="mt-[3.28rem] flex flex-wrap justify-center gap-2">
-            {[
-              ...new Set(
-                categoryList
-                  .filter((item) => item.category === resolvedParams.slug)
-                  .flatMap((item) => item.tags || []),
-              ),
-            ].map((tag, i) => (
-              <span
-                key={i}
-                className="tag-item cursor-pointer transition-colors duration-200 hover:bg-[#60a5fa] hover:text-white"
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
+          <CategoryTagFilter tags={allUniqueTags} categoryId={categoryId} />
         </div>
 
         <div className="mt-[6.78rem] w-full">
@@ -120,7 +125,7 @@ export default async function CategoryPage({ params }: PageProps) {
             data-animate-stage={2}
             className="grid grid-cols-1 gap-[64px] md:grid-cols-2 lg:grid-cols-3"
           >
-            {categoryList
+            {filteredPosts
               .filter(filterDraft)
               .sort(sortDateDesc)
               .map((post, i) => {
