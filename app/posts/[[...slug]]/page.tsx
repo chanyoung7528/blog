@@ -93,7 +93,7 @@ export default async function PostPage({
   const { prevPost, nextPost } = getRelatedInfo(post);
 
   return (
-    <main className="mx-auto box-border w-full max-w-[1280px] flex-grow px-[30px] xl:mx-0">
+    <main className="mx-auto box-border w-full flex-grow px-[30px] xl:mx-0">
       <div className="py-[69px] pb-[88px]">
         <div className="mx-auto max-w-[800px] text-center">
           <h1 className="block pt-2 text-[2.5rem] font-bold leading-tight">
