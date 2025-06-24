@@ -10,7 +10,6 @@ import rehypePrettyCode from "rehype-pretty-code";
 import rehypeSlug from "rehype-slug";
 import remarkBreaks from "remark-breaks";
 import remarkGfm from "remark-gfm";
-import rehypeClassNames from "rehype-class-names";
 
 import { parseSlug } from "./lib/mdx";
 
@@ -58,7 +57,6 @@ export default makeSource({
   mdx: {
     remarkPlugins: [remarkGfm, remarkBreaks],
     rehypePlugins: [
-      rehypeClassNames,
       rehypeSlug,
       [
         rehypeAutolinkHeadings,
