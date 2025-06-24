@@ -10,7 +10,8 @@ export const useTheme = () => {
     const defaultDark = !(hours > 7 && hours < 20);
 
     setIsDark(defaultDark);
-    setTheme(defaultDark ? "dark" : "light");
+    // setTheme(defaultDark ? "dark" : "light");
+    setTheme("light");
   }, []);
 
   const toggleTheme = () => {

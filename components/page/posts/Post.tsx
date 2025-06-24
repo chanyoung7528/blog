@@ -19,7 +19,7 @@ export const Post = () => {
                 href={`/posts/${post.slug}`}
                 className="flex h-full flex-col"
               >
-                <div className="relative aspect-[400/207] w-full overflow-hidden rounded-md bg-[#f2f4f7]">
+                <div className="relative aspect-[400/207] w-full overflow-hidden rounded-md bg-[#f2f4f7] transition-transform duration-300 hover:scale-105">
                   <Image
                     src={post.image || "/default-thumbnail.jpg"}
                     alt={post.title}
