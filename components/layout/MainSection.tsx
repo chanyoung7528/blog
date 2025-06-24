@@ -2,7 +2,7 @@ import { categoryInfo } from "@/constant/post";
 import styles from "@/styles/layout/main.module.css";
 import Link from "next/link";
 import { rootUrl } from "@/lib/utils";
-import { Badge } from "../ui/badge";
+import { Badge } from "../ui/Badge";
 import BlogList from "../page/main/BlogList";
 import { allWritings } from "contentlayer/generated";
 import Image from "next/image";

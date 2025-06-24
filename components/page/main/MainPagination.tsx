@@ -5,7 +5,7 @@ import {
   PaginationContent,
   PaginationItem,
   PaginationLink,
-} from "@/components/ui/pagination";
+} from "@/components/ui/Pagination";
 import {
   ChevronLeft,
   ChevronRight,

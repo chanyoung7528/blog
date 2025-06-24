@@ -53,8 +53,13 @@
   line-height: 1.75;
   margin: 1rem 0;
   background: #f9c8c8;
-  padding-left: 32px;
+  padding: 1rem;
   border-radius: 10px;
+}
+
+.mdx ul li::before {
+  content: "•";
+  margin-right: 0.5rem;
 }
 
 .mdx li {

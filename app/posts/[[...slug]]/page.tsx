@@ -82,8 +82,6 @@ export default async function PostPage({
 }: {
   params: Promise<PageProps["params"]>;
 }) {
-  // params가 Promise임을 명시
-  // ❗ 중요: params를 사용하기 전에 반드시 await으로 풀어줍니다.
   const resolvedParams = await params;
   const post = await getDocFromParams(resolvedParams.slug);
 
@@ -95,7 +93,7 @@ export default async function PostPage({
   const { prevPost, nextPost } = getRelatedInfo(post);
 
   return (
-    <main className="xl:ㅗx-0 mx-auto box-border w-full max-w-[1280px] flex-grow px-[30px]">
+    <main className="mx-auto box-border w-full max-w-[1280px] flex-grow px-[30px] xl:mx-0">
       <div className="py-[69px] pb-[88px]">
         <div className="mx-auto max-w-[800px] text-center">
           <h1 className="block pt-2 text-[2.5rem] font-bold leading-tight">
