@@ -1,77 +1,61 @@
 @theme {
   --color-tx: var(--text-color);
 }
+
 :root {
-  /* 기본 색상 */
+  /* 기본 테마 색상 */
   --fg: var(--gray12);
-  --bg: var(--gray1);
-  --text-color: #3a3a3a;
+  --bg: var(--white);
+  --text-color: var(--black);
   --alpha: hsla(0, 0%, 100%, 0.9);
   --shadow-color: hsla(0, 6%, 6%, 0.05);
-  --indigo: #5856d6;
+  --indigo: #60a5fa;
 
-  /* Gray Scale */
+  /* 기본 색상 */
+  --white: #fff;
+  --black: #000000;
+
+  /* 그레이 스케일 */
   --gray1: #ececec;
   --gray2: #f8f8f8;
   --gray3: #ffbf00;
   --gray4: #ededed;
-  --gray5: #000000;
-  --gray6: #e2e2e2;
-  --gray7: #dbdbdb;
-  --gray8: #c7c7c7;
-  --gray9: #8f8f8f;
-  --gray10: #858585;
-  --gray11: #6f6f6f;
-  --gray12: #171717;
+  --gray5: #d6d6d6;
+  --gray6: #dbdbdb;
+  --gray7: #d1d5db;
+  --gray8: #f8f9fa;
+  --gray9: #a3a3a3;
+  --gray10: #6f6f6f;
+  --gray11: #171717;
 
-  /* Black Alpha */
-  --blackA1: rgba(0, 0, 0, 0.012);
-  --blackA2: rgba(0, 0, 0, 0.027);
-  --blackA3: rgba(0, 0, 0, 0.047);
-  --blackA4: rgba(0, 0, 0, 0.071);
-  --blackA5: rgba(0, 0, 0, 0.09);
-  --blackA6: rgba(0, 0, 0, 0.114);
-  --blackA7: rgba(0, 0, 0, 0.141);
-  --blackA8: rgba(0, 0, 0, 0.22);
-  --blackA9: rgba(0, 0, 0, 0.439);
-  --blackA10: rgba(0, 0, 0, 0.478);
-  --blackA11: rgba(0, 0, 0, 0.565);
-  --blackA12: rgba(0, 0, 0, 0.91);
+  --black1: #040f0f;
+  --black2: rgba(0, 0, 0, 0.071);
+  --black3: #1a1a1a;
 }
 
 .dark {
-  --fg: #f2f2f2;
-  --bg: var(--gray1);
-  --text-color: #e5e5e5;
-  --alpha: rgba(28, 28, 28, 0.9);
-  --shadow-color: rgba(0, 0, 0, 0.55);
-  --indigo: #5e5ce6;
+  /* 기본 테마 색상 */
+  --fg: var(--gray12);
+  --bg: var(--black);
+  --text-color: var(--white);
+  --alpha: hsla(0, 0%, 100%, 0.9);
+  --shadow-color: hsla(0, 6%, 6%, 0.05);
 
-  /* Gray Scale (Dark) */
-  --gray1: #1a1a1a;
-  --gray2: #1c1c1c;
-  --gray3: #dcc990;
-  --gray4: #282828;
-  --gray5: #f2f2f2;
-  --gray6: #343434;
-  --gray7: #3e3e3e;
-  --gray8: #505050;
-  --gray9: #707070;
-  --gray10: #7e7e7e;
-  --gray11: #a0a0a0;
-  --gray12: #ededed;
+  /* 기본 색상 */
+  --white: #fff;
 
-  /* Black Alpha (Dark) */
-  --blackA1: hsla(0, 0%, 100%, 0);
-  --blackA2: hsla(0, 0%, 100%, 0.026);
-  --blackA3: hsla(0, 0%, 100%, 0.056);
-  --blackA4: hsla(0, 0%, 100%, 0.077);
-  --blackA5: hsla(0, 0%, 100%, 0.103);
-  --blackA6: hsla(0, 0%, 100%, 0.129);
-  --blackA7: hsla(0, 0%, 100%, 0.172);
-  --blackA8: hsla(0, 0%, 100%, 0.249);
-  --blackA9: hsla(0, 0%, 100%, 0.386);
-  --blackA10: hsla(0, 0%, 100%, 0.446);
-  --blackA11: hsla(0, 0%, 100%, 0.592);
-  --blackA12: hsla(0, 0%, 100%, 0.923);
+  /* 그레이 스케일 */
+  --gray1: #ececec;
+  --gray2: #f8f8f8;
+  --gray3: #ffbf00;
+  --gray4: #131313;
+  --gray5: #535353;
+  --gray6: #dbdbdb;
+  --gray7: #d1d5db;
+  --gray8: #f8f9fa;
+  --gray9: #a3a3a3;
+  --gray10: #6f6f6f;
+  --gray11: #171717;
+
+  --black1: #040f0f;
 }

@@ -9,7 +9,7 @@ export default function StyleProvider({
 }) {
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem={true}>
-      {children}
+      <div className="bg-white dark:bg-black3">{children}</div>
     </ThemeProvider>
   );
 }

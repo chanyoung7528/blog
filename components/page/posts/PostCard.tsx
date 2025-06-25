@@ -47,7 +47,7 @@ export default function PostCard({
 
             <div className="flex items-center  gap-2">
               {tags?.slice(0, 2).map((tag: string, index: number) => (
-                <span className="tag-item text-[#60a5fa]" key={`tag${index}`}>
+                <span className="tag-item text-indigo" key={`tag${index}`}>
                   {tag}
                 </span>
               ))}

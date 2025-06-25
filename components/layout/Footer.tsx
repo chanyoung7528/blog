@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Github, Linkedin, Rss, ExternalLink, ArrowRight } from "lucide-react";
 
 const Footer = () => (
-  <footer className="border-neutral-200 text-sm text-neutral-500  dark:bg-black mt-24   border-t bg-gray8  px-6 py-10">
+  <footer className="border-neutral-200 text-sm text-neutral-500  mt-24 border-t   bg-gray8 px-6  py-10 dark:bg-black">
     <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 sm:grid-cols-2 md:grid-cols-4">
       {/* About */}
       <div>
@@ -13,7 +13,7 @@ const Footer = () => (
           <li>
             <Link
               href="/about"
-              className="hover:text-black flex items-center gap-2"
+              className="flex items-center gap-2 hover:text-indigo"
             >
               <ArrowRight size={16} />
               블로그 소개
@@ -22,7 +22,7 @@ const Footer = () => (
           <li>
             <Link
               href="/contact"
-              className="hover:text-black flex items-center gap-2"
+              className="flex items-center gap-2 hover:text-indigo"
             >
               <ArrowRight size={16} />
               연락하기
@@ -31,7 +31,7 @@ const Footer = () => (
           <li>
             <Link
               href="/rss.xml"
-              className="hover:text-black flex items-center gap-2"
+              className="flex items-center gap-2 hover:text-indigo"
             >
               <Rss size={16} />
               RSS 구독
@@ -51,7 +51,7 @@ const Footer = () => (
               href="https://nextjs.org"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-black flex items-center gap-2"
+              className="flex items-center gap-2 hover:text-indigo"
             >
               <ExternalLink size={16} />
               Next.js
@@ -62,7 +62,7 @@ const Footer = () => (
               href="https://vercel.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-black flex items-center gap-2"
+              className="flex items-center gap-2 hover:text-indigo"
             >
               <ExternalLink size={16} />
               Vercel
@@ -73,7 +73,7 @@ const Footer = () => (
               href="https://developers.kakao.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-black flex items-center gap-2"
+              className="flex items-center gap-2 hover:text-indigo"
             >
               <ExternalLink size={16} />
               Kakao Developers
@@ -93,7 +93,7 @@ const Footer = () => (
               href="https://github.com/chance-dev"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-black flex items-center gap-2"
+              className="flex items-center gap-2 hover:text-indigo"
             >
               <Github size={16} />
               GitHub
@@ -104,7 +104,7 @@ const Footer = () => (
               href="https://linkedin.com/in/chance"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-black flex items-center gap-2"
+              className="flex items-center gap-2 hover:text-indigo"
             >
               <Linkedin size={16} />
               LinkedIn

@@ -100,7 +100,7 @@ const Header = () => {
   return (
     <header
       ref={headerRef}
-      className={`sticky left-0 top-0 z-10 w-full bg-white pl-[20px] pr-[20px] transition-[height] duration-300 dark:bg-[#1a1a1a] ${
+      className={`sticky left-0 top-0 z-10 w-full bg-white pl-[20px] pr-[20px] transition-[height] duration-300 dark:bg-black3 ${
         isSticky ? "h-[50px]" : "h-[70px]"
       }`}
     >

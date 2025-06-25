@@ -40,7 +40,7 @@ export const CategoryTagFilter = ({
         <span
           key={i}
           onClick={() => handleTagClick(tag)}
-          className={`tag-item cursor-pointer transition-colors duration-200 hover:bg-[#60a5fa] hover:text-white ${activeTag === tag ? "bg-[#60a5fa] text-white" : "text-[#60a5fa]"}`}
+          className={`tag-item cursor-pointer transition-colors duration-200 hover:bg-indigo hover:text-white ${activeTag === tag ? "bg-indigo text-white" : "text-indigo"}`}
         >
           {tag}
         </span>

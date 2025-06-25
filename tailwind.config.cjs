@@ -43,6 +43,7 @@ module.exports = {
       gray11: "var(--gray11)",
       black1: "var(--black1)",
       black2: "var(--black2)",
+      black3: "var(--black3)",
     },
     screens: {
       sm: "640px",

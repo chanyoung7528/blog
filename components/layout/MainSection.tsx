@@ -26,7 +26,7 @@ const MainSection = () => {
                   fill
                   className="object-cover"
                 />
-                <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                <div className="bg-black/20 absolute inset-0 flex items-center justify-center">
                   <div className="text-center">
                     <h1 className="mb-4 text-[2.25rem] font-bold text-white">
                       개발자의 기록
