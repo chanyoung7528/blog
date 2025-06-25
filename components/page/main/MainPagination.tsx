@@ -9,19 +9,21 @@ import {
 import { ChevronsLeft, ChevronsRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export const MainPagination = () => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const { currentPage, totalPages, setCurrentPage } = useAllWritings();
   const [isMobile, setIsMobile] = useState(false);
 
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
+  const baseButtonStyles = isMobile
+    ? "h-[40px] w-[40px] mt-[10px] bg-[#f3f4f6] text-[24px] flex items-center justify-center"
+    : "h-[50px] w-[50px] mt-[10px] bg-[#f3f4f6] text-[30px] flex items-center justify-center";
+  const disabledStyles = "pointer-events-none opacity-50";
+  const numberButtonStyles = isMobile
+    ? "min-w-[40px] text-[15px] rounded-[5px] cursor-pointer flex items-center justify-center no-underline"
+    : "min-w-[50px] text-[17px] rounded-[5px] cursor-pointer flex items-center justify-center no-underline";
 
   const scrollToTarget = () => {
     const element = document.getElementById("target-section");
@@ -41,6 +43,9 @@ export const MainPagination = () => {
   const handlePageChange = (page: number): void => {
     if (page >= 1 && page <= totalPages) {
       setCurrentPage(page);
+      const params = new URLSearchParams(window.location.search);
+      params.set("page", page.toString());
+      router.push(`?${params.toString()}`, { scroll: false });
       scrollToTarget();
     }
   };
@@ -64,13 +69,25 @@ export const MainPagination = () => {
     return Array.from({ length: end - start + 1 }, (_, i) => start + i);
   };
 
-  const baseButtonStyles = isMobile
-    ? "h-[40px] w-[40px] mt-[10px] bg-[#f3f4f6] text-[24px] flex items-center justify-center"
-    : "h-[50px] w-[50px] mt-[10px] bg-[#f3f4f6] text-[30px] flex items-center justify-center";
-  const disabledStyles = "pointer-events-none opacity-50";
-  const numberButtonStyles = isMobile
-    ? "min-w-[40px] text-[15px] rounded-[5px] cursor-pointer flex items-center justify-center no-underline"
-    : "min-w-[50px] text-[17px] rounded-[5px] cursor-pointer flex items-center justify-center no-underline";
+  useEffect(() => {
+    const page = searchParams.get("page");
+    if (page) {
+      const pageNum = parseInt(page);
+      if (pageNum >= 1 && pageNum <= totalPages) {
+        setCurrentPage(pageNum);
+      }
+    }
+  }, [searchParams, totalPages, setCurrentPage]);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
   return (
     <div className="mt-[90px] w-full text-center">
       <Pagination>

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { format } from "date-fns";
 import styles from "@/styles/layout/post.module.css";
 import { DateIcon } from "@/components/ui/icons/date-icon";
+import { Tag } from "@/components/ui/Tag";
 
 export default function PostCard({
   id,
@@ -47,9 +48,7 @@ export default function PostCard({
 
             <div className="flex items-center  gap-2">
               {tags?.slice(0, 2).map((tag: string, index: number) => (
-                <span className="tag-item text-indigo" key={`tag${index}`}>
-                  {tag}
-                </span>
+                <Tag key={`tag${index}`} tag={tag} />
               ))}
             </div>
           </dl>

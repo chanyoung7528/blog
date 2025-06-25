@@ -4,7 +4,7 @@ import { rootUrl } from "@/lib/utils";
 
 // { title: 'About', location: `${rootUrl()}/about` },
 const nav: { title: string; location: string }[] = [
-  { title: "Tag", location: `${rootUrl()}/tag` },
+  { title: "Tags", location: `${rootUrl()}/tags` },
   { title: "Archives", location: `${rootUrl()}/archives` },
 ];
 

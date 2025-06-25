@@ -6,21 +6,13 @@ export const useTheme = () => {
   const { theme, setTheme } = useNextTheme();
 
   useEffect(() => {
-    const hours = new Date().getHours();
-    const defaultDark = !(hours > 7 && hours < 20);
-
-    setIsDark(defaultDark);
-    setTheme(defaultDark ? "dark" : "light");
-    // setTheme("light");
+    setIsDark(false);
+    setTheme("light");
   }, []);
 
   const toggleTheme = () => {
     setTheme(isDark ? "light" : "dark");
-
-    setIsDark((prev) => {
-      const next = !prev;
-      return next;
-    });
+    setIsDark((prev) => !prev);
   };
 
   return {

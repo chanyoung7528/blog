@@ -1,5 +1,6 @@
 "use client";
 
+import { Tag } from "@/components/ui/Tag";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -37,13 +38,12 @@ export const CategoryTagFilter = ({
   return (
     <div className="mt-[3.28rem] flex flex-wrap justify-center gap-2">
       {tags.map((tag, i) => (
-        <span
+        <Tag
           key={i}
-          onClick={() => handleTagClick(tag)}
-          className={`tag-item cursor-pointer transition-colors duration-200 hover:bg-indigo hover:text-white ${activeTag === tag ? "bg-indigo text-white" : "text-indigo"}`}
-        >
-          {tag}
-        </span>
+          tag={tag}
+          onClick={handleTagClick}
+          isActive={activeTag === tag}
+        />
       ))}
     </div>
   );
