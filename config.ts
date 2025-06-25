@@ -3,7 +3,7 @@ import { DefaultSeoProps } from "next-seo";
 export const headerConfig = {};
 
 export const siteConfig = {
-  url: "https://imchanyo.github.io",
+  url: "http://localhost:3050",
   title: "chans blog",
   description: "개발하면서 탐구한 것을 소소하게 기록하는 공간입니다.",
   copyright: "chans © All rights reserved.",
@@ -14,8 +14,8 @@ export const siteConfig = {
     photo: "",
     bio: "Frontend Engineer",
     contacts: {
-      email: "chanyoung3320@gmail.com",
-      github: "https://github.com/imchanyo",
+      email: "chanyoung7528@gmail.com",
+      github: "https://github.com/chanyoung7528",
     },
   },
   menus: [

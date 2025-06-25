@@ -6,12 +6,7 @@ import {
   PaginationItem,
   PaginationLink,
 } from "@/components/ui/Pagination";
-import {
-  ChevronLeft,
-  ChevronRight,
-  ChevronsLeft,
-  ChevronsRight,
-} from "lucide-react";
+import { ChevronsLeft, ChevronsRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 
@@ -51,17 +46,19 @@ export const MainPagination = () => {
   };
 
   const getVisiblePages = () => {
-    if (!isMobile) return Array.from({ length: totalPages }, (_, i) => i + 1);
+    if (totalPages <= 5) {
+      return Array.from({ length: totalPages }, (_, i) => i + 1);
+    }
 
-    let start = currentPage - 1;
-    let end = currentPage + 1;
+    let start = currentPage - 2;
+    let end = currentPage + 2;
 
     if (start < 1) {
       start = 1;
-      end = Math.min(3, totalPages);
+      end = 5;
     } else if (end > totalPages) {
       end = totalPages;
-      start = Math.max(1, totalPages - 2);
+      start = totalPages - 4;
     }
 
     return Array.from({ length: end - start + 1 }, (_, i) => start + i);
@@ -74,11 +71,10 @@ export const MainPagination = () => {
   const numberButtonStyles = isMobile
     ? "min-w-[40px] text-[15px] rounded-[5px] cursor-pointer flex items-center justify-center no-underline"
     : "min-w-[50px] text-[17px] rounded-[5px] cursor-pointer flex items-center justify-center no-underline";
-
   return (
     <div className="mt-[90px] w-full text-center">
       <Pagination>
-        <PaginationContent>
+        <PaginationContent className="gap-2">
           <PaginationItem>
             <PaginationLink
               href="#"
@@ -89,30 +85,11 @@ export const MainPagination = () => {
               className={cn(
                 baseButtonStyles,
                 currentPage === 1
-                  ? "text-[#d1d5db] " + disabledStyles
-                  : "text-[#a3a3a3]",
+                  ? "text-gray7 " + disabledStyles
+                  : "text-gray9",
               )}
             >
               <ChevronsLeft size={24} />
-            </PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink
-              href="#"
-              onClick={(e) => {
-                e.preventDefault();
-                handlePageChange(currentPage - 1);
-              }}
-              className={cn(
-                baseButtonStyles,
-                "mr-[50px]",
-                "hidden lg:flex",
-                currentPage === 1
-                  ? "text-[#d1d5db] " + disabledStyles
-                  : "text-[#a3a3a3]",
-              )}
-            >
-              <ChevronLeft size={24} />
             </PaginationLink>
           </PaginationItem>
           {getVisiblePages().map((page) => (
@@ -127,7 +104,8 @@ export const MainPagination = () => {
                 className={cn(
                   baseButtonStyles,
                   numberButtonStyles,
-                  page === currentPage ? "text-[#040f0f]" : "text-[#a3a3a3]",
+                  page === currentPage ? "text-black1" : "text-gray9",
+                  "mx-1",
                 )}
               >
                 {page}
@@ -139,32 +117,13 @@ export const MainPagination = () => {
               href="#"
               onClick={(e) => {
                 e.preventDefault();
-                handlePageChange(currentPage + 1);
-              }}
-              className={cn(
-                baseButtonStyles,
-                "ml-[50px]",
-                "hidden lg:flex",
-                currentPage === totalPages
-                  ? "text-[#d1d5db] " + disabledStyles
-                  : "text-[#a3a3a3]",
-              )}
-            >
-              <ChevronRight size={24} />
-            </PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink
-              href="#"
-              onClick={(e) => {
-                e.preventDefault();
                 handlePageChange(totalPages);
               }}
               className={cn(
                 baseButtonStyles,
                 currentPage === totalPages
-                  ? "text-[#d1d5db] " + disabledStyles
-                  : "text-[#a3a3a3]",
+                  ? "text-gray7 " + disabledStyles
+                  : "text-gray9",
               )}
             >
               <ChevronsRight size={24} />

@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { format } from "date-fns";
 import styles from "@/styles/layout/post.module.css";
+import { DateIcon } from "@/components/ui/icons/date-icon";
 
 export default function PostCard({
   id,
@@ -21,7 +22,7 @@ export default function PostCard({
   return (
     <li key={id}>
       <Link href={`/posts/${slug}`} className="flex h-full flex-col">
-        <div className="relative aspect-[400/207] w-full overflow-hidden rounded-md bg-[#f2f4f7] transition-transform duration-300 hover:scale-105">
+        <div className="relative aspect-[400/207] w-full overflow-hidden rounded-md transition-transform duration-300 hover:scale-105">
           <Image
             src={image || "/default-thumbnail.jpg"}
             alt={title}
@@ -37,8 +38,11 @@ export default function PostCard({
           </h4>
 
           <dl className={styles.dl_info}>
-            <dd className={styles.dl_info_time}>
-              {format(new Date(date), "yyyy-MM-dd")}
+            <dd className="flex items-center gap-2">
+              <DateIcon />
+              <time className={styles.dl_info_time}>
+                {format(new Date(date), "yyyy-MM-dd")}
+              </time>
             </dd>
 
             <div className="flex items-center  gap-2">

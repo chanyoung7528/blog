@@ -19,7 +19,7 @@ const MainSection = () => {
         >
           <div className="flex-[1]">
             <div className="w-full">
-              <div className="relative aspect-[16/9] w-full overflow-hidden rounded-md bg-[#f2f4f7] transition-transform duration-300 hover:scale-105">
+              <div className="relative aspect-[16/9] w-full overflow-hidden rounded-md transition-transform duration-300 hover:scale-105">
                 <Image
                   src="https://nomadcoders.co/courses/maker-masterclass/hero.jpg"
                   alt="bestPost.title"

@@ -112,7 +112,7 @@ export default async function PostPage({
         </div>
 
         <div className="relative mx-auto flex max-w-[800px] gap-[25px]">
-          <aside className="absolute right-[-425px] top-0 mt-[78px] hidden h-full w-[400px] bg-white xl:block">
+          <aside className="absolute right-[-425px] top-0 mt-[78px] hidden h-full w-[400px] bg-white dark:bg-[#1d1d1d] xl:block">
             <TocList toc={toc} />
           </aside>
 

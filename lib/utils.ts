@@ -11,7 +11,7 @@ export const isProd = process.env.NODE_ENV === "production";
 export const rootUrl = () => {
   const root =
     process.env.NODE_ENV === "production"
-      ? "https://imchanyo.github.io"
+      ? "http://localhost:3050"
       : "http://localhost:3050";
   return root;
 };
