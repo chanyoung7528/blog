@@ -1,10 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { Github, Linkedin, Rss, ExternalLink, ArrowRight } from "lucide-react";
+import { Github, Linkedin, ExternalLink, ArrowRight } from "lucide-react";
 
 const Footer = () => (
-  <footer className="border-neutral-200 text-sm text-neutral-500 mt-24 border-t bg-[#f8f9fa] px-6 py-10">
+  <footer className="border-neutral-200 text-sm text-neutral-500  mt-24 border-t   bg-gray8 px-6  py-10 dark:bg-black">
     <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 sm:grid-cols-2 md:grid-cols-4">
       {/* About */}
       <div>
@@ -13,7 +13,7 @@ const Footer = () => (
           <li>
             <Link
               href="/about"
-              className="flex items-center gap-2 hover:text-black"
+              className="flex items-center gap-2 hover:text-indigo"
             >
               <ArrowRight size={16} />
               블로그 소개
@@ -22,19 +22,10 @@ const Footer = () => (
           <li>
             <Link
               href="/contact"
-              className="flex items-center gap-2 hover:text-black"
+              className="flex items-center gap-2 hover:text-indigo"
             >
               <ArrowRight size={16} />
               연락하기
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/rss.xml"
-              className="flex items-center gap-2 hover:text-black"
-            >
-              <Rss size={16} />
-              RSS 구독
             </Link>
           </li>
         </ul>
@@ -47,37 +38,37 @@ const Footer = () => (
         </h4>
         <ul className="space-y-2">
           <li>
-            <a
-              href="https://nextjs.org"
+            <Link
+              href="https://toss.tech/"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 hover:text-black"
+              className="flex items-center gap-2 hover:text-indigo"
             >
               <ExternalLink size={16} />
-              Next.js
-            </a>
+              토스
+            </Link>
           </li>
           <li>
-            <a
-              href="https://vercel.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 hover:text-black"
-            >
-              <ExternalLink size={16} />
-              Vercel
-            </a>
-          </li>
-          <li>
-            <a
+            <Link
               href="https://developers.kakao.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 hover:text-black"
+              className="flex items-center gap-2 hover:text-indigo"
             >
               <ExternalLink size={16} />
               Kakao Developers
-            </a>
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="https://about.daangn.com/blog/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 hover:text-indigo"
+            >
+              <ExternalLink size={16} />
+              당근
+            </Link>
           </li>
         </ul>
       </div>
@@ -89,26 +80,26 @@ const Footer = () => (
         </h4>
         <ul className="space-y-2">
           <li>
-            <a
-              href="https://github.com/chance-dev"
+            <Link
+              href="https://github.com/chanyoung7528"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 hover:text-black"
+              className="flex items-center gap-2 hover:text-indigo"
             >
               <Github size={16} />
               GitHub
-            </a>
+            </Link>
           </li>
           <li>
-            <a
+            <Link
               href="https://linkedin.com/in/chance"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 hover:text-black"
+              className="flex items-center gap-2 hover:text-indigo"
             >
               <Linkedin size={16} />
               LinkedIn
-            </a>
+            </Link>
           </li>
         </ul>
       </div>
@@ -117,10 +108,36 @@ const Footer = () => (
       <div>
         <h4 className="text-neutral-800 mb-3 text-base font-semibold">Stack</h4>
         <ul className="text-neutral-500 space-y-2">
-          <li>Next.js 15</li>
-          <li>Tailwind CSS</li>
-          <li>Contentlayer</li>
-          <li>MDX</li>
+          <li>
+            <Link
+              href="https://nextjs.org"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 hover:text-indigo"
+            >
+              Next.js 15
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="https://reactnative.dev"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 hover:text-indigo"
+            >
+              React Native
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="https://nuxt.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 hover:text-indigo"
+            >
+              Nuxt3
+            </Link>
+          </li>
         </ul>
       </div>
     </div>

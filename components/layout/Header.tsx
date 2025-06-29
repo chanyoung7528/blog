@@ -100,12 +100,12 @@ const Header = () => {
   return (
     <header
       ref={headerRef}
-      className={`sticky left-0 top-0 z-10 w-full bg-white transition-[height] duration-300 dark:bg-[#1a1a1a] ${
+      className={`sticky left-0 top-0 z-10 w-full bg-white pl-[20px] pr-[20px] transition-[height] duration-300 dark:bg-black3 ${
         isSticky ? "h-[50px]" : "h-[70px]"
       }`}
     >
       <div className="mx-auto flex h-full max-w-[1260px] flex-nowrap items-center justify-between gap-5 text-black">
-        <div className="hidden items-center gap-5 text-center sm:flex">
+        <div className="hidden flex-1 items-center gap-5 text-center sm:flex">
           <Navbar type="normal" onClick={menuRouter} />
         </div>
         <div className="flex gap-5 maxSm:w-full maxSm:justify-end">

@@ -2,10 +2,10 @@ import { categoryInfo } from "@/constant/post";
 import styles from "@/styles/layout/main.module.css";
 import Link from "next/link";
 import { rootUrl } from "@/lib/utils";
-import { Badge } from "../ui/badge";
 import BlogList from "../page/main/BlogList";
 import { allWritings } from "contentlayer/generated";
 import Image from "next/image";
+import { Badge } from "../ui/Badge";
 
 const MainSection = () => {
   return (
@@ -19,14 +19,14 @@ const MainSection = () => {
         >
           <div className="flex-[1]">
             <div className="w-full">
-              <div className="relative aspect-[16/9] w-full overflow-hidden rounded-md bg-[#f2f4f7] transition-transform duration-300 hover:scale-105">
+              <div className="relative aspect-[16/9] w-full overflow-hidden rounded-md transition-transform duration-300 hover:scale-105">
                 <Image
                   src="https://nomadcoders.co/courses/maker-masterclass/hero.jpg"
                   alt="bestPost.title"
                   fill
                   className="object-cover"
                 />
-                <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                <div className="bg-black/20 absolute inset-0 flex items-center justify-center">
                   <div className="text-center">
                     <h1 className="mb-4 text-[2.25rem] font-bold text-white">
                       개발자의 기록

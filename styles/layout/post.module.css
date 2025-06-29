@@ -37,7 +37,7 @@
   position: relative;
 }
 
-.dl_info_time::before {
+/* .dl_info_time::before {
   background-color: #9ca3af;
   border-radius: 50%;
   content: "";
@@ -45,4 +45,4 @@
   height: 4px;
   margin: 4px 10px;
   width: 4px;
-}
+} */

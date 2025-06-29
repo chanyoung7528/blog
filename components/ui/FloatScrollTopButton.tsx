@@ -20,7 +20,7 @@ export default function FloatScrollTopButton() {
   }, []);
 
   const scrollToTop = () => {
-    window.scroll({ top: 0, behavior: "instant" });
+    window.scroll({ top: 0, behavior: "auto" });
   };
 
   return (
@@ -32,7 +32,7 @@ export default function FloatScrollTopButton() {
     >
       <button
         onClick={scrollToTop}
-        className="rounded-full p-2 text-gray-9 transition hover:bg-gray-3 active:text-gray-11"
+        className="text-gray-9 hover:bg-gray-3 active:text-gray-11 rounded-full p-2 transition"
       >
         <ArrowTopIcon className="h-5 w-5" />
       </button>
