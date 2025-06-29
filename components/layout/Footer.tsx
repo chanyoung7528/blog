@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Github, Linkedin, Rss, ExternalLink, ArrowRight } from "lucide-react";
+import { Github, Linkedin, ExternalLink, ArrowRight } from "lucide-react";
 
 const Footer = () => (
   <footer className="border-neutral-200 text-sm text-neutral-500  mt-24 border-t   bg-gray8 px-6  py-10 dark:bg-black">
