@@ -11,7 +11,7 @@ export const isProd = process.env.NODE_ENV === "production";
 export const rootUrl = () => {
   const root =
     process.env.NODE_ENV === "production"
-      ? "http://localhost:3050"
+      ? "https://chans.dev/"
       : "http://localhost:3050";
   return root;
 };
