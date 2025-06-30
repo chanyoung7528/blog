@@ -11,8 +11,8 @@ import Header from "@/components/layout/Header";
 
 export const metadata: Metadata = {
   title: {
-    template: "%s | chanyoung",
-    default: "chanyoung.me",
+    template: "%s | chans.dev",
+    default: "chans.dev",
   },
   description: "Develop about something Soft and Simple.",
   openGraph: {
