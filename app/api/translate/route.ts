@@ -2,7 +2,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
-  console.log("req", process.env.NAVER_CLIENT_ID);
   const { text } = await req.json();
 
   const res = await fetch(
@@ -11,7 +10,7 @@ export async function POST(req: NextRequest) {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-        "X-Naver-Client-Id": process.env.NAVER_CLIENT_ID!,
+        "X-Naver-Client-Id": process.env.NEXT_PUBLIC_NAVER_CLIENT_ID!,
         "X-Naver-Client-Secret": process.env.NAVER_CLIENT_SECRET!,
       },
       body: new URLSearchParams({
