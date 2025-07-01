@@ -6,7 +6,8 @@
     "dev": "contentlayer dev & next dev -p 3050",
     "build": "next build",
     "start": "next start -p 3050",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prod": "vercel --prod"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.3",
