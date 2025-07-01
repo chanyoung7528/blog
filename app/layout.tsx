@@ -57,8 +57,18 @@ export default function RootLayout({
           href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css"
           rel="stylesheet"
         />
+        {process.env.NODE_ENV === "production" && <GoogleAnalytics />}
       </head>
       <body className="md:m mt-4 md:mt-0">
+        <noscript
+          dangerouslySetInnerHTML={{
+            __html: `
+            <iframe
+            src="https://www.googletagmanager.com/ns.html?id=${process.env.GTM_ID}"
+            height="0" width="0" style="display:none;visibility:hidden"></iframe>
+            `,
+          }}
+        />
         <StyleProvider>
           <KBarProviders allWritings={allWritings}>
             <Header />
@@ -68,7 +78,6 @@ export default function RootLayout({
           </KBarProviders>
         </StyleProvider>
       </body>
-      {process.env.NODE_ENV === "production" && <GoogleAnalytics />}
     </html>
   );
 }
