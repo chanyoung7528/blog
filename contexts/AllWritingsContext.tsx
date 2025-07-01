@@ -32,7 +32,10 @@ export const AllWritingsProvider = ({
   const endIndex = startIndex + ITEMS_PER_PAGE;
 
   const currentPageWritings = useMemo(() => {
-    return writings.slice(startIndex, endIndex);
+    const sortedWritings = [...writings].sort(
+      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+    );
+    return sortedWritings.slice(startIndex, endIndex);
   }, [writings, startIndex, endIndex]);
 
   const totalItems = writings.length;
