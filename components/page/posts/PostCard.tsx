@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { format } from "date-fns";
 import styles from "@/styles/layout/post.module.css";
-import { DateIcon } from "@/components/ui/icons/date-icon";
 import { Tag } from "@/components/ui/Tag";
 
 export default function PostCard({
@@ -40,9 +39,8 @@ export default function PostCard({
 
           <dl className={styles.dl_info}>
             <dd className="flex items-center gap-2">
-              <DateIcon />
               <time className={styles.dl_info_time}>
-                {format(new Date(date), "yyyy-MM-dd")}
+                {format(new Date(date), "yyyy년 MM월 dd일")}
               </time>
             </dd>
 

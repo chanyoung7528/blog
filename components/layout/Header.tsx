@@ -127,7 +127,7 @@ const Header = () => {
       {/* 모바일 토글 메뉴 */}
       <div
         ref={toggleRef}
-        className={`absolute z-50 hidden h-screen w-full flex-col bg-white p-5 dark:bg-[#111111] ${
+        className={`absolute left-0 right-0 z-50 hidden h-screen w-full bg-white p-5 dark:bg-[#111111] ${
           isSticky ? "top-[50px]" : "top-[70px]"
         }`}
       >

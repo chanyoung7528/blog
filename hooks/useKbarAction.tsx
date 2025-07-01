@@ -39,32 +39,32 @@ export default function useKbarAction(allWritings: Writing[] = []) {
         icon: <HomeIcon width={20} />,
         perform: () => router.push(`${rootUrl()}`),
       },
+      // {
+      //   id: "about",
+      //   name: "About",
+      //   shortcut: ["B"], // 중복된 A -> B로 변경
+      //   keywords: "about",
+      //   section: "Pages",
+      //   icon: <AboutBoxIcon />,
+      //   perform: () => router.push(`${rootUrl()}/about`),
+      // },
       {
-        id: "about",
-        name: "About",
-        shortcut: ["B"], // 중복된 A -> B로 변경
-        keywords: "about",
-        section: "Pages",
-        icon: <AboutBoxIcon />,
-        perform: () => router.push(`${rootUrl()}/about`),
-      },
-      {
-        id: "tag",
+        id: "tags",
         name: "Tags",
         shortcut: ["T"],
-        keywords: "tag",
+        keywords: "tags",
         section: "Pages",
         icon: <TagBoxIcon />,
-        perform: () => router.push(`${rootUrl()}/tag`),
+        perform: () => router.push(`${rootUrl()}/tags`),
       },
-      {
-        id: "archives",
-        name: "Archives",
-        shortcut: ["R"],
-        section: "Pages",
-        icon: <ArchiveBoxIcon />,
-        perform: () => router.push(`${rootUrl()}/archives`),
-      },
+      // {
+      //   id: "archives",
+      //   name: "Archives",
+      //   shortcut: ["R"],
+      //   section: "Pages",
+      //   icon: <ArchiveBoxIcon />,
+      //   perform: () => router.push(`${rootUrl()}/archives`),
+      // },
     ];
 
     const contactActions: Action[] = Object.entries(siteConfig.author.contacts)

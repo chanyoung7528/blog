@@ -14,12 +14,12 @@ export default function KBarButton() {
       <button
         type="button"
         className={`
-        bg-gray-100 hover:bg-gray-200 text-sm flex
-        h-8 cursor-pointer items-center justify-between
-        gap-2 whitespace-nowrap rounded-md bg-gray-4
-        px-2
-        font-sans transition-colors duration-150
-        ease-in-out dark:bg-[#2a2a2a] dark:text-white
+        text-sm bg-gray-4 flex h-8
+        cursor-pointer items-center justify-between gap-2
+        whitespace-nowrap rounded-md bg-gray4 px-2
+        font-sans
+        transition-colors duration-150 ease-in-out
+        hover:bg-gray6 dark:bg-[#2a2a2a] dark:text-white
         dark:hover:bg-[#3a3a3a] sm:h-[32px] sm:px-3
       `}
         onClick={query?.toggle}

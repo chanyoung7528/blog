@@ -17,7 +17,7 @@ export default function Navbar({ type, onClick }: NavProps) {
   const defaultStyleString =
     "dark:text-white dark:hover:text-green-500 text-center transition duration-250 hover:scale-125 hover:text-green-500 cursor-pointer";
   return (
-    <div className="flex flex-1 items-center">
+    <div className="flex flex-1 flex-col items-center sm:flex-row">
       <h1
         className={
           type === "normal"
