@@ -121,7 +121,7 @@ export const administratorSchema: SchemaType = {
           schema.test(
             "권한 그룹명 중복체크",
             ADMINISTRATOR_MESSAGE[ADMINISTRATOR_MESSAGE_USAGE_DUPLICATE_ERROR],
-            (authGrpNm, context) => authGrpNm === context.parent.grpNm
+            (authGrpNm, context) => authGrpNm === context.parent.grpNm,
           ),
       }),
   },
@@ -151,7 +151,7 @@ export const useValid = () => {
     });
     throw new Error(content); // 이후 로직 중단
   };
-  const runValidation = async <T,>({
+  const runValidation = async <T>({
     params,
     schema,
   }: RunValidationModel<T>): Promise<void> => {
@@ -213,9 +213,9 @@ yup에서 제공해주는 object.shape을 이용하여 안에 객체타입으로
 결국, createCommonSchema의 return값은 shape함수 안에 들어가는 객체를 생성하는 함수입니다.
 
 ```ts
-const processCommonSchema = <T,>(
+const processCommonSchema = <T>(
   params: T,
-  commonSchema: RequireParams
+  commonSchema: RequireParams,
 ): Record<string, any> => {
   return Object.entries(commonSchema).reduce(
     (acc, [key, value]) => {
@@ -226,7 +226,7 @@ const processCommonSchema = <T,>(
       }
       return acc;
     },
-    {} as Record<string, any>
+    {} as Record<string, any>,
   );
 };
 ```
@@ -257,7 +257,7 @@ const requireMessage = {
 };
 
 const createCommonSchema = (
-  commonSchema: RequireParams = {}
+  commonSchema: RequireParams = {},
 ): Record<string, any> => {
   return Object.entries(commonSchema).reduce(
     (acc, [key, value]) => {
@@ -276,7 +276,7 @@ const createCommonSchema = (
       });
       return acc;
     },
-    {} as Record<string, any>
+    {} as Record<string, any>,
   );
 };
 ```
@@ -286,8 +286,6 @@ const createCommonSchema = (
 trim함수는 string타입일 경우만 사용되므로, 다른 타입과 다르게 사용되므로 분기처리해주었습니다.
 
 ## useValid의 이점
-
-<div style={{ display: 'flex', gap: '10px' }}>
 
 ```typescript
 // --useValid 적용 전---
@@ -341,7 +339,6 @@ const saveForm = handleSubmit(async (params: AdministratorParams) => {
 });
 ```
 
-</div>
 기존에 if문으로 길게 작성되었던 로직을 제거하고, 위와같이 Action을 담당하는 함수에 runValidation함수만 호출해서 사용하면, 손쉽게 벨리데이션을 제어할 수 있게됩니다. 이로써 얻고자하는 이점은 다음과 같습니다.
 
 **1. 검증 로직의 분리화로 유지보수성 향상**
