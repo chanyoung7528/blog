@@ -1,4 +1,4 @@
-export const dynamic = "force-static";
+export const dynamic = "force-dynamic";
 
 import PostCard from "@/components/page/posts/PostCard";
 import { Badge } from "@/components/ui/Badge";
