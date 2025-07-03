@@ -9,6 +9,7 @@ module.exports = {
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  safelist: [], // 사용 안 하는 클래스 강제 포함 X
   theme: {
     fontFamily: {
       sans: ['"Pretendard Variable"', "sans-serif"],

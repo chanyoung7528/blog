@@ -5,6 +5,9 @@ const nextConfig = {
   images: {
     domains: ["nomadcoders.co"],
   },
+  experimental: {
+    optimizeCss: true,
+  },
 };
 
 export default withContentlayer(nextConfig);

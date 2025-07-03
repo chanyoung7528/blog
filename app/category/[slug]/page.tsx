@@ -1,3 +1,5 @@
+export const dynamic = "force-static";
+
 import PostCard from "@/components/page/posts/PostCard";
 import { Badge } from "@/components/ui/Badge";
 import { categoryInfo } from "@/constant/post";

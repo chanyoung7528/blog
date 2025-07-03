@@ -23,6 +23,7 @@ const MainSection = () => {
                   src="https://nomadcoders.co/courses/maker-masterclass/hero.jpg"
                   alt="bestPost.title"
                   fill
+                  priority
                   className="object-cover"
                 />
                 <div className="bg-black/20 absolute inset-0 flex items-center justify-center">
