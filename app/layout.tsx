@@ -59,7 +59,7 @@ export default function RootLayout({
         />
         {process.env.NODE_ENV === "production" && <GoogleAnalytics />}
       </head>
-      <body className="md:m mt-4 md:mt-0">
+      <body>
         <noscript
           dangerouslySetInnerHTML={{
             __html: `
