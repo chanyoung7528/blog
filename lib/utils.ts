@@ -7,11 +7,3 @@ export function cn(...inputs: ClassValue[]) {
 
 export const isDev = process.env.NODE_ENV === "development";
 export const isProd = process.env.NODE_ENV === "production";
-
-export const rootUrl = () => {
-  const root =
-    process.env.NODE_ENV === "production"
-      ? "https://chans.dev/"
-      : "http://localhost:3050";
-  return root;
-};

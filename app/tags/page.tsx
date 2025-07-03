@@ -1,5 +1,4 @@
 import { Tag } from "@/components/ui/Tag";
-import { rootUrl } from "@/lib/utils";
 import styles from "@/styles/layout/main.module.css";
 import { allWritings } from "contentlayer/generated";
 import Link from "next/link";
@@ -46,7 +45,7 @@ const MainSection = () => {
 
               return (
                 <li key={tag}>
-                  <Link href={`${rootUrl()}/category/${category}?tag=${tag}`}>
+                  <Link href={`/category/${category}?tag=${tag}`}>
                     <Tag tag={tag} />
                   </Link>
                 </li>

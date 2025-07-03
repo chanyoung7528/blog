@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 
 import { siteConfig } from "@/config";
 
-import { rootUrl } from "@/lib/utils";
 import MailIcon from "@/components/ui/icons/mail-icon";
 import GithubIcon from "@/components/ui/icons/github-icon";
 import HomeIcon from "@/components/ui/icons/home-icon";
@@ -37,7 +36,7 @@ export default function useKbarAction(allWritings: Writing[] = []) {
         keywords: "profile",
         section: "Pages",
         icon: <HomeIcon width={20} />,
-        perform: () => router.push(`${rootUrl()}`),
+        perform: () => router.push(`/`),
       },
       // {
       //   id: "about",
@@ -46,7 +45,7 @@ export default function useKbarAction(allWritings: Writing[] = []) {
       //   keywords: "about",
       //   section: "Pages",
       //   icon: <AboutBoxIcon />,
-      //   perform: () => router.push(`${rootUrl()}/about`),
+      //   perform: () => router.push(`/about`),
       // },
       {
         id: "tags",
@@ -55,7 +54,7 @@ export default function useKbarAction(allWritings: Writing[] = []) {
         keywords: "tags",
         section: "Pages",
         icon: <TagBoxIcon />,
-        perform: () => router.push(`${rootUrl()}/tags`),
+        perform: () => router.push(`/tags`),
       },
       // {
       //   id: "archives",
@@ -63,7 +62,7 @@ export default function useKbarAction(allWritings: Writing[] = []) {
       //   shortcut: ["R"],
       //   section: "Pages",
       //   icon: <ArchiveBoxIcon />,
-      //   perform: () => router.push(`${rootUrl()}/archives`),
+      //   perform: () => router.push(`/archives`),
       // },
     ];
 
@@ -83,7 +82,7 @@ export default function useKbarAction(allWritings: Writing[] = []) {
       name: el.title,
       section: "Posts",
       icon: <LibBoxIcon width={18} />,
-      perform: () => router.push(`${rootUrl()}${el.href}`),
+      perform: () => router.push(`${el.href}`),
     }));
 
     setActionData([...staticActions, ...contactActions, ...writingActions]);

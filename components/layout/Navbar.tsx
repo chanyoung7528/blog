@@ -1,11 +1,9 @@
 "use client";
 
-import { rootUrl } from "@/lib/utils";
-
-// { title: 'About', location: `${rootUrl()}/about` },
+// { title: 'About', location: `/about` },
 const nav: { title: string; location: string }[] = [
-  { title: "Tags", location: `${rootUrl()}/tags` },
-  // { title: "Archives", location: `${rootUrl()}/archives` },
+  { title: "Tags", location: "/tags" },
+  // { title: "Archives", location: "/archives" },
 ];
 
 interface NavProps {
@@ -24,7 +22,7 @@ export default function Navbar({ type, onClick }: NavProps) {
             ? defaultStyleString
             : defaultStyleString + " text-lg py-4"
         }
-        onClick={() => onClick && onClick(rootUrl())}
+        onClick={() => onClick && onClick("/")}
       >
         Chans tech
       </h1>
