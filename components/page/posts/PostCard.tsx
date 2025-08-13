@@ -5,14 +5,12 @@ import styles from "@/styles/layout/post.module.css";
 import { Tag } from "@/components/ui/Tag";
 
 export default function PostCard({
-  id,
   slug,
   image,
   title,
   date,
   tags,
 }: {
-  id: string;
   slug: string;
   image: string;
   title: string;
@@ -20,9 +18,9 @@ export default function PostCard({
   tags: string[];
 }) {
   return (
-    <li key={id}>
-      <Link href={`/posts/${slug}`} className="flex h-full flex-col">
-        <div className="relative aspect-[400/207] w-full overflow-hidden rounded-md transition-transform duration-300 hover:scale-105">
+    <li>
+      <Link prefetch href={`/posts/${slug}`} className="flex h-full flex-col">
+        <div className="relative aspect-[128/72] w-full overflow-hidden rounded-md transition-transform duration-300 hover:scale-105">
           <Image
             src={image || "/default-thumbnail.jpg"}
             alt={title}

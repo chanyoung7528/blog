@@ -134,7 +134,6 @@ export default async function CategoryPage({
                 return (
                   <PostCard
                     key={i}
-                    id={post._id}
                     slug={post.slug}
                     image={post.image || ""}
                     title={post.title}

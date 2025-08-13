@@ -15,7 +15,10 @@
 /* 전역 폰트 fallback 설정 */
 :root {
   --font-fallback:
-    "KakaoBig", "Apple SD Gothic Neo", "Malgun Gothic", "맑은 고딕", sans-serif;
+    "Pretendard-Regular", "Apple SD Gothic Neo", "Malgun Gothic", "맑은 고딕",
+    sans-serif;
+  --font-kakao:
+    "KakaoBig", "KakaoSmall", "Apple SD Gothic Neo", "Malgun Gothic";
 }
 
 /* 기본 스타일 초기화 및 설정 */
@@ -40,7 +43,7 @@ h4,
 h5,
 h6,
 strong {
-  font-family: var(--font-fallback);
+  font-family: var(--font-kakao);
 }
 
 body {
