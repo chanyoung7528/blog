@@ -41,7 +41,6 @@ const MainSection = () => {
           <ul className="flex flex-wrap gap-[1rem]">
             {uniqueTags.map((tag) => {
               const category = tagCategoryMap.get(tag);
-              if (!category || !tag) return null;
 
               return (
                 <li key={tag}>
