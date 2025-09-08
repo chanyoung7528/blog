@@ -34,6 +34,19 @@ pnpm add rehype-pretty-code shiki
 ${TBT}
 `;
 
+/**
+ * Render Markdown as HTML with syntax-highlighted code blocks and return a React article containing the result.
+ *
+ * Processes the provided `markdown` (or an internal sample when omitted) through a unified pipeline that parses Markdown,
+ * preserves raw HTML, applies rehype-pretty-code highlighting (theme "material-theme-darker" and non-empty-line preservation),
+ * and serializes to HTML. The produced HTML is injected into the returned <article> via `dangerouslySetInnerHTML`.
+ *
+ * @param markdown - Optional Markdown source to render. When omitted, a built-in sample Markdown is used.
+ * @param className - Optional extra CSS class(es) to append to the component's base class list.
+ * @returns A Promise that resolves to a React article element containing the rendered HTML.
+ *
+ * @throws If the Markdown processing pipeline fails, the promise will reject with the underlying error.
+ */
 export default async function PrettyCodeDemo({
   markdown,
   className,
