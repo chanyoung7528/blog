@@ -1,4 +1,5 @@
 import "@/styles/global.css";
+import "@/styles/mdx-contentful.css";
 import StyleProvider from "@/components/layout/StyleProvider";
 import type { Metadata } from "next";
 import { siteConfig } from "@/config";

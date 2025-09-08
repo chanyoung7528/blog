@@ -91,7 +91,7 @@ export default async function PostPage({
 
   const toc = parseToc(post.body.raw);
   const { prevPost, nextPost } = getRelatedInfo(post);
-
+  console.log("post", post);
   return (
     <main className="mx-auto box-border w-full flex-grow px-[30px] xl:mx-0">
       <div className="py-[69px] pb-[88px]">
