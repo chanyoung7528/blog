@@ -77,6 +77,16 @@ function getRelatedInfo(currentPost: DocumentTypes) {
   };
 }
 
+/**
+ * Server component that renders a blog post page for a given route `slug`.
+ *
+ * Looks up the post by joining `params.slug`, returns a 404 via `notFound()` if no post
+ * is found, then renders the post title, formatted date, tags, table of contents, MDX body,
+ * and navigation links to the previous/next posts within the same document type.
+ *
+ * @param params - Promise resolving to route params; `params.slug` is an optional array of path segments that form the post slug (`["path","to","post"]` -> "path/to/post")
+ * @returns The post page as a JSX element.
+ */
 export default async function PostPage({
   params,
 }: {

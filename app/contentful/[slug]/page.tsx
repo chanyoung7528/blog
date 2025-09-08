@@ -4,6 +4,16 @@ import { notFound } from "next/navigation";
 import PrettyCodeDemo from "@/components/ui/PrettyCodeDemo";
 import { ResponseData } from "@/app/types/query";
 
+/**
+ * Generate route parameters for all blog post pages.
+ *
+ * Queries the CMS for up to 100 posts and returns an array of objects suitable
+ * for Next.js static route generation, e.g. `{ slug: "post-slug" }`.
+ *
+ * If no posts are returned, an empty array is returned.
+ *
+ * @returns An array of route parameter objects with a `slug` property.
+ */
 export async function generateStaticParams() {
   const { data } = await client.query<ResponseData>({
     query: GET_ALL_POSTS,
@@ -18,6 +28,14 @@ export async function generateStaticParams() {
   );
 }
 
+/**
+ * Renders a blog post page for the given slug by fetching the post from Contentful.
+ *
+ * Fetches the post matching `params.slug`; if no post is found, triggers a 404 via `notFound()`.
+ *
+ * @param params.slug - The slug identifying the post to render.
+ * @returns The server-rendered React element for the post page.
+ */
 export default async function PostPage({
   params,
 }: {

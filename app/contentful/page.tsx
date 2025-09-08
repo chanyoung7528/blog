@@ -15,6 +15,15 @@ type ResponseData = {
   };
 };
 
+/**
+ * Server component that fetches blog posts via GraphQL and renders a list of links with localized publish dates.
+ *
+ * Fetches up to 10 posts using the `GET_ALL_POSTS` query (variables: `{ limit: 10, skip: 0 }`) through the imported Apollo client,
+ * extracts items from `data?.pageBlogPostCollection.items`, and renders them as a Tailwind-styled list. Optional chaining is
+ * used so the component renders an empty list if no posts are available. The fetched posts are also logged to the console.
+ *
+ * @returns The rendered JSX element containing the blog post list.
+ */
 export default async function Home() {
   const { data } = await client.query<ResponseData>({
     query: GET_ALL_POSTS,

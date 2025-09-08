@@ -13,6 +13,20 @@ import "@/styles/mdx-contentful.css";
 const removeFrontmatter = (content: string) =>
   content ? content.replace(/^---[\s\S]*?---\s*/, "") : "";
 
+/**
+ * Render Markdown (with optional embedded HTML) to styled HTML inside an article element.
+ *
+ * Processes the provided Markdown string (YAML frontmatter is removed) through a Unified pipeline
+ * that parses Markdown, preserves and renders any raw HTML present in the content, applies
+ * syntax highlighting (rehype-pretty-code) and stringifies to HTML. The resulting HTML is injected
+ * into an <article> using dangerouslySetInnerHTML.
+ *
+ * Note: raw HTML in `content` is allowed and will be rendered as-is.
+ *
+ * @param content - Markdown source to render (may include YAML frontmatter and raw HTML)
+ * @param className - Optional additional className(s) added to the article element
+ * @returns A React element containing the rendered HTML
+ */
 export default async function MarkdownRenderer({
   content,
   className,
