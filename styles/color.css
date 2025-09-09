@@ -1,6 +1,4 @@
-@theme {
-  --color-tx: var(--text-color);
-}
+/* 중첩 문법을 일반 CSS로 변환 */
 
 :root {
   /* 기본 테마 색상 */
@@ -32,6 +30,9 @@
   --black1: #040f0f;
   --black2: rgba(0, 0, 0, 0.071);
   --black3: #1a1a1a;
+
+  --code-plaintext-color: rgb(255 103 0);
+  --color-tx: var(--text-color);
 }
 
 .dark {
@@ -59,4 +60,27 @@
   --gray11: #171717;
 
   --black1: #040f0f;
+}
+
+/* :root와 .dark가 동시에 적용될 때 .prose *에 스타일 적용 */
+:root.dark .prose * {
+  color: var(--tw-prose-invert-headings);
+}
+
+/* code[data-language="plaintext"], code[data-language="plaintext"] span에 스타일 적용 */
+.prose code[data-language="plaintext"]:not(.not-prose):not(.not-prose *),
+.prose code[data-language="plaintext"] span:not(.not-prose):not(.not-prose *) {
+  color: var(--code-plaintext-color) !important;
+}
+
+/* strong에 스타일 적용 */
+.prose strong:not(.not-prose):not(.not-prose *) {
+  color: var(--code-plaintext-color) !important;
+  font-size: 1.2rem;
+}
+
+/* code의 before, after 가상요소 숨김 */
+.prose code:not(.not-prose):not(.not-prose *)::after,
+.prose code:not(.not-prose):not(.not-prose *)::before {
+  display: none;
 }
