@@ -1,20 +1,26 @@
 "use client";
 import { useEffect } from "react";
 import { usePostsStore } from "@/stores/usePostsStore";
-import type { BlogPost } from "@/app/types/query";
+import type { ResponseData } from "@/app/types/query";
+import { getAllPosts } from "@/lib/contentful";
 
 export default function PostsStoreInitializer({
-  posts,
   children,
 }: {
-  posts: BlogPost[];
   children: React.ReactNode;
 }) {
   const { setPosts } = usePostsStore();
 
   useEffect(() => {
-    setPosts(posts);
-  }, [posts, setPosts]);
+    async function fetchPosts() {
+      const data: ResponseData = await getAllPosts({
+        tags: ["posts"],
+      });
+      setPosts(data.pageBlogPostCollection.items);
+    }
+
+    fetchPosts();
+  }, [setPosts]);
 
   return <>{children}</>;
 }

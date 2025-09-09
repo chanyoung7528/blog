@@ -6,7 +6,6 @@ import KBarProviders from "@/components/layout/KbarProvider";
 import FloatScrollTopButton from "@/components/ui/FloatScrollTopButton";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import PostsStoreInitializer from "@/components/PostsStoreInitializer";
-import { getAllPosts } from "@/lib/contentful";
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
 
@@ -51,9 +50,6 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const data = await getAllPosts({ tags: ["posts"] });
-  const posts = data?.pageBlogPostCollection?.items ?? [];
-
   return (
     <html lang="ko" suppressHydrationWarning>
       <head>
@@ -74,7 +70,7 @@ export default async function RootLayout({
           }}
         />
         <StyleProvider>
-          <PostsStoreInitializer posts={posts}>
+          <PostsStoreInitializer>
             <KBarProviders>
               {/* <GlobalPrefetch /> */}
               <Header />
