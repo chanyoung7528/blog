@@ -8,6 +8,7 @@ import rehypeStringify from "rehype-stringify";
 import rehypePrettyCode, {
   Options as RehypePrettyCodeOptions,
 } from "rehype-pretty-code";
+import "@/styles/mdx-contentful.css";
 
 function getTextFromNode(
   node: Node | Element | Parent | null | undefined,
@@ -85,7 +86,7 @@ export default async function MarkdownRenderer({
   return (
     <article
       className={cn(
-        "mdx dark:prose-invepnpm list rehype-pretty-code shikit prose max-w-none",
+        "mdx list rehype-pretty-code shikit prose prose-lg max-w-none",
         className ?? "",
       )}
     >

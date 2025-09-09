@@ -8,7 +8,7 @@ import MarkdownRenderer from "@/components/page/posts/MarkdownRenderer";
 import { getAllPosts, getPostBySlug } from "@/lib/contentful";
 import type { BlogPost, ResponseData } from "@/app/types/query";
 
-export const revalidate = 300;
+export const revalidate = 30000;
 
 type PageProps = {
   params: { slug?: string[] };
@@ -52,6 +52,7 @@ async function getPostFromParams(slugArray: string[] | undefined) {
   const slug = slugArray.join("/");
 
   const data: ResponseData = await getPostBySlug(slug, { revalidate });
+
   const post = data?.pageBlogPostCollection?.items?.[0];
   return post ?? null;
 }

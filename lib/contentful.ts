@@ -62,6 +62,7 @@ export async function contentfulFetch<T>(
   variables: Record<string, unknown>,
   options?: FetchOptions,
 ): Promise<T> {
+  console.log("options", options);
   const res = await fetch(ENDPOINT, {
     method: "POST",
     headers: {
