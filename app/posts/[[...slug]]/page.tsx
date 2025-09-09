@@ -8,8 +8,6 @@ import MarkdownRenderer from "@/components/page/posts/MarkdownRenderer";
 import { getAllPosts, getPostBySlug } from "@/lib/contentful";
 import type { BlogPost, ResponseData } from "@/app/types/query";
 
-export const revalidate = 30000;
-
 type PageProps = {
   params: { slug?: string[] };
 };
@@ -50,15 +48,20 @@ async function getPostFromParams(slugArray: string[] | undefined) {
     return null;
   }
   const slug = slugArray.join("/");
-
-  const data: ResponseData = await getPostBySlug(slug, { revalidate });
-
+  // on-demand revalidate 방식: tag 추가
+  const data: ResponseData = await getPostBySlug(slug, {
+    tags: [`post:${slug}`], // slug별 태그 설정
+  });
   const post = data?.pageBlogPostCollection?.items?.[0];
   return post ?? null;
 }
 
 async function getRelatedInfo(currentPost: BlogPost) {
-  const data: ResponseData = await getAllPosts({ revalidate });
+  //  on-demand revalidate 방식: posts 태그 추가
+  const data: ResponseData = await getAllPosts({
+    tags: ["posts"],
+  });
+
   const posts = (data?.pageBlogPostCollection?.items ?? []) as BlogPost[];
   const sorted = posts.sort((a: BlogPost, b: BlogPost) =>
     compareAsc(new Date(a.publishedDate), new Date(b.publishedDate)),

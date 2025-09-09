@@ -8,7 +8,7 @@ import rehypeStringify from "rehype-stringify";
 import rehypePrettyCode, {
   Options as RehypePrettyCodeOptions,
 } from "rehype-pretty-code";
-import "@/styles/mdx-contentful.css";
+import styles from "@/styles/mdx-contentful.module.css";
 
 function getTextFromNode(
   node: Node | Element | Parent | null | undefined,
@@ -86,7 +86,8 @@ export default async function MarkdownRenderer({
   return (
     <article
       className={cn(
-        "mdx list rehype-pretty-code shikit prose prose-lg max-w-none",
+        "mdx rehype-pretty-code shiki prose prose-lg max-w-none",
+        styles.mdx,
         className ?? "",
       )}
     >

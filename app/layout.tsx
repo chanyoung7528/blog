@@ -10,8 +10,6 @@ import { getAllPosts } from "@/lib/contentful";
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
 
-export const revalidate = 300;
-
 export const metadata: Metadata = {
   title: {
     template: "%s | chans.dev",
@@ -53,7 +51,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const data = await getAllPosts({ revalidate });
+  const data = await getAllPosts({ tags: ["posts"] });
   const posts = data?.pageBlogPostCollection?.items ?? [];
 
   return (

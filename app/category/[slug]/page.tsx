@@ -1,8 +1,6 @@
 import { Metadata, ResolvingMetadata } from "next";
 import CategoryPageClient from "@/components/page/category/CategoryPageClient";
 
-export const revalidate = 300;
-
 interface PageProps {
   params: Promise<{
     slug: string;

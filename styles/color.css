@@ -62,9 +62,8 @@
   --black1: #040f0f;
 }
 
-/* :root와 .dark가 동시에 적용될 때 .prose *에 스타일 적용 */
-:root.dark .prose * {
-  color: var(--tw-prose-invert-headings);
+.dark .prose {
+  color: var(--tw-prose-invert-body);
 }
 
 /* code[data-language="plaintext"], code[data-language="plaintext"] span에 스타일 적용 */
