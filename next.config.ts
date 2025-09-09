@@ -1,4 +1,3 @@
-import { withContentlayer } from "next-contentlayer";
 import nextMDX from "@next/mdx";
 import rehypePrettyCode from "rehype-pretty-code";
 
@@ -30,6 +29,5 @@ const mdxOptions = {
   },
 };
 
-// @next/mdx와 Contentlayer를 함께 적용
 const withMDX = nextMDX(mdxOptions);
-export default withContentlayer(withMDX(nextConfig));
+export default withMDX(nextConfig);

@@ -1,6 +1,6 @@
 type Author = {
   sys: Sys;
-  name: String;
+  name: string;
 };
 type Sys = {
   id: string;
@@ -12,7 +12,7 @@ type Sys = {
 };
 
 type Asset = {
-  title: String;
+  title: string;
   description: string;
   contentType: string;
   fileName: string;

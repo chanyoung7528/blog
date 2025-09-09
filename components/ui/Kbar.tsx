@@ -12,7 +12,7 @@ export default function KBar() {
   return (
     <KBarPortal>
       <KBarPositioner className="z-50">
-        <div className="pointer-events-none fixed inset-0 h-full w-full bg-white/50 backdrop-blur dark:bg-black/50" />
+        <div className="bg-white/50 dark:bg-black/50 pointer-events-none fixed inset-0 h-full w-full backdrop-blur" />
         <KBarAnimator
           className={cn(
             "bg-primary w-full overflow-hidden rounded-lg shadow-xl",
@@ -41,11 +41,11 @@ function RenderResults() {
       items={results}
       onRender={({ item, active }) =>
         typeof item === "string" ? (
-          <div className="text-secondary mx-3 py-2 text-xs">{item}</div>
+          <div className="text-secondary text-xs mx-3 py-2">{item}</div>
         ) : (
           <div
             className={cn(
-              "mx-3 flex cursor-pointer items-center gap-3 rounded-lg p-3 text-sm transition-colors",
+              "text-sm mx-3 flex cursor-pointer items-center gap-3 rounded-lg p-3 transition-colors",
               active && "bg-[#ededed] dark:bg-[#262626]",
             )}
           >
@@ -64,7 +64,7 @@ function RenderResults() {
                 {item.shortcut.map((sc) => (
                   <kbd
                     key={sc}
-                    className="rounded-md px-2 py-1 text-xs"
+                    className="text-xs rounded-md px-2 py-1"
                     style={{
                       background: "rgba(0 0 0 / .1)",
                     }}

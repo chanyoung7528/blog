@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import { unified } from "unified";
+import type { Root, Element, Parent, Node } from "hast";
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
 import rehypeRaw from "rehype-raw";
@@ -7,61 +8,86 @@ import rehypeStringify from "rehype-stringify";
 import rehypePrettyCode, {
   Options as RehypePrettyCodeOptions,
 } from "rehype-pretty-code";
-import "@/styles/mdx-contentful.css";
 
-// frontmatter 제거
-const removeFrontmatter = (content: string) =>
-  content ? content.replace(/^---[\s\S]*?---\s*/, "") : "";
+function getTextFromNode(
+  node: Node | Element | Parent | null | undefined,
+): string {
+  if (!node) return "";
+  if (node.type === "text")
+    return (node as unknown as { value?: string }).value || "";
+  if ("children" in node && Array.isArray((node as Parent).children)) {
+    return (node as Parent).children.map(getTextFromNode).join("");
+  }
+  return "";
+}
+
+function createHeadingId(text: string): string {
+  return text
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9ㄱ-ㅎ|ㅏ-ㅣ|가-힣 -]/g, "")
+    .replace(/\s/g, "-");
+}
+
+function rehypeAddHeadingIds() {
+  return (tree: Root) => {
+    const visit = (node: Node) => {
+      if (!node || typeof node !== "object") return;
+      if (
+        node.type === "element" &&
+        ["h2", "h3", "h4"].includes((node as Element).tagName)
+      ) {
+        const text = getTextFromNode(node);
+        const id = createHeadingId(text);
+        (node as Element).properties = {
+          ...((node as Element).properties || {}),
+          id,
+        };
+      }
+      if ("children" in node && Array.isArray((node as Parent).children)) {
+        (node as Parent).children.forEach(visit);
+      }
+    };
+    visit(tree);
+  };
+}
 
 export default async function MarkdownRenderer({
-  content,
+  markdown,
   className,
 }: {
-  content: string;
+  markdown?: string;
   className?: string;
 }) {
-  const mdContent = removeFrontmatter(content);
-
-  // rehype-pretty-code 옵션 타입 정의
-  const prettyCodeOptions: RehypePrettyCodeOptions = {
-    theme: {
-      dark: "one-dark-pro",
-    },
-    keepBackground: true,
-    defaultLang: {
-      block: "plaintext",
-      inline: "plaintext",
-    },
-    grid: false,
+  // prettier code 옵션
+  const options: RehypePrettyCodeOptions = {
+    theme: "material-theme-darker", // 문자열로만 지정해도 OK
+    keepBackground: false,
+    defaultLang: { block: "plaintext", inline: "plaintext" },
     onVisitLine(node) {
-      // 빈 줄의 기본 높이 방지
       if (node.children.length === 0) {
         node.children = [{ type: "text", value: " " }];
       }
     },
-    onVisitHighlightedLine(node) {
-      // 하이라이트된 줄에 클래스 추가
-      node.properties.className = [
-        ...(node.properties.className || []),
-        "highlight-line",
-      ];
-    },
-    // onVisitHighlightedWord는 rehype-pretty-code Options 타입에 존재하지 않으므로 제거
   };
 
   const file = await unified()
     .use(remarkParse)
     .use(remarkRehype, { allowDangerousHtml: true })
     .use(rehypeRaw)
-    .use(rehypePrettyCode, prettyCodeOptions)
+    .use(rehypeAddHeadingIds)
+    .use(rehypePrettyCode, options)
     .use(rehypeStringify, { allowDangerousHtml: true })
-    .process(mdContent);
+    .process(markdown);
 
   const html = String(file);
 
   return (
     <article
-      className={cn("mdx prose max-w-none dark:prose-invert", className ?? "")}
+      className={cn(
+        "mdx dark:prose-invepnpm list rehype-pretty-code shikit prose max-w-none",
+        className ?? "",
+      )}
     >
       <div dangerouslySetInnerHTML={{ __html: html }} />
     </article>

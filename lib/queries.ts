@@ -15,6 +15,8 @@ export const GET_ALL_POSTS = gql`
         }
         content
         publishedDate
+        tags
+        category
       }
     }
   }
@@ -29,8 +31,14 @@ export const GET_POST_BY_SLUG = gql`
         }
         title
         slug
+        shortDescription
+        featuredImage {
+          url
+        }
         content
         publishedDate
+        tags
+        category
       }
     }
   }

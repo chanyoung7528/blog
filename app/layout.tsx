@@ -6,9 +6,12 @@ import { siteConfig } from "@/config";
 import KBarProviders from "@/components/layout/KbarProvider";
 import FloatScrollTopButton from "@/components/ui/FloatScrollTopButton";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
-import { allWritings } from "contentlayer/generated";
+import PostsStoreInitializer from "@/components/PostsStoreInitializer";
+import { getAllPosts } from "@/lib/contentful";
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
+
+export const revalidate = 300;
 
 export const metadata: Metadata = {
   title: {
@@ -46,11 +49,13 @@ export const viewport = {
   ],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const data = await getAllPosts({ revalidate });
+  const posts = data?.pageBlogPostCollection?.items ?? [];
   return (
     <html lang="ko" suppressHydrationWarning>
       <head>
@@ -71,12 +76,15 @@ export default function RootLayout({
           }}
         />
         <StyleProvider>
-          <KBarProviders allWritings={allWritings}>
-            <Header />
-            {children}
-            <Footer />
-            <FloatScrollTopButton />
-          </KBarProviders>
+          <PostsStoreInitializer posts={posts}>
+            <KBarProviders>
+              {/* <GlobalPrefetch /> */}
+              <Header />
+              {children}
+              <Footer />
+              <FloatScrollTopButton />
+            </KBarProviders>
+          </PostsStoreInitializer>
         </StyleProvider>
       </body>
     </html>
