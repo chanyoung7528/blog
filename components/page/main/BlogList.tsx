@@ -1,16 +1,17 @@
 "use client";
 
-import { AllWritingsProvider } from "@/contexts/AllWritingsContext"; // 기존 Context 로직
-import { Writing } from "contentlayer/generated";
 import Post from "../posts/Post";
 import { MainPagination } from "./MainPagination";
+import { Suspense } from "react";
 
-function BlogList({ writings }: { writings: Writing[] }) {
+function BlogList() {
   return (
-    <AllWritingsProvider writings={writings}>
+    <>
       <Post />
-      <MainPagination />
-    </AllWritingsProvider>
+      <Suspense fallback={null}>
+        <MainPagination />
+      </Suspense>
+    </>
   );
 }
 

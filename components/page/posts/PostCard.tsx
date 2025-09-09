@@ -19,7 +19,11 @@ export default function PostCard({
 }) {
   return (
     <li>
-      <Link prefetch href={`/posts/${slug}`} className="flex h-full flex-col">
+      <Link
+        prefetch={true}
+        href={`/posts/${slug}`}
+        className="flex h-full flex-col"
+      >
         <div className="relative aspect-[128/72] w-full overflow-hidden rounded-md transition-transform duration-300 hover:scale-105">
           <Image
             src={image || "/default-thumbnail.jpg"}
@@ -43,7 +47,7 @@ export default function PostCard({
             </dd>
 
             <div className="flex items-center  gap-2">
-              {tags?.slice(0, 2).map((tag: string, index: number) => (
+              {tags?.map((tag: string, index: number) => (
                 <Tag key={`tag${index}`} tag={tag} />
               ))}
             </div>

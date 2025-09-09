@@ -2,7 +2,6 @@ import { categoryInfo } from "@/constant/post";
 import styles from "@/styles/layout/main.module.css";
 import Link from "next/link";
 import BlogList from "../page/main/BlogList";
-import { allWritings } from "contentlayer/generated";
 import Image from "next/image";
 import { Badge } from "../ui/Badge";
 
@@ -42,7 +41,11 @@ const MainSection = () => {
           <div className="min-h-[200px] flex-1 maxSm:mt-5">
             <div className="flex flex-wrap gap-[2.5rem] pl-6 pr-6">
               {categoryInfo?.map((category, index) => (
-                <Link href={`/category/${category.value}`} key={index}>
+                <Link
+                  prefetch={true}
+                  href={`/category/${category.value}`}
+                  key={index}
+                >
                   <Badge category={category} />
                 </Link>
               ))}
@@ -51,7 +54,7 @@ const MainSection = () => {
         </div>
 
         <div className="cont_main">
-          <BlogList writings={allWritings} />
+          <BlogList />
         </div>
       </article>
     </main>

@@ -92,5 +92,6 @@ module.exports = {
     ({ addUtilities }) => {
       addUtilities({});
     },
+    require("@tailwindcss/typography"),
   ],
 };

@@ -1,5 +1,4 @@
 "use client";
-import { useAllWritings } from "@/contexts/AllWritingsContext";
 import {
   Pagination,
   PaginationContent,
@@ -11,10 +10,13 @@ import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
+import { usePostsStore } from "@/stores/usePostsStore";
+
 export const MainPagination = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { currentPage, totalPages, setCurrentPage } = useAllWritings();
+  const { posts, currentPage, itemsPerPage, setCurrentPage } = usePostsStore();
+  const totalPages = Math.ceil(posts.length / itemsPerPage) || 1;
   const [isMobile, setIsMobile] = useState(false);
 
   const baseButtonStyles = isMobile
